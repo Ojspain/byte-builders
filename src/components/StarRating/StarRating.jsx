@@ -1,4 +1,3 @@
-import './StarRating.css';
 import filledStar from "../../assets/filledStar.svg";
 import hollowStar from "../../assets/hollowStar.svg";
 
