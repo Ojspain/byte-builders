@@ -38,9 +38,13 @@
     {
       "_id": "1",
       "authorId": "1",
-      "imageUrl": "https://example.com/ladybug.png",
-      "textTitle": "Ladybug in my garden",
+      "authorName": "Alice Walker", 
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/7-Spotted-Ladybug-Coccinella-septempunctata-sq1.jpg",
+      "speciesCommon": "Beetle",
+      "speciesActual": "Coleoptera",
       "textContent": "Love these guys so much!!",
+      "location": "Kitchen",
+      "tags": ["Loud", "Scared me!", "Pretty", "Fast", "Flying around"],
       "rating": 5,
       "heart": true,
       "createdAt": "2026-04-25T14:00:00.000Z"
@@ -48,9 +52,13 @@
     {
       "_id": "2",
       "authorId": "3",
-      "imageUrl": "",
-      "textTitle": "Ant",
+      "authorName": "Dave-The-Brave", 
+      "imageUrl": "https://cdn.britannica.com/42/223142-050-7033F421/Red-ant-on-a-green-branch.jpg",
+      "speciesCommon": "Ant",
+      "speciesActual": "Ant",
       "textContent": "Found eating my crumbs",
+      "location": "Kitchen",
+      "tags": ["Crawling"],
       "rating": 4,
       "heart": false,
       "createdAt": "2026-04-26T09:45:00.000Z"
