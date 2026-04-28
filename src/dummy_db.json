@@ -1,0 +1,83 @@
+{
+  "users": [
+    {
+      "_id": "1",
+      "username": "ladybug_larry",
+      "email": "larry@garden.com",
+      "passwordHash": "hashed_pass_123",
+      "bio": "Aphid hunter. Spot enthusiast.",
+      "profilePicUrl": "https://example.com/ladybug.png",
+      "followerCount": 1,
+      "followingCount": 0,
+      "createdAt": "2026-04-20T10:00:00.000Z"
+    },
+    {
+      "_id": "2",
+      "username": "code_mantis",
+      "email": "mantis@jungle.com",
+      "passwordHash": "hashed_pass_456",
+      "bio": "Praying for a bug-free deploy.",
+      "profilePicUrl": "https://example.com/mantis.png",
+      "followerCount": 0,
+      "followingCount": 1,
+      "createdAt": "2026-04-21T11:30:00.000Z"
+    },
+    {
+      "_id": "3",
+      "username": "worker_ant_99",
+      "email": "ant99@colony.com",
+      "passwordHash": "hashed_pass_789",
+      "bio": "Your picnic is mine",
+      "profilePicUrl": "https://example.com/ant.png",
+      "followerCount": 0,
+      "followingCount": 0,
+      "createdAt": "2026-04-22T08:15:00.000Z"
+    }
+  ],
+  "posts": [
+    {
+      "_id": "1",
+      "authorId": "1",
+      "imageUrl": "https://example.com/ladybug.png",
+      "textTitle": "Ladybug in my garden",
+      "textContent": "Love these guys so much!!",
+      "rating": 5,
+      "heart": true,
+      "createdAt": "2026-04-25T14:00:00.000Z"
+    },
+    {
+      "_id": "2",
+      "authorId": "3",
+      "imageUrl": "",
+      "textTitle": "Ant",
+      "textContent": "Found eating my crumbs",
+      "rating": 4,
+      "heart": false,
+      "createdAt": "2026-04-26T09:45:00.000Z"
+    }
+  ],
+  "comments": [
+    {
+      "_id": "1",
+      "postId": "1",
+      "authorId": "2",
+      "commentText": "Nice find!",
+      "createdAt": "2026-04-25T15:15:00.000Z"
+    },
+    {
+      "_id": "2",
+      "postId": "2",
+      "authorId": "1",
+      "commentText": "Great photo",
+      "createdAt": "2026-04-26T10:00:00.000Z"
+    }
+  ],
+  "follows": [
+    {
+      "_id": "1",
+      "followerId": "2",
+      "followeeId": "1",
+      "createdAt": "2026-04-22T09:00:00.000Z"
+    }
+  ]
+}
