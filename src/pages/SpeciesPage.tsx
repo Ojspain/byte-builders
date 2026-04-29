@@ -38,7 +38,7 @@ function SpeciesPage() {
   return (
     <>
       <SideBar />
-      <div className="ml-60 mt-16 p-10 flex justify-center pb-20">
+      <div className="lg:ml-60 mt-16 p-10 flex justify-center pb-20">
         {!speciesData ? (
           <div className="text-center mt-20">
             <h1 className="text-3xl font-bold text-zinc-400">

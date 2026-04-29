@@ -12,7 +12,7 @@ function SavedPage() {
         <>
             <SideBar />
             {/* Keep at least these styles so the SideBar works */}
-            <div className='ml-60 mt-16 p-10'>
+            <div className='lg:ml-60 mt-16 p-10'>
                 <h1 className='text-3xl font-bold mb-8'>Saved</h1>
                 <div className='grid grid-cols-3 gap-6'>
                     {posts.map((post) => (

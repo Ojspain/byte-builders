@@ -7,7 +7,7 @@ function HomePage() {
   return (
     <>
       <SideBar />
-      <div className="ml-60 mt-16 flex flex-col gap-20 p-10">
+      <div className="lg:ml-60 mt-16 flex flex-col gap-20 p-10 items-center">
         {dummy.posts.map((p) => (
           <Post
             key={p._id}

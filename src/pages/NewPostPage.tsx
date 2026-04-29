@@ -91,7 +91,7 @@ function NewPostPage() {
     <>
       <SideBar />
       <div
-        className="ml-60 mt-16 min-h-[calc(100vh-4rem)] bg-slate-50 px-8 pb-16 pt-8 font-[family-name:var(--font-body)] sm:px-16"
+        className="lg:ml-60 mt-16 min-h-[calc(100vh-4rem)] bg-slate-50 px-8 pb-16 pt-8 font-[family-name:var(--font-body)] sm:px-16"
         style={
           {
             "--font-body": "'Be Vietnam Pro', sans-serif",

@@ -7,7 +7,7 @@ function SearchPage() {
         <>
             <SideBar />
             {/* Keep at least these styles so the SideBar works */}
-            <div className='ml-60 mt-16 p-10'>
+            <div className='lg:ml-60 mt-16 p-10'>
                 {/* Page content goes here */}
             </div>
         </>
