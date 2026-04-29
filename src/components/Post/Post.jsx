@@ -4,6 +4,7 @@ import StarRating from "../StarRating/StarRating";
 import Interaction from "./Interaction";
 import sendArrow from "../../assets/sendArrow.svg";
 import Tags from "./Tags";
+import { Link } from "react-router-dom";
 
 function Post({
   _id,
@@ -75,9 +76,12 @@ function Post({
                 <div className="text-zinc-900 text-xl font-semibold leading-5">
                   {speciesCommon}
                 </div>
-                <div className="text-zinc-500 text-xs font-semibold">
+                <Link
+                  to={`/species/${speciesActual}`}
+                  className="text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer"
+                >
                   ({speciesActual})
-                </div>
+                </Link>
               </div>
 
               {/* Tags */}

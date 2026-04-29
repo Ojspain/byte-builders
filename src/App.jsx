@@ -4,6 +4,7 @@ import SearchPage from "./pages/SearchPage";
 import SavedPage from "./pages/SavedPage";
 import ProfilePage from "./pages/ProfilePage";
 import NewPostPage from "./pages/NewPostPage";
+import SpeciesPage from "./pages/SpeciesPage";
 
 function App() {
 
@@ -15,9 +16,10 @@ function App() {
         <Route path="/saved" element={<SavedPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/new-post" element={<NewPostPage />} />
+        <Route path="/species/:speciesId" element={<SpeciesPage />} />
       </Routes>
     </>
-  )
+  );
 }
 
 export default App
