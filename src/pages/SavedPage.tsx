@@ -1,3 +1,4 @@
+import React from "react";
 import SideBar from '../components/SideBar/SideBar';
 import dummy from '../dummy_db.json';
 import { Link } from 'react-router-dom';

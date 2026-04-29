@@ -1,3 +1,4 @@
+import React from "react";
 import SideBar from "../components/SideBar/SideBar";
 import Post from "../components/Post/Post";
 import dummy from "../dummy_db.json";
