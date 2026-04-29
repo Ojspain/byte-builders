@@ -2,37 +2,76 @@ import bell from "../../assets/bell.svg";
 import settings from "../../assets/settings.svg";
 import bugLogo from "../../assets/bugLogo.svg";
 import cup from "../../assets/cup.svg"
+import ham from "../../assets/ham.svg"
 import NavItem from "./NavItem";
 import { NavLink } from 'react-router-dom';
+import { useState } from "react";
 
 function SideBar() {
+    const [hamOpen, setHamOpen] = useState(false);
+
+    const handleHam = () => {
+        setHamOpen(!hamOpen);
+    }
 
     return (
         <>
             {/* Top Bar */}
-            <div className="w-full h-16 px-10 bg-white border-b border-slate-100 shadow-xs flex justify-end fixed top-0 left-0 z-99">
-                <div className="flex items-center gap-6">
+            <div className="w-full h-16 px-10 bg-white border-b border-slate-100 shadow-xs fixed flex justify-between top-0 left-0 z-99">
+                <section className="flex gap-10">
+                    <button onClick={handleHam} className="lg:hidden">
+                        <img src={ham} alt="Navigation" className="h-10" />
+                    </button>
+
+                    <div className="pb-5 px-2 flex relative">
+                        <div className="absolute w-12 mt-0.5 rotate-180 scale-y-90">
+                            <img src={cup} />
+                        </div>
+
+                        {/* Logo */}
+                        <div className="flex lg:hidden pt-4 pl-3 items-center gap-5">
+                            <img src={bugLogo} className="mt-4"/>
+                            <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
+                                U<span className="text-xl">nder</span>
+                                T<span className="text-xl">he</span>
+                                C<span className="text-xl">up</span></div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <div className="flex justify-end items-center gap-6">
                     <img src={bell} alt="Notifications" className='cursor-pointer' />
                     <img src={settings} alt="Settings" className='cursor-pointer' />
                 </div>
             </div>
 
             {/* Side Bar */}
-            <div className="z-100 w-60 h-full p-4 left-0 top-0 fixed bg-white shadow-sm border-r border-slate-100 flex flex-col">
+            <div className={`${hamOpen ? "flex" : "hidden lg:flex"} z-100 lg:w-60 h-full p-4 left-0 top-0 fixed bg-white shadow-sm border-r border-slate-100 flex flex-col`}>
                 {/* Logo */}
-                <div className="pb-10 px-2 flex flex-col items-center relative">
-                    <div className="absolute w-12 rotate-180 scale-y-90">
-                        <img src={cup} />
+                {!hamOpen ?
+                    <div className="pb-10 px-2 flex flex-col items-center relative">
+                        <div className="absolute w-12 rotate-180 scale-y-90">
+                            <img src={cup} />
+                        </div>
+
+                        <div className="pt-6 flex flex-col items-center">
+                            <img src={bugLogo} />
+                            <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
+                                U<span className="text-xl">nder</span>
+                                T<span className="text-xl">he</span>
+                                C<span className="text-xl">up</span></div>
+                        </div>
                     </div>
 
-                    <div className="pt-6 flex flex-col items-center">
-                        <img src={bugLogo} />
-                        <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
-                            U<span className="text-xl">nder</span>
-                            T<span className="text-xl">he</span>
-                            C<span className="text-xl">up</span></div>
+                    :
+
+                    <div className="h-31 w-60 px-6 -my-1">
+                        <button onClick={handleHam}>
+                            <img src={ham} alt="Navigation" className="h-10" />
+                        </button>
                     </div>
-                </div>
+                }
 
                 {/* Search and Library */}
                 <div className="flex-1 flex flex-col gap-1 text-xs font-bold tracking-wide">
