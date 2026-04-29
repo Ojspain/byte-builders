@@ -1,6 +1,7 @@
 import bell from "../../assets/bell.svg";
 import settings from "../../assets/settings.svg";
 import bugLogo from "../../assets/bugLogo.svg";
+import cup from "../../assets/cup.svg"
 import NavItem from "./NavItem";
 import { NavLink } from 'react-router-dom';
 
@@ -19,9 +20,18 @@ function SideBar() {
             {/* Side Bar */}
             <div className="z-100 w-60 h-full p-4 left-0 top-0 fixed bg-white shadow-sm border-r border-slate-100 flex flex-col">
                 {/* Logo */}
-                <div className="pb-10 px-2 flex items-center gap-3">
-                    <img src={bugLogo} />
-                    <div className="text-emerald-600 text-3xl font-bold">BugHunter</div>
+                <div className="pb-10 px-2 flex flex-col items-center relative">
+                    <div className="absolute w-12 rotate-180 scale-y-90">
+                        <img src={cup} />
+                    </div>
+
+                    <div className="pt-6 flex flex-col items-center">
+                        <img src={bugLogo} />
+                        <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
+                            U<span className="text-xl">nder</span>
+                            T<span className="text-xl">he</span>
+                            C<span className="text-xl">up</span></div>
+                    </div>
                 </div>
 
                 {/* Search and Library */}
@@ -62,9 +72,9 @@ function SideBar() {
                     />
                 </div>
 
-                {/* Make a Post */}
+                {/* Make a */}
                 <NavLink to="/new-post" className="w-full pt-4 border-t border-zinc-200 flex flex-col justify-start items-start gap-4 cursor-pointer">
-                    <div className="flex w-full h-12 bg-[#40e77d] rounded-full gap-3 items-center justify-center">
+                    <div className="flex w-full h-12 bg-[#6af39c] rounded-full gap-3 items-center justify-center">
                         <img src={bugLogo} className='h-6' />
                         <div className="text-center justify-center text-[#006D37] text-md font-bold tracking-wide">Post New Bug</div>
                     </div>
