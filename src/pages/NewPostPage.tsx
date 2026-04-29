@@ -6,24 +6,29 @@ import filledStar from "../assets/filledStar.svg";
 import hollowStar from "../assets/hollowStar.svg";
 
 const TAG_OPTIONS = [
+  "Serious",
+  "Joke",
   "Scared me!",
   "Crawler",
-  "Stationary",
-  "Fast",
   "Flying",
+  "Landed on me",
+  "Got in my face",
+  "Stationary",
+  "Pesky",
+  "Fast",
   "Ugly",
+  "Pretty",
+  "Shiny",
   "Tiny",
   "Small",
   "Large",
   "Massive beast",
-  "Landed on me",
   "Loud",
   "Quiet",
-  "Pesky",
-  "Got in my face",
 ] as const;
 
 const LOCATIONS = [
+  "Outside",
   "Kitchen",
   "Bedroom",
   "Garden",
@@ -38,11 +43,11 @@ type SpeciesRow = (typeof dummy.species)[number];
 function NewPostPage() {
   const navigate = useNavigate();
 
-  const [speciesQuery, setSpeciesQuery] = useState("Drosophila melanogaster");
+  const [speciesQuery, setSpeciesQuery] = useState("");
   const [location, setLocation] = useState("");
   const [rating, setRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState<Set<string>>(
-    () => new Set(["Scared me!", "Fast", "Flying"])
+    () => new Set([])
   );
   const [caption, setCaption] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
