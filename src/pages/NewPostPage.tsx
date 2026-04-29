@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideBar from "../components/SideBar/SideBar";
 import dummy from "../dummy_db.json";
 import filledStar from "../assets/filledStar.svg";
 import hollowStar from "../assets/hollowStar.svg";
@@ -89,9 +88,8 @@ function NewPostPage() {
 
     return (
         <>
-            <SideBar />
             <div
-                className="lg:ml-60 mt-16 min-h-[calc(100vh-4rem)] bg-slate-50 px-8 pb-16 pt-8 font-[family-name:var(--font-body)] sm:px-16"
+                className="min-h-[calc(100vh-4rem)] bg-slate-50 px-8 pb-16 pt-8 font-[family-name:var(--font-body)] sm:px-16"
                 style={
                     {
                         "--font-body": "'Be Vietnam Pro', sans-serif",

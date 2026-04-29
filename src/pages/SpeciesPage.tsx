@@ -1,5 +1,3 @@
-import React from "react";
-import SideBar from "../components/SideBar/SideBar";
 import Post from "../components/Post/Post";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -37,8 +35,7 @@ function SpeciesPage() {
 
   return (
     <>
-      <SideBar />
-      <div className="lg:ml-60 mt-16 p-10 flex justify-center pb-20">
+      <div className="flex justify-center pb-20">
         {!speciesData ? (
           <div className="text-center mt-20">
             <h1 className="text-3xl font-bold text-zinc-400">

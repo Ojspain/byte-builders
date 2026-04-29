@@ -1,13 +1,10 @@
-import React from "react";
-import SideBar from "../components/SideBar/SideBar";
 import Post from "../components/Post/Post";
 import dummy from "../dummy_db.json";
 
 function HomePage() {
   return (
     <>
-      <SideBar />
-      <div className="lg:ml-60 mt-16 flex flex-col gap-20 p-10 items-center">
+      <div className="flex flex-col gap-20 items-center">
         {dummy.posts.map((p) => (
           <Post
             key={p._id}
