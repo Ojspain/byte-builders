@@ -13,10 +13,10 @@
     },
     {
       "_id": "2",
-      "username": "code_mantis",
+      "username": "bed_bug_hater",
       "email": "mantis@jungle.com",
       "passwordHash": "hashed_pass_456",
-      "bio": "Praying for a bug-free deploy.",
+      "bio": "Praying for a bug-free bedroom.",
       "profilePicUrl": "https://example.com/mantis.png",
       "followerCount": 0,
       "followingCount": 1,
@@ -34,6 +34,22 @@
       "createdAt": "2026-04-22T08:15:00.000Z"
     }
   ],
+  "species": [
+    {
+      "_id": "Beetle",
+      "speciesCommon": "Beetle",
+      "speciesActual": "Coleoptera",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/7-Spotted-Ladybug-Coccinella-septempunctata-sq1.jpg",
+      "description": "Beetles are a group of insects that form the order Coleoptera, in the superorder Endopterygota. Their front pair of wings are hardened into wing-cases, elytra, distinguishing them from most other insects. They are highly diverse and found in almost every habitat."
+    },
+    {
+      "_id": "Ant",
+      "speciesCommon": "Ant",
+      "speciesActual": "Formicidae",
+      "imageUrl": "https://cdn.britannica.com/42/223142-050-7033F421/Red-ant-on-a-green-branch.jpg",
+      "description": "Ants are eusocial insects of the family Formicidae and, along with the related wasps and bees, belong to the order Hymenoptera. They form highly organized colonies that can range in size from a few dozen predatory individuals to highly organized colonies that may occupy large territories."
+    }
+  ],
   "posts": [
     {
       "_id": "1",
@@ -47,6 +63,8 @@
       "tags": ["Loud", "Scared me!", "Pretty", "Fast", "Flying around"],
       "rating": 5,
       "heart": true,
+      "likeCount": 124,
+      "sprayCount": 2,
       "createdAt": "2026-04-25T14:00:00.000Z"
     },
     {
@@ -61,6 +79,8 @@
       "tags": ["Crawling"],
       "rating": 4,
       "heart": false,
+      "likeCount": 45,
+      "sprayCount": 12,
       "createdAt": "2026-04-26T09:45:00.000Z"
     }
   ],
