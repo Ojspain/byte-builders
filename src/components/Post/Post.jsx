@@ -29,6 +29,24 @@ function Post({
     day: "numeric",
   });
 
+  // TODO make these two into API calls:
+
+  // get comments on this post
+  const postComments = dummy.comments.filter(
+    (comment) => String(comment.postId) === String(_id),
+  );
+
+  // populate user info on comments
+  const populatedComments = postComments.map((comment) => {
+    const authorDetails = dummy.users.find(
+      (user) => String(user._id) === String(comment.authorId),
+    );
+    return {
+      ...comment,
+      author: authorDetails,
+    };
+  });
+
   return (
     <>
       <div
@@ -112,17 +130,16 @@ function Post({
 
           {/* Comments Section */}
           <div className="h-full pt-5 flex flex-col gap-3 overflow-hidden">
-            {dummy.comments.map((c) => (
+            {populatedComments.map((commentData) => (
               <Comment
-                key={c._id}
-                _id={c._id}
-                authorId={c.authorId}
-                commentText={c.commentText}
-                createdAt={c.createdAt}
+                key={commentData._id}
+                author={commentData.author}
+                commentText={commentData.commentText}
+                createdAt={commentData.createdAt}
               />
             ))}
           </div>
-
+          
           {/* Add Comment */}
           {/* TODO: add usability */}
           <div className="border-t border-zinc-200 flex flex-col w-full pt-5 relative">
