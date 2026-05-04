@@ -6,6 +6,7 @@ import SavedPage from "./pages/SavedPage";
 import ProfilePage from "./pages/ProfilePage";
 import NewPostPage from "./pages/NewPostPage";
 import SpeciesPage from "./pages/SpeciesPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/new-post" element={<NewPostPage />} />
           <Route path="/species/:speciesId" element={<SpeciesPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </>
