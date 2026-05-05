@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import Comment from "./Comment";
 import dummy from "../../dummy_db.json";
 import StarRating from "../StarRating/StarRating";
@@ -21,6 +22,8 @@ function Post({
   likeCount,
   sprayCount,
 }) {
+  const [isScroll, setIsScroll] = useState(false);
+  const scrollRef = useRef(null);
   const date = new Date(createdAt);
   const postedHoursAgo = Math.floor((new Date() - date) / (1000 * 60 * 60));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -35,6 +38,11 @@ function Post({
   const postComments = dummy.comments.filter(
     (comment) => String(comment.postId) === String(_id),
   );
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) setIsScroll(el.scrollHeight > el.clientHeight);
+  }, [postComments]);
 
   // populate user info on comments
   const populatedComments = postComments.map((comment) => {
@@ -72,12 +80,18 @@ function Post({
               />
 
               {/* Name and Time */}
-              <div className="w-20 flex flex-col overflow-hidden">
+              <div className="min-w-20 max-w-80 flex flex-col overflow-hidden">
                 <div className="text-white text-xs font-bold tracking-wide max-h-8 overflow-hidden">
                   {authorName}
                 </div>
                 <div className="text-stone-300 text-xs font-medium">
-                  {postedHoursAgo} hours ago
+                  {(postedHoursAgo < 24)
+                    ? `${postedHoursAgo} hours ago`
+                    :
+                    (postedHoursAgo < 8760)
+                      ? `${Math.floor(postedHoursAgo / 24)} days ago`
+                      : `${Math.floor(postedHoursAgo / (24 * 365))} years ago`
+                  }
                 </div>
               </div>
             </div>
@@ -129,7 +143,7 @@ function Post({
           </section>
 
           {/* Comments Section */}
-          <div className="h-full pt-5 flex flex-col gap-3 overflow-hidden">
+          <div ref={scrollRef} className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll [scrollbar-width:none] ${isScroll && "bg-linear-to-b from-80% to-gray-100"}`}>
             {populatedComments.map((commentData) => (
               <Comment
                 key={commentData._id}
@@ -139,7 +153,7 @@ function Post({
               />
             ))}
           </div>
-          
+
           {/* Add Comment */}
           {/* TODO: add usability */}
           <div className="border-t border-zinc-200 flex flex-col w-full pt-5 relative">
