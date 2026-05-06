@@ -36,11 +36,14 @@ function Tags({ location, tags }) {
                     }
                 </div>
 
-                {tagCnt > 4 && isOpen &&
-                    tags.slice(4).map((tag, i) => (
-                        <div key={i} className="tag">{tag}</div>
-                    ))
-                }
+                <div className='flex gap-1.5'>
+                    {tagCnt > 4 && isOpen &&
+                        tags.slice(4).map((tag, i) => (
+                            <div key={i} className="tag">{tag}</div>
+                        ))
+                    }
+                </div>
+
             </div>
         </>
     )

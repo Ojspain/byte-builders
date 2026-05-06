@@ -41,7 +41,7 @@ function Post({
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) setIsScroll(el.scrollHeight > el.clientHeight);
+    if (el) setIsScroll(el.scrollHeight != el.clientHeight);
   }, [postComments]);
 
   // populate user info on comments
