@@ -2,13 +2,19 @@ import dummy from '../dummy_db.json';
 import { Link } from 'react-router-dom';
 import StarRating from '../components/StarRating/StarRating';
 import Interaction from '../components/Post/Interaction';
+import SortBy from "../components/SortBy/SortBy";
 
 function SavedPage() {
     const posts = dummy.posts;
+    const options = {
+        "Liked": "liked",
+        "Sprayed": "sprayed",
+    };
 
     return (
         <>
             <h1 className='text-3xl font-bold mb-8'>Saved</h1>
+            <SortBy options={options} />
             <div className='grid grid-cols-3 gap-6'>
                 {posts.map((post) => (
                     <div
