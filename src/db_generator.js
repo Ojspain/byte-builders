@@ -6,6 +6,7 @@ const NUMBER_OF_POSTS = 50;
 const NUMBER_OF_COMMENTS = 80;
 const NUMBER_OF_FOLLOWS = 30;
 const OUTPUT_FILE_NAME = "dummy_db.json";
+const SPECIES_INPUT_FILE = "species.json";
 
 // source arrays
 const bugTypes = [
@@ -96,27 +97,21 @@ const loremWords = [
   "veniam",
 ];
 
-// hardcoded species for now
-const speciesData = [
-  {
-    _id: "Beetle",
-    speciesCommon: "Beetle",
-    speciesActual: "Coleoptera",
-    imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/0/08/7-Spotted-Ladybug-Coccinella-septempunctata-sq1.jpg",
-    description:
-      "Beetles are a group of insects that form the order Coleoptera, in the superorder Endopterygota.",
-  },
-  {
-    _id: "Ant",
-    speciesCommon: "Ant",
-    speciesActual: "Formicidae",
-    imageUrl:
-      "https://cdn.britannica.com/42/223142-050-7033F421/Red-ant-on-a-green-branch.jpg",
-    description:
-      "Ants are eusocial insects of the family Formicidae and, along with the related wasps and bees, belong to the order Hymenoptera.",
-  },
-];
+// Data loading helper
+function loadSpeciesData(filePath) {
+  try {
+    const rawData = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(rawData);
+  } catch (error) {
+    console.error(
+      `Failed to load species data from ${filePath}. Error: ${error.message}`,
+    );
+    process.exit(1);
+  }
+}
+
+// Load the dynamic species data instead of hardcoding
+const speciesData = loadSpeciesData(SPECIES_INPUT_FILE);
 
 // helpers for randomly getting items from source
 function getRandomItem(array) {
@@ -187,16 +182,16 @@ function createPosts(postCount, usersList) {
       }
     }
 
-    // Pull the entire object from our hardcoded list
+    // Pull the entire object from the imported list
     const selectedSpecies = getRandomItem(speciesData);
 
     generatedPosts.push({
       _id: String(postIndex),
       authorId: randomUser._id,
       authorName: randomUser.username,
-      imageUrl: selectedSpecies.imageUrl,
-      speciesCommon: selectedSpecies.speciesCommon,
-      speciesActual: selectedSpecies.speciesActual,
+      imageUrl: selectedSpecies.imageUrl || "",
+      speciesCommon: selectedSpecies.speciesCommon || "",
+      speciesActual: selectedSpecies.speciesActual || "",
       textContent: generateLoremIpsum(5, 25),
       location: getRandomItem(locations),
       tags: selectedTags,
@@ -240,26 +235,27 @@ function createFollows(followCount, usersList) {
     const follower = getRandomItem(usersList);
     const followee = getRandomItem(usersList);
 
-    if (follower._id !== followee._id) {
-      const alreadyExists = generatedFollows.some(
-        (followRecord) =>
-          followRecord.followerId === follower._id &&
-          followRecord.followeeId === followee._id,
-      );
+    const isSelfFollow = follower._id === followee._id;
+    const alreadyExists = generatedFollows.some(
+      (followRecord) =>
+        followRecord.followerId === follower._id &&
+        followRecord.followeeId === followee._id,
+    );
 
-      if (!alreadyExists) {
-        generatedFollows.push({
-          _id: String(followIndex),
-          followerId: follower._id,
-          followeeId: followee._id,
-          createdAt: generateRandomDate(365),
-        });
+    const isValidNewFollow = !isSelfFollow && !alreadyExists;
 
-        follower.followingCount += 1;
-        followee.followerCount += 1;
+    if (isValidNewFollow) {
+      generatedFollows.push({
+        _id: String(followIndex),
+        followerId: follower._id,
+        followeeId: followee._id,
+        createdAt: generateRandomDate(365),
+      });
 
-        followIndex++;
-      }
+      follower.followingCount += 1;
+      followee.followerCount += 1;
+
+      followIndex++;
     }
   }
   return generatedFollows;
@@ -287,6 +283,7 @@ function generateDatabase() {
   fs.writeFileSync(OUTPUT_FILE_NAME, JSON.stringify(completeDatabase, null, 2));
   console.log(`Database generated successfully with:
   - ${usersArray.length} Users
+  - ${speciesData.length} Species imported from ${SPECIES_INPUT_FILE}
   - ${postsArray.length} Posts
   - ${commentsArray.length} Comments
   - ${followsArray.length} Follows`);
