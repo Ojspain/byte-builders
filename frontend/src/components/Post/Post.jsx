@@ -3,6 +3,7 @@ import Comment from "./Comment";
 import dummy from "../../dummy_db.json";
 import StarRating from "../StarRating/StarRating";
 import Interaction from "./Interaction";
+import diagonalArrow from "../../assets/diagonalArrow.svg";
 import sendArrow from "../../assets/sendArrow.svg";
 import Tags from "./Tags";
 import { Link } from "react-router-dom";
@@ -110,9 +111,10 @@ function Post({
                 </div>
                 <Link
                   to={`/species/${speciesActual}`}
-                  className="text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer"
+                  className="whitespace-nowrap flex gap-1 text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer"
                 >
                   ({speciesActual})
+                  <img src={diagonalArrow} className="w-2 h-3.5" />
                 </Link>
               </div>
 
