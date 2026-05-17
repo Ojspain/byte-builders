@@ -110,7 +110,7 @@ function SignupPage() {
                             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                                 {/* Name */}
                                 <div className="flex flex-col gap-1 relative">
-                                    <label htmlFor="username" className="text-xs font-bold tracking-wide">Full Name</label>
+                                    <label htmlFor="username" className="text-xs font-bold tracking-wide">Username</label>
                                     <input
                                         type="text"
                                         placeholder="BugHunter47"

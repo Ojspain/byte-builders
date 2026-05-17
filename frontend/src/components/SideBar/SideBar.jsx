@@ -14,6 +14,15 @@ function SideBar() {
         setHamOpen(!hamOpen);
     }
 
+    {/* TODO: connect to backend */ }
+    const savedUser = localStorage.getItem("User");
+
+    // TODO: make sure the buttons refresh to show log in and sign up. show a success message
+    const handleLogout = () => {
+        localStorage.removeItem("User");
+        navigate("/");
+    };
+
     return (
         <>
             {/* Top Bar */}
@@ -30,7 +39,7 @@ function SideBar() {
 
                         {/* Logo */}
                         <div className="flex lg:hidden pt-4 pl-3 items-center gap-5">
-                            <img src={bugLogo} className="mt-4"/>
+                            <img src={bugLogo} className="mt-4" />
                             <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
                                 U<span className="text-xl">nder</span>
                                 T<span className="text-xl">he</span>
@@ -41,8 +50,17 @@ function SideBar() {
 
 
                 <div className="flex justify-end items-center gap-3">
-                    <Link to="/login" className="rounded-full bg-[#6af39c] text-[#00361b] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
-                    <Link to="/signup" className="rounded-full bg-gray-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
+                    {/* Already logged in? Hide the Log In and Sign Up buttons */}
+                    {!savedUser &&
+                        <>
+                            <Link to="/login" className="rounded-full bg-[#6af39c] text-[#00361b] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
+                            <Link to="/signup" className="rounded-full bg-gray-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
+                        </>
+                    }
+                    {/* Show the Log Out button instead */}
+                    {savedUser &&
+                        <button className="rounded-full bg-gray-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
+                    }
 
                     <img src={bell} alt="Notifications" className='cursor-pointer ml-3' />
                     {/* TODO: decide if we want to implement this */}
