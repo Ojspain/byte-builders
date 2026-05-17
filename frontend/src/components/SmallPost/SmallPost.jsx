@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import StarRating from '../StarRating/StarRating';
 import Interaction from '../Post/Interaction';
 
-function Comment({ post, hasAuthor }) {
+function SmallPost({ post, hasAuthor }) {
     return (
         <div
             key={post._id}
@@ -71,4 +71,4 @@ function Comment({ post, hasAuthor }) {
     );
 }
 
-export default Comment;
+export default SmallPost;
