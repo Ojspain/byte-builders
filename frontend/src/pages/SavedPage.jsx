@@ -11,10 +11,13 @@ function SavedPage() {
         "Sprayed": "sprayed",
     };
 
+    const [sortBy, setSortBy] = useState("");
+    const [speciesQuery, setSpeciesQuery] = useState("");
+
     return (
         <>
             <h1 className='text-3xl font-bold mb-8'>Saved</h1>
-            <SortBy options={options} />
+            <SortBy options={options} sortBy={sortBy} setSortBy={setSortBy} speciesQuery={speciesQuery} setSpeciesQuery={setSpeciesQuery} />
             <div className='grid grid-cols-3 gap-6'>
                 {posts.map((post) => (
                     <div
