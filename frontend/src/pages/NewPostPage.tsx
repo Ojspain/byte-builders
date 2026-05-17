@@ -77,7 +77,7 @@ function NewPostPage() {
     return (
         <>
             <div
-                className="min-h-[calc(100vh-4rem)] bg-slate-50 px-8 pb-16 pt-8 font-[family-name:var(--font-body)] sm:px-16"
+                className="min-h-[calc(100vh-4rem)] px-8 pb-16 pt-8 font-(family-name:--font-body) sm:px-16"
                 style={
                     {
                         "--font-body": "'Be Vietnam Pro', sans-serif",
@@ -93,7 +93,7 @@ function NewPostPage() {
                         >
                             You Found a Bug!
                         </h1>
-                        <p className="text-sm leading-[21px] text-[#6c7b6d]">
+                        <p className="text-sm leading-5.25 text-[#6c7b6d]">
                             Let&apos;s add it to your collection.
                         </p>
                     </header>
@@ -154,7 +154,7 @@ function NewPostPage() {
                                         <select
                                             value={location}
                                             onChange={(e) => setLocation(e.target.value)}
-                                            className="w-full appearance-none rounded-full border border-[#e1e3e4] bg-[#f8f9fa] py-3.5 pl-[17px] pr-10 text-sm text-[#3d4a3e] shadow-[0px_1px_1px_rgba(0,0,0,0.05)] outline-none focus:border-[#bbcbbb]"
+                                            className="w-full appearance-none rounded-full border border-[#e1e3e4] bg-[#f8f9fa] py-3.5 pl-4.25 pr-10 text-sm text-[#3d4a3e] shadow-[0px_1px_1px_rgba(0,0,0,0.05)] outline-none focus:border-[#bbcbbb]"
                                         >
                                             <option value="" disabled className="text-[#bbcbbb]">
                                                 Select One
@@ -166,7 +166,7 @@ function NewPostPage() {
                                             ))}
                                         </select>
                                         <svg
-                                            className="pointer-events-none absolute right-4 top-1/2 h-[21px] w-[21px] -translate-y-1/2 text-[#3d4a3e]"
+                                            className="pointer-events-none absolute right-4 top-1/2 h-5.25 w-5.25 -translate-y-1/2 text-[#3d4a3e]"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"
@@ -250,7 +250,7 @@ function NewPostPage() {
                                     onChange={(e) => setCaption(e.target.value)}
                                     placeholder="Write an Interesting Caption!"
                                     rows={4}
-                                    className="w-full resize-y rounded-lg border border-[#e1e3e4] bg-[#f8f9fa] px-[17px] pb-14 pt-3 text-sm text-[#3d4a3e] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] outline-none placeholder:text-[#bbcbbb] focus:border-[#bbcbbb]"
+                                    className="w-full resize-y rounded-lg border border-[#e1e3e4] bg-[#f8f9fa] px-4.25 pb-14 pt-3 text-sm text-[#3d4a3e] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] outline-none placeholder:text-[#bbcbbb] focus:border-[#bbcbbb]"
                                 />
                             </div>
 
@@ -258,11 +258,10 @@ function NewPostPage() {
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                                 <button
                                     type="submit"
-                                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#006d37] px-6 py-2.5 text-base font-semibold text-white shadow-[0px_4px_6px_rgba(46,204,113,0.2)] transition hover:bg-[#005a2e]"
-                                    style={{ fontFamily: "var(--font-display)" }}
+                                    className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-2.5 text-base text-white transition hover:bg-[#005a2e] tracking-wide"
                                 >
                                     Log Observation
-                                    <span className="inline-flex h-[14px] w-[14px] items-center justify-center rounded-full border border-white/80 bg-white/20">
+                                    <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white/80">
                                         <svg
                                             width="10"
                                             height="10"
@@ -283,11 +282,10 @@ function NewPostPage() {
                                 <button
                                     type="button"
                                     onClick={() => navigate(-1)}
-                                    className="flex w-full shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-semibold text-[#3d4a3e] shadow-[0px_4px_6px_rgba(25,28,29,0.1)] transition hover:bg-[#e2e4e5] sm:w-[200px]"
-                                    style={{ fontFamily: "var(--font-display)" }}
+                                    className="flex w-full shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-[#3d4a3e]transition hover:bg-[#e2e4e5] sm:w-50"
                                 >
                                     Cancel
-                                    <span className="inline-flex h-[13px] w-[13px] items-center justify-center text-[#3d4a3e]">
+                                    <span className="inline-flex h-3.25 w-3.25 items-center justify-center text-[#3d4a3e]">
                                         <svg viewBox="0 0 14 14" fill="none" aria-hidden>
                                             <circle
                                                 cx="7"
