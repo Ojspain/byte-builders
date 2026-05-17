@@ -1,0 +1,11 @@
+.tag {
+    padding: 1px 10px 4px;
+    background-color: rgb(249, 215, 249);
+    border-radius: 20px;
+    display: flex;
+    color: rgb(93, 8, 102);
+    font-size: small;
+    font-weight: 500;
+    width: min-content;
+    white-space: nowrap;
+}
