@@ -55,7 +55,7 @@ function SpeciesPage() {
                   alt={speciesData.speciesCommon}
                   className="h-72 xl:h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent xl:hidden"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent xl:hidden"></div>
                 <h1 className="absolute bottom-4 left-6 text-white text-4xl font-extrabold xl:hidden tracking-wide drop-shadow-md">
                   {speciesData.speciesCommon}
                 </h1>

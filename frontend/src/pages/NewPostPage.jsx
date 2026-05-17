@@ -24,7 +24,7 @@ const TAG_OPTIONS = [
     "Massive beast",
     "Loud",
     "Quiet",
-] as const;
+];
 
 const LOCATIONS = [
     "Outside",
@@ -43,13 +43,11 @@ function NewPostPage() {
     const [speciesQuery, setSpeciesQuery] = useState("");
     const [location, setLocation] = useState("");
     const [rating, setRating] = useState(0);
-    const [selectedTags, setSelectedTags] = useState<Set<string>>(
-        () => new Set([])
-    );
+    const [selectedTags, setSelectedTags] = useState(new Set());
     const [caption, setCaption] = useState("");
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState(null);
 
-    const toggleTag = (tag: string) => {
+    const toggleTag = (tag) => {
         setSelectedTags((prev) => {
             const next = new Set(prev);
             if (next.has(tag)) next.delete(tag);
@@ -58,7 +56,7 @@ function NewPostPage() {
         });
     };
 
-    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onFileChange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
         const url = URL.createObjectURL(file);
@@ -68,7 +66,7 @@ function NewPostPage() {
         });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         // Stub: wire to API when available
         navigate("/");
@@ -82,7 +80,7 @@ function NewPostPage() {
                     {
                         "--font-body": "'Be Vietnam Pro', sans-serif",
                         "--font-display": "'Plus Jakarta Sans', sans-serif",
-                    } as React.CSSProperties
+                    }
                 }
             >
                 <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 pt-6 pb-16">

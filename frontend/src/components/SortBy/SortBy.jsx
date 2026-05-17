@@ -2,15 +2,15 @@ import { useState } from "react";
 import "./SortBy.css";
 import SelectSpecies from "../SelectSpecies/SelectSpecies";
 
-function SortBy({ options }: any) {
+function SortBy({ options }) {
     const [sortBy, setSortBy] = useState("");
     const [speciesQuery, setSpeciesQuery] = useState("");
 
-    const handleSortByChange = (option: any) => {
+    const handleSortByChange = (option) => {
         setSortBy(option);
     };
 
-    const getSortByClass = (option: any) => {
+    const getSortByClass = (option) => {
         return sortBy === option ? 'activeSort' : '';
     }
 
