@@ -4,7 +4,7 @@ import bugLogo from "../../assets/bugLogo.svg";
 import cup from "../../assets/cup.svg"
 import ham from "../../assets/ham.svg"
 import NavItem from "./NavItem";
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useState } from "react";
 
 function SideBar() {
@@ -40,9 +40,13 @@ function SideBar() {
                 </section>
 
 
-                <div className="flex justify-end items-center gap-6">
-                    <img src={bell} alt="Notifications" className='cursor-pointer' />
-                    <img src={settings} alt="Settings" className='cursor-pointer' />
+                <div className="flex justify-end items-center gap-3">
+                    <Link to="/login" className="rounded-full bg-[#6af39c] text-[#00361b] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
+                    <Link to="/signup" className="rounded-full bg-gray-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
+
+                    <img src={bell} alt="Notifications" className='cursor-pointer ml-3' />
+                    {/* TODO: decide if we want to implement this */}
+                    {/* <img src={settings} alt="Settings" className='cursor-pointer' /> */}
                 </div>
             </div>
 
@@ -66,7 +70,7 @@ function SideBar() {
 
                     :
 
-                    <div className="h-31 w-60 px-6 -my-1">
+                    <div className="h-20 w-60 px-6 -my-1">
                         <button onClick={handleHam}>
                             <img src={ham} alt="Navigation" className="h-10" />
                         </button>

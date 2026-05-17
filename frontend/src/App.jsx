@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import SideBar from "./components/SideBar/SideBar";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import SavedPage from "./pages/SavedPage";
@@ -16,6 +18,8 @@ function App() {
       <div className='lg:ml-60 mt-16 p-10'>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/saved" element={<SavedPage />} />
           <Route path="/profile" element={<ProfilePage />} />
