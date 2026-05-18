@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import StarRating from '../StarRating/StarRating';
 import Interaction from '../Post/Interaction';
+import diagonalArrow from "../../assets/diagonalArrow.svg";
 
 function SmallPost({ post, hasAuthor }) {
     return (
@@ -30,9 +31,10 @@ function SmallPost({ post, hasAuthor }) {
                         <h3 className='font-bold text-sm'>{post.speciesCommon}</h3>
                         <Link
                             to={`/species/${post.speciesActual}`}
-                            className='text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer'
+                            className='text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer whitespace-nowrap flex gap-1 mr-1'
                         >
                             ({post.speciesActual})
+                            <img src={diagonalArrow} className="w-1.5 h-4" />
                         </Link>
                     </div>
                     <p className='text-zinc-700 text-sm mb-3 line-clamp-2 min-h-10'>
