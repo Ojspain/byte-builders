@@ -72,5 +72,6 @@ npm run dev
 - **`/search` (Search Page):** Allows users to query the database to find specific species, tags, or posts.
 - **`/new-post` (New Post Page):** The form interface for users to create and submit new content to the platform.
 - **`/profile` (Profile Page):** The user-specific dashboard displaying user details and personal post history.
+- **`/edit-account` (Edit Account Page):** How users can edit their dashboard and user details.
 - **`/saved` (Saved Page):** A collection of posts and species that the user has bookmarked for later viewing.
 - **`/*` (Not Found):** A fallback route to handle 404 errors for unrecognized URLs.
