@@ -58,7 +58,7 @@ function Interaction({
         <button className="flex gap-1" onClick={handleLike}>
           <img src={likeImg} alt="Like" />
           <div
-            className={`${isLiked ? "text-emerald-800" : "text-neutral-500"} text-center text-sm font-bold tracking-wide`}
+            className={`${isLiked ? "text-emerald-800" : "text-zinc-500"} text-center text-sm font-bold tracking-wide`}
           >
             {likeCount}
           </div>
@@ -68,7 +68,7 @@ function Interaction({
         <button className="flex gap-1" onClick={handleSpray}>
           <img src={sprayImg} alt="Spray" />
           <div
-            className={` ${isSprayed ? "text-[#880808]" : "text-neutral-500"} text-center text-sm font-bold tracking-wide`}
+            className={` ${isSprayed ? "text-[#880808]" : "text-zinc-500"} text-center text-sm font-bold tracking-wide`}
           >
             {sprayCount}
           </div>

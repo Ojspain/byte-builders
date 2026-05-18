@@ -53,7 +53,7 @@ function LoginPage() {
         <>
             <section className="w-screen h-screen z-200 bg-white absolute top-0 left-0">
 
-                <Link to="/" className="flex absolute gap-2 m-3 w-fit rounded-full bg-gray-200 px-4 pt-1.5 pb-2 font-semibold z-1 shadow-md border border-gray-300" >
+                <Link to="/" className="flex absolute gap-2 m-3 w-fit rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold z-1 shadow-md border border-zinc-300" >
                     <img src={arrowRight} alt="<--" className="rotate-180 size-5 mt-0.5" />
                     Back to Home
                 </Link>
@@ -85,7 +85,7 @@ function LoginPage() {
                             </div>
 
                             <div className="pt-1 w-72 h-10 text-center text-zinc-900 text-3xl font-bold">Welcome back!</div>
-                            <div className="w-80 h-5 text-center text-neutral-700 text-sm font-normal">We've been ant-icipating you.</div>
+                            <div className="w-80 h-5 text-center text-zinc-700 text-sm font-normal">We've been ant-icipating you.</div>
                         </div>
 
                         {/* Form */}

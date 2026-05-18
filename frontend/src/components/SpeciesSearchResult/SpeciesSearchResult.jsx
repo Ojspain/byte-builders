@@ -45,14 +45,14 @@ function SpeciesSearchResult({ species }) {
         <>
             {species && (info != "") && (
                 <Link to={`/species/${info.actual}`} >
-                    <div className="flex w-full h-25 border border-gray-300 rounded-2xl overflow-hidden items-center bg-no-repeat bg-cover bg-left max-w-250 m-auto"
+                    <div className="flex w-full h-25 border border-zinc-300 rounded-2xl overflow-hidden items-center bg-no-repeat bg-cover bg-left max-w-250 m-auto"
                         style={{
                             backgroundImage: `linear-gradient(to right, rgba(245, 245, 245, 0.4), rgba(245, 245, 245, 1) 60%), url(${info.image})`,
                             backgroundSize: 'cover',
                         }}
                     >
 
-                        <img src={info.image} className="h-35 rounded-l-2xl mr-5 border-r border-gray-600" />
+                        <img src={info.image} className="h-35 rounded-l-2xl mr-5 border-r border-zinc-600" />
 
                         <div className="flex flex-col">
                             <div className="text-xl font-semibold mr-2">

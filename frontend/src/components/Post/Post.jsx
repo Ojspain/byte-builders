@@ -126,7 +126,7 @@ function Post({
 
               {/* Caption */}
               <div className="w-full pt-2.5 flex overflow-hidden">
-                <div className="text-neutral-700 text-sm font-normal">
+                <div className="text-zinc-700 text-sm font-normal">
                   {textContent}
                 </div>
               </div>
@@ -145,7 +145,7 @@ function Post({
           </section>
 
           {/* Comments Section */}
-          <div ref={scrollRef} className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll [scrollbar-width:none] ${isScroll && "bg-linear-to-b from-80% to-gray-100"}`}>
+          <div ref={scrollRef} className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll [scrollbar-width:none] ${isScroll && "bg-linear-to-b from-80% to-zinc-100"}`}>
             {populatedComments.map((commentData) => (
               <Comment
                 key={commentData._id}
@@ -165,7 +165,7 @@ function Post({
             <input
               type="text"
               placeholder="Leave a Comment"
-              className="border border-gray-200 rounded-full p-3"
+              className="border border-zinc-200 rounded-full p-3"
             />
           </div>
         </div>
