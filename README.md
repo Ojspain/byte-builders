@@ -66,6 +66,8 @@ npm run dev
 ## Navigation
 
 - **`/` (Home Page):** The main landing area featuring the primary post feed. Includes functionality for sorting the feed and viewing recent interactions.
+- **`/signup` (Sign Up Page):** The interface through which users can create an account to track their saved posts and follow other.
+- **`/login` (Log In Page):** The interface through which returning users can access their account.
 - **`/species` (Species Page):** A dedicated area for exploring and viewing information about specific bug species.
 - **`/search` (Search Page):** Allows users to query the database to find specific species, tags, or posts.
 - **`/new-post` (New Post Page):** The form interface for users to create and submit new content to the platform.
