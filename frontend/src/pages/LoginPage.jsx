@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import arrowRight from "../assets/arrowRight.svg";
 import bugLogo from "../assets/bugLogo.svg";
 import beetle from "../assets/beetle.jpg";
@@ -32,15 +33,18 @@ function LoginPage() {
             const data = await response.json();
             if (!response.ok) {
                 setError(data.error || "Login failed.");
+                toast.error(error);
                 return;
             }
 
             localStorage.setItem("User", JSON.stringify(data.user));
+            toast.success("Login successful. Welcome back!");
             navigate("/profile");
         } catch (err) {
             console.error(err);
             const message = "Network error. Is the server running?";
             setError(message);
+            toast.error(error);
         }
     };
 
@@ -48,6 +52,11 @@ function LoginPage() {
     return (
         <>
             <section className="w-screen h-screen z-200 bg-white absolute top-0 left-0">
+
+                <Link to="/" className="flex absolute gap-2 m-3 w-fit rounded-full bg-gray-200 px-4 pt-1.5 pb-2 font-semibold z-1 shadow-md border border-gray-300" >
+                    <img src={arrowRight} alt="<--" className="rotate-180 size-5 mt-0.5" />
+                    Back to Home
+                </Link>
 
                 <div className="absolute size-96 opacity-30 mix-blend-multiply bg-green-500/50 rounded-full blur-[32px]" />
                 <div className="absolute right-0 top-[50%] size-80 opacity-30 mix-blend-multiply bg-fuchsia-400/35 rounded-full blur-[32px]" />
