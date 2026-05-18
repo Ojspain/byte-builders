@@ -68,23 +68,23 @@ function ProfilePage() {
 
                 <section className="flex flex-col lg:flex-row gap-6">
                     <section className="flex lg:flex-2 justify-center gap-6">
-                        <div className="px-6 py-4 bg-white rounded-full shadow-md border border-gray-200 flex gap-3 w-full justify-center items-center">
-                            <div className="text-[#191C1D] text-lg font-bold">Followers:</div>
-                            <div className="text-slate-700 text-lg font-normal">
+                        <div className="px-6 py-3 bg-white rounded-full shadow-md border border-gray-200 flex gap-3 w-full justify-center items-center">
+                            <div className="text-[#191C1D] text-md font-bold">Followers:</div>
+                            <div className="text-slate-700 text-md font-normal">
                                 {user.followerCount}
                             </div>
                         </div>
 
-                        <div className="px-6 py-4 bg-white rounded-full shadow-md border border-gray-200 flex gap-3 w-full justify-center items-center">
-                            <div className="text-[#191C1D] text-lg font-bold">Following:</div>
-                            <div className="text-slate-700 text-lg font-normal">
+                        <div className="px-6 py-3 bg-white rounded-full shadow-md border border-gray-200 flex gap-3 w-full justify-center items-center">
+                            <div className="text-[#191C1D] text-md font-bold">Following:</div>
+                            <div className="text-slate-700 text-md font-normal">
                                 {user.followingCount}
                             </div>
                         </div>
                     </section>
 
-                    <div className="lg:flex-1 p-6 bg-white rounded-full shadow-md border border-gray-200 flex flex-col w-full text-center">
-                        <div className="text-[#191C1D] text-lg font-bold">Member Since</div>
+                    <div className="lg:flex-1 px-6 py-3 bg-white rounded-full shadow-md border border-gray-200 flex flex-col w-full text-center">
+                        <div className="text-[#191C1D] text-md font-bold">Member Since</div>
                         <div className="text-slate-700 text-md font-normal">
                             {formattedDate}
                         </div>
