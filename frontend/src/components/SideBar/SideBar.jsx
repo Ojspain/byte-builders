@@ -6,6 +6,7 @@ import ham from "../../assets/ham.svg"
 import NavItem from "./NavItem";
 import { NavLink, Link } from 'react-router-dom';
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 function SideBar() {
     const [hamOpen, setHamOpen] = useState(false);
@@ -20,6 +21,7 @@ function SideBar() {
     // TODO: make sure the buttons refresh to show log in and sign up. show a success message
     const handleLogout = () => {
         localStorage.removeItem("User");
+        toast.success("Account logged out.");
         navigate("/");
     };
 
@@ -103,12 +105,13 @@ function SideBar() {
                             <path d="M0 18V6L8 0L16 6V18H10V11H6V18H0Z" fill="#64748B" />
                         </svg>}
                     />
+                    {/* TODO: decide if we want to implement this */}
                     {/* Today's Tops */}
-                    <NavItem text="Today's Tops" route="/TODO"
+                    {/* <NavItem text="Today's Tops" route="/TODO"
                         svg={<svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.4 12L0 10.6L7.4 3.15L11.4 7.15L16.6 2H14V0H20V6H18V3.4L11.4 10L7.4 6L1.4 12Z" fill="#64748B" />
                         </svg>}
-                    />
+                    /> */}
                     {/* Search */}
                     <NavItem text="Search" route="/search"
                         svg={<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
