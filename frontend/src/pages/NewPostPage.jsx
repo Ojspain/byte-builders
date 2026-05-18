@@ -91,7 +91,7 @@ function NewPostPage() {
                         >
                             You Found a Bug!
                         </h1>
-                        <p className="text-sm leading-5.25 text-[#6c7b6d]">
+                        <p className="text-sm leading-5.25 text-zinc-500">
                             Let&apos;s add it to your collection.
                         </p>
                     </header>
@@ -102,7 +102,7 @@ function NewPostPage() {
                             <div>
                                 <label
                                     htmlFor="bug-image-upload"
-                                    className="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-[#bbcbbb] bg-[#f8f9fa] p-2 transition hover:bg-[#f1f3f4]"
+                                    className="relative flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-zinc-400 bg-[#f8f9fa] p-2 transition hover:bg-[#f1f3f4]"
                                 >
                                     <input
                                         id="bug-image-upload"
@@ -120,7 +120,7 @@ function NewPostPage() {
                                     ) : (
                                         <>
                                             <svg
-                                                className="mb-2 h-11 w-11 text-[#6c7b6d]"
+                                                className="mb-2 h-11 w-11 text-zinc-500"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
@@ -133,7 +133,7 @@ function NewPostPage() {
                                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                                                 />
                                             </svg>
-                                            <span className="text-center text-xs font-bold uppercase tracking-[0.6px] text-[#6c7b6d]">
+                                            <span className="text-center text-xs font-bold uppercase tracking-[0.6px] text-zinc-500">
                                                 Upload from your Device
                                             </span>
                                         </>
@@ -145,16 +145,16 @@ function NewPostPage() {
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <SelectSpecies isLabeled={true} speciesQuery={speciesQuery} setSpeciesQuery={setSpeciesQuery} />
                                 <div className="flex flex-col gap-1">
-                                    <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-[#3d4a3e]">
+                                    <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                                         Location
                                     </label>
                                     <div className="relative">
                                         <select
                                             value={location}
                                             onChange={(e) => setLocation(e.target.value)}
-                                            className="w-full appearance-none rounded-full border border-[#e1e3e4] bg-[#f8f9fa] py-3.5 pl-4.25 pr-10 text-sm text-[#3d4a3e] shadow-[0px_1px_1px_rgba(0,0,0,0.05)] outline-none focus:border-[#bbcbbb]"
+                                            className="w-full appearance-none rounded-full border border-[#e1e3e4] bg-[#f8f9fa] py-3.5 pl-4.25 pr-10 text-sm text-zinc-600 shadow-[0px_1px_1px_rgba(0,0,0,0.05)] outline-none focus:border-zinc-400"
                                         >
-                                            <option value="" disabled className="text-[#bbcbbb]">
+                                            <option value="" disabled className="text-zinc-400">
                                                 Select One
                                             </option>
                                             {LOCATIONS.map((loc) => (
@@ -164,7 +164,7 @@ function NewPostPage() {
                                             ))}
                                         </select>
                                         <svg
-                                            className="pointer-events-none absolute right-4 top-1/2 h-5.25 w-5.25 -translate-y-1/2 text-[#3d4a3e]"
+                                            className="pointer-events-none absolute right-4 top-1/2 h-5.25 w-5.25 -translate-y-1/2 text-zinc-600"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"
@@ -183,7 +183,7 @@ function NewPostPage() {
 
                             {/* Rating */}
                             <div className="flex max-w-md flex-col gap-1">
-                                <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-[#3d4a3e]">
+                                <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                                     Rating
                                 </label>
                                 <div className="flex items-center gap-1 px-2 py-2">
@@ -208,7 +208,7 @@ function NewPostPage() {
                             {/* Tags */}
                             <div className="flex flex-col gap-1">
                                 <div className="flex flex-wrap items-baseline gap-2 pl-1">
-                                    <span className="text-xs font-bold uppercase tracking-[0.6px] text-[#3d4a3e]">
+                                    <span className="text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                                         Tags
                                     </span>
                                     <span className="text-xs font-bold uppercase tracking-[0.6px] text-[#828282]">
@@ -225,7 +225,7 @@ function NewPostPage() {
                                                 onClick={() => toggleTag(tag)}
                                                 className={`rounded-full px-3 py-1 text-xs font-medium transition ${on
                                                     ? "bg-[#de8ffd] text-[#661a86] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
-                                                    : "bg-[#edeeef] text-[#3d4a3e] hover:opacity-90"
+                                                    : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
                                                     }`}
                                             >
                                                 {tag}
@@ -240,7 +240,7 @@ function NewPostPage() {
 
                             {/* Caption */}
                             <div className="flex flex-col gap-1">
-                                <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-[#3d4a3e]">
+                                <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                                     Caption
                                 </label>
                                 <textarea
@@ -248,7 +248,7 @@ function NewPostPage() {
                                     onChange={(e) => setCaption(e.target.value)}
                                     placeholder="Write an Interesting Caption!"
                                     rows={4}
-                                    className="w-full resize-y rounded-lg border border-[#e1e3e4] bg-[#f8f9fa] px-4.25 pb-14 pt-3 text-sm text-[#3d4a3e] shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] outline-none placeholder:text-[#bbcbbb] focus:border-[#bbcbbb]"
+                                    className="w-full resize-y rounded-lg border border-[#e1e3e4] bg-[#f8f9fa] px-4.25 pb-14 pt-3 text-sm text-zinc-600 shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] outline-none placeholder:text-zinc-400 focus:border-zinc-400"
                                 />
                             </div>
 
@@ -280,10 +280,10 @@ function NewPostPage() {
                                 <button
                                     type="button"
                                     onClick={() => navigate(-1)}
-                                    className="flex w-full shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-[#3d4a3e]transition hover:bg-[#e2e4e5] sm:w-50"
+                                    className="flex w-full shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] sm:w-50"
                                 >
                                     Cancel
-                                    <span className="inline-flex h-3.25 w-3.25 items-center justify-center text-[#3d4a3e]">
+                                    <span className="inline-flex h-3.25 w-3.25 items-center justify-center text-zinc-600">
                                         <svg viewBox="0 0 14 14" fill="none" aria-hidden>
                                             <circle
                                                 cx="7"

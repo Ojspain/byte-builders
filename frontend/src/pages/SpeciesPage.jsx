@@ -19,9 +19,9 @@ function SpeciesPage() {
   const speciesPosts = dummy.posts.filter(
     (p) =>
       p.speciesCommon.toLowerCase() ===
-        speciesData?.speciesCommon.toLowerCase() ||
+      speciesData?.speciesCommon.toLowerCase() ||
       p.speciesActual.toLowerCase() ===
-        speciesData?.speciesActual.toLowerCase(),
+      speciesData?.speciesActual.toLowerCase(),
   );
 
   // 2. Sort the filtered posts based on the active tab
@@ -73,7 +73,7 @@ function SpeciesPage() {
                   </span>
                 </div>
                 <div className="h-px w-16 bg-zinc-200 mb-6"></div>
-                <p className="text-neutral-600 leading-relaxed text-lg font-medium">
+                <p className="text-zinc-600 leading-relaxed text-lg font-medium">
                   {speciesData.description}
                 </p>
               </div>

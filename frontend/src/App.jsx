@@ -6,6 +6,7 @@ import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import SavedPage from "./pages/SavedPage";
 import ProfilePage from "./pages/ProfilePage";
+import EditAccountPage from "./pages/EditAccountPage";
 import NewPostPage from "./pages/NewPostPage";
 import SpeciesPage from "./pages/SpeciesPage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -23,6 +24,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/saved" element={<SavedPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/edit-account" element={<EditAccountPage />} />
           <Route path="/new-post" element={<NewPostPage />} />
           <Route path="/species/:speciesId" element={<SpeciesPage />} />
           <Route path="*" element={<NotFoundPage />} />

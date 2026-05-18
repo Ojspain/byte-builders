@@ -1,7 +1,7 @@
 function Comment({ author, commentText, createdAt }) {
   // just in case
   if (!author) {
-    return <div className="text-sm text-neutral-500">Unknown user</div>;
+    return <div className="text-sm text-zinc-500">Unknown user</div>;
   }
 
   return (
@@ -14,7 +14,7 @@ function Comment({ author, commentText, createdAt }) {
       <div className="w-min justify-center text-zinc-900 font-bold tracking-wide">
         {author.username}:
       </div>
-      <div className="w-fit text-neutral-700">{commentText}</div>
+      <div className="w-fit text-zinc-700">{commentText}</div>
     </div>
   );
 }

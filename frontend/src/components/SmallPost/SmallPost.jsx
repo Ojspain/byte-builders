@@ -9,7 +9,7 @@ function SmallPost({ post, hasAuthor }) {
             className='rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer bg-white'
         >
             {/* Post Image */}
-            <div className='relative h-48 overflow-hidden bg-gray-200'>
+            <div className='relative h-48 overflow-hidden bg-zinc-200'>
                 <img
                     src={post.imageUrl}
                     alt={post.speciesCommon}
@@ -30,12 +30,12 @@ function SmallPost({ post, hasAuthor }) {
                         <h3 className='font-bold text-sm'>{post.speciesCommon}</h3>
                         <Link
                             to={`/species/${post.speciesActual}`}
-                            className='text-gray-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer'
+                            className='text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer'
                         >
                             ({post.speciesActual})
                         </Link>
                     </div>
-                    <p className='text-gray-700 text-sm mb-3 line-clamp-2 min-h-10'>
+                    <p className='text-zinc-700 text-sm mb-3 line-clamp-2 min-h-10'>
                         {post.textContent}
                     </p>
                     <div className='mb-3'>
@@ -55,7 +55,7 @@ function SmallPost({ post, hasAuthor }) {
                             </span>
                         ))}
                         {post.tags.length > 2 && (
-                            <span className='text-gray-500 text-xs px-2 py-1'>
+                            <span className='text-zinc-500 text-xs px-2 py-1'>
                                 +{post.tags.length - 2} more
                             </span>
                         )}
