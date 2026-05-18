@@ -145,7 +145,7 @@ function Post({
           </section>
 
           {/* Comments Section */}
-          <div ref={scrollRef} className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll [scrollbar-width:none] ${isScroll && "bg-linear-to-b from-80% to-zinc-100"}`}>
+          <div ref={scrollRef} className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll scrollbar-none ${isScroll && "bg-linear-to-b from-80% to-zinc-100"}`}>
             {populatedComments.map((commentData) => (
               <Comment
                 key={commentData._id}
