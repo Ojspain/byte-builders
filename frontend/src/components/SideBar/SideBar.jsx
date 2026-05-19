@@ -42,7 +42,7 @@ function SideBar() {
                         {/* Logo */}
                         <div className="flex lg:hidden pt-4 pl-3 items-center gap-5">
                             <img src={bugLogo} className="mt-4" />
-                            <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
+                            <div className="text-[#006D37] text-3xl font-bold uppercase tracking-wide">
                                 U<span className="text-xl">nder</span>
                                 T<span className="text-xl">he</span>
                                 C<span className="text-xl">up</span></div>
@@ -55,7 +55,7 @@ function SideBar() {
                     {/* Already logged in? Hide the Log In and Sign Up buttons */}
                     {!savedUser &&
                         <>
-                            <Link to="/login" className="rounded-full bg-[#6af39c] text-[#00361b] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
+                            <Link to="/login" className="rounded-full bg-[#6af39c] text-[#006D37] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
                             <Link to="/signup" className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
                         </>
                     }
@@ -64,7 +64,8 @@ function SideBar() {
                         <button className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
                     }
 
-                    <img src={bell} alt="Notifications" className='cursor-pointer ml-3' />
+                    {/* TODO: decide if we want to implement this */}
+                    {/* <img src={bell} alt="Notifications" className='cursor-pointer ml-3' /> */}
                     {/* TODO: decide if we want to implement this */}
                     {/* <img src={settings} alt="Settings" className='cursor-pointer' /> */}
                 </div>
@@ -81,7 +82,7 @@ function SideBar() {
 
                         <div className="pt-6 flex flex-col items-center">
                             <img src={bugLogo} />
-                            <div className="text-emerald-600 text-3xl font-bold uppercase tracking-wide">
+                            <div className="text-[#006D37] text-3xl font-bold uppercase tracking-wide">
                                 U<span className="text-xl">nder</span>
                                 T<span className="text-xl">he</span>
                                 C<span className="text-xl">up</span></div>

@@ -8,22 +8,32 @@ ul {
 
 li {
     padding: 8px 15px;
-    background-color: #d5dbe3;
-    border-radius: 30px;
+    background-color: #f8f9fa;
+    border: 1px solid #e1e3e4;
+    box-shadow: 1px 1px 3px -2px #777;
+    border-radius: 8px;
     letter-spacing: 2%;
     width: 160px;
     text-align: center;
     color: #1e2423;
     font-size: 14px;
+    align-content: center;
+}
+
+.reset {
+    width: min-content;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    box-shadow: none;
+    margin-left: -10px;
 }
 
 li:hover {
-    background-color: #bfc6d0;
+    background-color: rgba(225, 227, 228, 0.5);
 }
 
 .activeSort, .activeSort:hover {
     background-color: #6af39c;
-    color: #003513;
 }
 
 .selectSpecies {
