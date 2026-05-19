@@ -224,7 +224,7 @@ function NewPostPage() {
                                                 type="button"
                                                 onClick={() => toggleTag(tag)}
                                                 className={`rounded-full px-3 py-1 text-xs font-medium transition ${on
-                                                    ? "bg-[#de8ffd] text-[#661a86] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
+                                                    ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
                                                     : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
                                                     }`}
                                             >
