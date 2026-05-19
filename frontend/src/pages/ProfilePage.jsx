@@ -30,8 +30,8 @@ function ProfilePage() {
 
     return (
         <>
-            <section className="flex flex-col gap-6">
-                <div className="p-6 bg-white rounded-xl shadow-md border border-zinc-200 flex gap-6 mb-6">
+            <section className="flex flex-col gap-">
+                <div className="p-6 bg-white rounded-xl shadow-sm border border-zinc-200 flex gap-6 mb-6">
                     <img className="size-32 max-w-248 relative rounded-full border-4 border-zinc-100" src={user.profilePicUrl} />
 
                     <div className="flex flex-col w-full">
@@ -69,14 +69,14 @@ function ProfilePage() {
 
                 <section className="flex flex-col lg:flex-row gap-6">
                     <section className="flex lg:flex-2 justify-center gap-6">
-                        <div className="px-6 py-3 bg-white rounded-full shadow-md border border-zinc-200 flex gap-3 w-full justify-center items-center">
+                        <div className="px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex gap-3 w-full justify-center items-center">
                             <div className="text-[#191C1D] text-md font-bold">Followers:</div>
                             <div className="text-zinc-700 text-md font-normal">
                                 {user.followerCount}
                             </div>
                         </div>
 
-                        <div className="px-6 py-3 bg-white rounded-full shadow-md border border-zinc-200 flex gap-3 w-full justify-center items-center">
+                        <div className="px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex gap-3 w-full justify-center items-center">
                             <div className="text-[#191C1D] text-md font-bold">Following:</div>
                             <div className="text-zinc-700 text-md font-normal">
                                 {user.followingCount}
@@ -84,7 +84,7 @@ function ProfilePage() {
                         </div>
                     </section>
 
-                    <div className="lg:flex-1 px-6 py-3 bg-white rounded-full shadow-md border border-zinc-200 flex flex-col w-full text-center">
+                    <div className="lg:flex-1 px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col w-full text-center">
                         <div className="text-[#191C1D] text-md font-bold">Member Since</div>
                         <div className="text-zinc-700 text-md font-normal">
                             {formattedDate}
