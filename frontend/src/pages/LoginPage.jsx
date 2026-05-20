@@ -15,17 +15,12 @@ function LoginPage() {
         event.preventDefault();
         setError("");
 
-        // Handle missing login fields.
-        if (!username || !password) {
-            setError("Username and password are required.")
-            return;
-        }
-
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch("/api/user/login", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify({ username, password }),
             });

@@ -13,42 +13,19 @@ function SignupPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const validateInputs = () => {
-    if (!username || username.trim().length < 4) {
-      return "Username must be at least 4 characters";
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      return "Invalid email format.";
-    }
-
-    if (!password || password.length < 8) {
-      return "Password must be at least 8 characters.";
-    }
-
-    //   - Password must be typed correctly both times.
-    if (!confirmPassword || password !== confirmPassword) {
-      return "Passwords must match.";
-    }
-
-    // Everything passes
-    return "";
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
 
-    const validationError = validateInputs();
-    if (validationError) {
-      setError(validationError);
-      toast.error(validationError);
+    if (password !== confirmPassword) {
+      const message = "Passwords must match.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -20,30 +20,10 @@ function EditAccountPage() {
         });
     };
 
-    const validateInputs = () => {
-        if (!username || username.trim().length < 4) {
-            return "Username must be at least 4 characters";
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
-            return "Invalid email format.";
-        }
-
-        // Everything passes
-        return "";
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         // TODO: add rest of API and update user info
-
-        const validationError = validateInputs();
-        if (validationError) {
-            setError(validationError);
-            return;
-        }
 
         navigate("/profile");
     };

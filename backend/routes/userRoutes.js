@@ -1,15 +1,12 @@
 import express from "express";
-import {
-  getUser,
-  getUserById,
-} from "../controllers/userController.js";
+import { signup, login, logout, updateUser, getUserByUsername } from "../controllers/userController.js";
 
 const router = express.Router();
 
-// Map the GET request at the root (/api/user) to the getuser controller
-router.get("/", getUser);
-
-// Map the GET request with an ID parameter to the getuserById controller
-router.get("/:id", getUserById);
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/logout", logout);
+router.put("/:username", updateUser);
+router.get("/:username", getUserByUsername);
 
 export default router;
