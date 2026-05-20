@@ -11,6 +11,8 @@ app.use(express.json());
 // Mount the routes
 // Any request that starts with '/api/species' is forwarded to speciesRoutes
 app.use("/api/species", speciesRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 // Other routes will go here as they are created. For example:
 // app.use("/api/posts", postRoutes);
