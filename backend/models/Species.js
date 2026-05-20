@@ -23,7 +23,10 @@ const speciesSchema = new mongoose.Schema(
   },
 );
 
-//Convert the species json into a schema
+speciesSchema.index({ speciesActual: 1 });
+speciesSchema.index({ speciesCommon: 1 });
+speciesSchema.index({ speciesActual: "text", speciesCommon: "text" });
+
 const Species = mongoose.model("Species", speciesSchema);
 
 export default Species;
