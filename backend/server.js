@@ -12,8 +12,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// TODO: Connect to the database
-// connectDB();
+// Connect to the database
+connectDB();
 
 // Mount the routes
 // Any request that starts with '/api/species' is forwarded to speciesRoutes
