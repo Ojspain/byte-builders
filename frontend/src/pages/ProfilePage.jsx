@@ -2,31 +2,29 @@ import { Link } from "react-router-dom";
 import bugLogo from "../assets/bugLogo.svg";
 import dummy from '../dummy_db.json';
 import SmallPost from "../components/SmallPost/SmallPost";
+import { useAuth } from "../context/AuthContext";
 
 function ProfilePage() {
 
-    // temporary stand-in
-    // copied form dummy_db, but I felt it would be a different call than sorting all users
-    const user = {
-        "_id": "1",
-        "username": "CicadaSpotter891",
-        "email": "cicadaspotter891@example.com",
-        "passwordHash": "hashed_pass_3347",
-        "bio": "Ad sed ut ut elit.",
-        "profilePicUrl": "https://csciprojects.us/342/Lessons/L6/user%20%284%29.jpg",
-        "followerCount": 1,
-        "followingCount": 2,
-        "createdAt": "2025-12-30T11:57:07.644Z"
-    }
+    const { user } = useAuth();
 
-    const date = new Date(user.createdAt);
-    const formattedDate = date.toLocaleDateString("en-US", {
+    const date = user?.createdAt ? new Date(user.createdAt) : null;
+    const formattedDate = date ? date.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
-    });
+    }) : "Unknown";
 
     const posts = dummy.posts;
+
+    if (!user) {
+        return (
+            <div className="flex flex-col items-center justify-center mt-20 gap-4">
+                <p className="text-zinc-600 text-lg">You are not logged in.</p>
+                <Link to="/login" className="text-emerald-700 font-semibold underline">Log in</Link>
+            </div>
+        );
+    }
 
     return (
         <>

@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import bugLogo from "../assets/bugLogo.svg";
 import beetle from "../assets/beetle.jpg";
 import arrowRight from "../assets/arrowRight.svg";
+import { useAuth } from "../context/AuthContext";
 
 function SignupPage() {
   const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,19 +40,20 @@ function SignupPage() {
       // const data = await response.json();
 
       if (!response.ok) {
-        const message = data.error || "Signup failed.";
+        const message = data.message || "Signup failed.";
         setError(message);
-        toast.error(error);
+        toast.error(message);
         return;
       }
 
-      localStorage.setItem("User", JSON.stringify(data.user));
+      login(data.user, data.token);
       toast.success("Account successfully created. Welcome!");
       navigate("/profile");
     } catch (err) {
       console.error("Network error", err);
-      setError("Network error. Check the server is running.");
-      toast.error(error);
+      const message = "Network error. Check the server is running.";
+      setError(message);
+      toast.error(message);
     }
   };
 

@@ -13,9 +13,9 @@ export const validateSignup = ({ username, email, password }) => {
   return null;
 };
 
-export const validateLogin = ({ email, password }) => {
-  if (!email || !emailRegex.test(email)) {
-    return "Invalid email format";
+export const validateLogin = ({ username, password }) => {
+  if (!username || username.trim().length < 4) {
+    return "Username must be at least 4 characters";
   }
   if (!password) {
     return "Password is required";

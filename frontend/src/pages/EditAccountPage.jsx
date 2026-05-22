@@ -1,31 +1,50 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import beetle from "../assets/beetle.jpg";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 function EditAccountPage() {
-    // TODO: set starting state to current state
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [bio, setBio] = useState("");
-    const [imagePreview, setImagePreview] = useState(null);
+    const { user, updateUser } = useAuth();
+    const [username, setUsername] = useState(user?.username ?? "");
+    const [email, setEmail] = useState(user?.email ?? "");
+    const [bio, setBio] = useState(user?.bio ?? "");
+    const [profilePicUrl, setProfilePicUrl] = useState(user?.profilePicUrl ?? "");
+    const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const onFileChange = (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        const url = URL.createObjectURL(file);
-        setImagePreview((old) => {
-            if (old) URL.revokeObjectURL(old);
-            return url;
-        });
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
 
-        // TODO: add rest of API and update user info
+        try {
+            const response = await fetch(`/api/user/${user.username}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({ username, email, bio, profilePicUrl }),
+            });
 
-        navigate("/profile");
+            const data = await response.json();
+
+            if (!response.ok) {
+                const message = data.message || "Failed to update profile.";
+                setError(message);
+                toast.error(message);
+                return;
+            }
+
+            updateUser(data);
+            toast.success("Profile updated successfully.");
+            navigate("/profile");
+        } catch (err) {
+            console.error(err);
+            const message = "Network error. Is the server running?";
+            setError(message);
+            toast.error(message);
+        }
     };
 
     return (
@@ -59,50 +78,32 @@ function EditAccountPage() {
                             <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                                 {/* Upper section */}
                                 <section className="flex gap-5">
-                                    {/* Image upload */}
-                                    <div>
+                                    {/* Profile image URL */}
+                                    <div className="flex flex-col gap-2">
                                         <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                                             Profile Image
                                         </label>
-                                        <label
-                                            htmlFor="bug-image-upload"
-                                            className="relative flex h-48 w-48 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-zinc-400 bg-[#f8f9fa] p-2 transition hover:bg-[#f1f3f4]"
-                                        >
-                                            <input
-                                                id="bug-image-upload"
-                                                type="file"
-                                                accept="image/*"
-                                                className="sr-only"
-                                                onChange={onFileChange}
-                                            />
-                                            {imagePreview ? (
+                                        <div className="flex h-48 w-48 items-center justify-center rounded-lg border-2 border-dashed border-zinc-300 bg-[#f8f9fa] overflow-hidden">
+                                            {profilePicUrl ? (
                                                 <img
-                                                    src={imagePreview}
+                                                    src={profilePicUrl}
                                                     alt="Preview"
-                                                    className="max-h-40 max-w-full rounded-md object-contain"
+                                                    className="h-full w-full object-cover"
+                                                    onError={(e) => { e.target.style.display = "none"; }}
                                                 />
                                             ) : (
-                                                <>
-                                                    <svg
-                                                        className="mb-2 h-11 w-11 text-zinc-500"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="1.5"
-                                                        aria-hidden
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                                        />
-                                                    </svg>
-                                                    <span className="text-center text-xs font-bold uppercase tracking-[0.6px] text-zinc-500">
-                                                        Upload from your Device
-                                                    </span>
-                                                </>
+                                                <svg className="h-11 w-11 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
                                             )}
-                                        </label>
+                                        </div>
+                                        <input
+                                            type="url"
+                                            placeholder="https://example.com/photo.jpg"
+                                            value={profilePicUrl}
+                                            onChange={(e) => setProfilePicUrl(e.target.value)}
+                                            className="w-48 rounded-lg border border-[#e1e3e4] bg-[#f8f9fa] px-3 py-2 text-xs text-zinc-600 outline-none placeholder:text-zinc-400 focus:border-zinc-400"
+                                        />
                                     </div>
 
                                     {/* Right section */}
@@ -190,6 +191,7 @@ function EditAccountPage() {
                                             </svg>
                                         </span>
                                     </button>
+                                    {error && <p className="text-red-500 text-sm">{error}</p>}
                                     <button
                                         type="button"
                                         onClick={() => navigate(-1)}

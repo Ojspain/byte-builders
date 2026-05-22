@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import arrowRight from "../assets/arrowRight.svg";
 import bugLogo from "../assets/bugLogo.svg";
 import beetle from "../assets/beetle.jpg";
+import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -20,26 +22,26 @@ function LoginPage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
                 },
                 body: JSON.stringify({ username, password }),
             });
 
             const data = await response.json();
             if (!response.ok) {
-                setError(data.error || "Login failed.");
-                toast.error(error);
+                const message = data.message || "Login failed.";
+                setError(message);
+                toast.error(message);
                 return;
             }
 
-            localStorage.setItem("User", JSON.stringify(data.user));
+            login(data.user, data.token);
             toast.success("Login successful. Welcome back!");
             navigate("/profile");
         } catch (err) {
             console.error(err);
             const message = "Network error. Is the server running?";
             setError(message);
-            toast.error(error);
+            toast.error(message);
         }
     };
 
@@ -86,7 +88,7 @@ function LoginPage() {
                         {/* Form */}
                         <div className="flex flex-col gap-6">
                             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                                {/* Name */}
+                                {/* Username */}
                                 <div className="flex flex-col gap-1 relative">
                                     <label htmlFor="username" className="text-xs font-bold tracking-wide">Username</label>
                                     <input

@@ -4,24 +4,23 @@ import bugLogo from "../../assets/bugLogo.svg";
 import cup from "../../assets/cup.svg"
 import ham from "../../assets/ham.svg"
 import NavItem from "./NavItem";
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 function SideBar() {
     const [hamOpen, setHamOpen] = useState(false);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const handleHam = () => {
         setHamOpen(!hamOpen);
     }
 
-    {/* TODO: connect to backend */ }
-    const savedUser = localStorage.getItem("User");
-
-    // TODO: make sure the buttons refresh to show log in and sign up. show a success message
     const handleLogout = () => {
-        localStorage.removeItem("User");
-        toast.success("Account logged out.");
+        logout();
+        toast.success("Logged out successfully.");
         navigate("/");
     };
 
@@ -53,14 +52,14 @@ function SideBar() {
 
                 <div className="flex justify-end items-center gap-3">
                     {/* Already logged in? Hide the Log In and Sign Up buttons */}
-                    {!savedUser &&
+                    {!user &&
                         <>
                             <Link to="/login" className="rounded-full bg-[#6af39c] text-[#006D37] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
                             <Link to="/signup" className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
                         </>
                     }
                     {/* Show the Log Out button instead */}
-                    {savedUser &&
+                    {user &&
                         <button className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
                     }
 
