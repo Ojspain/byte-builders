@@ -1,8 +1,16 @@
 import Post from "../models/Post.js";
+import Comment from "../models/Comment.js";
+import User from "../models/User.js";
 
 export const getPost = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const { authorId, speciesActual, speciesCommon } = req.query;
+    const query = {};
+    if (authorId) query.authorId = authorId;
+    if (speciesActual) query.speciesActual = { $regex: `^${speciesActual}$`, $options: "i" };
+    if (speciesCommon) query.speciesCommon = { $regex: `^${speciesCommon}$`, $options: "i" };
+
+    const posts = await Post.find(query).sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (error) {
     console.error("Error in getPost:", error.message);
@@ -20,6 +28,25 @@ export const getPostById = async (req, res) => {
     res.status(200).json(post);
   } catch (error) {
     console.error("Error in getPostById:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getCommentsByPostId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const comments = await Comment.find({ postId: id }).sort({ createdAt: 1 });
+
+    const populated = await Promise.all(
+      comments.map(async (comment) => {
+        const author = await User.findById(comment.authorId, { username: 1, profilePicUrl: 1 });
+        return { ...comment.toObject(), author };
+      })
+    );
+
+    res.status(200).json(populated);
+  } catch (error) {
+    console.error("Error in getCommentsByPostId:", error.message);
     res.status(500).json({ message: "Server Error" });
   }
 };
