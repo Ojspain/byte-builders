@@ -1,49 +1,37 @@
 import { Link } from "react-router-dom";
-import dummy from "../../dummy_db.json";
+import { useState, useEffect } from "react";
 import arrowRight from "../../assets/arrowRight.svg";
 
 function SpeciesSearchResult({ species }) {
-    const options = {
-        "Most Liked": "most_liked",
-        "Most Sprayed": "most_sprayed",
-        "Posted Today": "posted_today"
-    };
+    const [info, setInfo] = useState(null);
 
-    const speciesInfo = () => {
-        if (!species) return "";
-
-        // Search content before parenthesees
-        let searchTerm = species.split("(")[0].trim().toLowerCase();
-        let result = dummy.species.filter((s) =>
-            s.speciesCommon.toLowerCase().includes(searchTerm) ||
-            s.speciesActual.toLowerCase().includes(searchTerm)
-        );
-
-        // Search content ignoring parenthesees
-        if (result.length == 0) {
-            searchTerm = species.replace(/[()]/g, '').trim().toLowerCase();
-
-            result = dummy.species.filter((s) =>
-                s.speciesCommon.toLowerCase().includes(searchTerm) ||
-                s.speciesActual.toLowerCase().includes(searchTerm)
-            );
+    useEffect(() => {
+        if (!species) {
+            setInfo(null);
+            return;
         }
+        const searchTerm = species.split("(")[0].trim();
+        if (!searchTerm) return;
 
-        return result.length > 0 ?
-            {
-                actual: result[0].speciesActual,
-                common: result[0].speciesCommon,
-                image: result[0].imageUrl
-            }
-            :
-            "";
-    };
-
-    const info = speciesInfo();
+        fetch(`/api/species?search=${encodeURIComponent(searchTerm)}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.length > 0) {
+                    setInfo({
+                        actual: data[0].speciesActual,
+                        common: data[0].speciesCommon,
+                        image: data[0].imageUrl,
+                    });
+                } else {
+                    setInfo(null);
+                }
+            })
+            .catch(() => setInfo(null));
+    }, [species]);
 
     return (
         <>
-            {species && (info != "") && (
+            {species && info && (
                 <Link to={`/species/${info.actual}`} >
                     <div className="flex w-full h-25 border border-zinc-600 rounded-lg overflow-hidden items-center bg-no-repeat bg-cover bg-left max-w-250 m-auto"
                         style={{
@@ -51,7 +39,6 @@ function SpeciesSearchResult({ species }) {
                             backgroundSize: 'cover',
                         }}
                     >
-
                         <img src={info.image} className="h-35 rounded-l-lg mr-5 border-r border-zinc-600" />
 
                         <div className="flex flex-col">
@@ -62,16 +49,11 @@ function SpeciesSearchResult({ species }) {
                         </div>
 
                         <img src={arrowRight} alt="-->" className="w-10 ml-auto mr-5" />
-
                     </div>
                 </Link>
             )}
         </>
     );
-
 }
 
-
-
-
-export default SpeciesSearchResult
+export default SpeciesSearchResult;

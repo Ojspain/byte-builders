@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import Comment from "./Comment";
-import dummy from "../../dummy_db.json";
 import StarRating from "../StarRating/StarRating";
 import Interaction from "./Interaction";
 import diagonalArrow from "../../assets/diagonalArrow.svg";
@@ -24,6 +23,7 @@ function Post({
   sprayCount,
 }) {
   const [isScroll, setIsScroll] = useState(false);
+  const [populatedComments, setPopulatedComments] = useState([]);
   const scrollRef = useRef(null);
   const date = new Date(createdAt);
   const postedHoursAgo = Math.floor((new Date() - date) / (1000 * 60 * 60));
@@ -33,28 +33,18 @@ function Post({
     day: "numeric",
   });
 
-  // TODO make these two into API calls:
-
-  // get comments on this post
-  const postComments = dummy.comments.filter(
-    (comment) => String(comment.postId) === String(_id),
-  );
+  useEffect(() => {
+    if (!_id) return;
+    fetch(`/api/post/${_id}/comments`)
+      .then((res) => res.json())
+      .then((data) => setPopulatedComments(data))
+      .catch(() => setPopulatedComments([]));
+  }, [_id]);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (el) setIsScroll(el.scrollHeight != el.clientHeight);
-  }, [postComments]);
-
-  // populate user info on comments
-  const populatedComments = postComments.map((comment) => {
-    const authorDetails = dummy.users.find(
-      (user) => String(user._id) === String(comment.authorId),
-    );
-    return {
-      ...comment,
-      author: authorDetails,
-    };
-  });
+  }, [populatedComments]);
 
   return (
     <>

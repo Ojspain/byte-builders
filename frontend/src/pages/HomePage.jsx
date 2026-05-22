@@ -1,11 +1,25 @@
+import { useState, useEffect } from "react";
 import Post from "../components/Post/Post";
-import dummy from "../dummy_db.json";
 
 function HomePage() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/post")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.error("Failed to load posts:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p className="text-center text-zinc-500 mt-20">Loading posts...</p>;
+  if (!posts.length) return <p className="text-center text-zinc-500 mt-20">No posts yet. Be the first!</p>;
+
   return (
     <>
       <div className="flex flex-col gap-20 items-center">
-        {dummy.posts.map((p) => (
+        {posts.map((p) => (
           <Post
             key={p._id}
             _id={p._id}

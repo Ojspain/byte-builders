@@ -1,7 +1,6 @@
 import SmallPost from "../components/SmallPost/SmallPost";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import dummy from "../dummy_db.json";
+import { useState, useEffect } from "react";
 
 function SpeciesPage() {
   const { speciesId } = useParams();
@@ -10,25 +9,28 @@ function SpeciesPage() {
   const [disliked, setDisliked] = useState(false);
   const selected = "!bg-[#6af39c]"
 
-  // State to track which feed is active: 'new' or 'top'
   const [activeTab, setActiveTab] = useState("new");
+  const [speciesData, setSpeciesData] = useState(null);
+  const [speciesPosts, setSpeciesPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const speciesData = dummy.species.find(
-    (s) =>
-      s.speciesCommon.toLowerCase() === speciesId?.toLowerCase() ||
-      s.speciesActual.toLowerCase() === speciesId?.toLowerCase(),
-  );
+  useEffect(() => {
+    if (!speciesId) return;
+    setLoading(true);
+    fetch(`/api/species/name/${encodeURIComponent(speciesId)}`)
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        setSpeciesData(data);
+        if (data) {
+          return fetch(`/api/post?speciesActual=${encodeURIComponent(data.speciesActual)}`);
+        }
+      })
+      .then((res) => res ? res.json() : [])
+      .then((posts) => setSpeciesPosts(posts || []))
+      .catch((err) => console.error("Failed to load species:", err))
+      .finally(() => setLoading(false));
+  }, [speciesId]);
 
-  // 1. Filter posts to only include ones about this specific species
-  const speciesPosts = dummy.posts.filter(
-    (p) =>
-      p.speciesCommon.toLowerCase() ===
-      speciesData?.speciesCommon.toLowerCase() ||
-      p.speciesActual.toLowerCase() ===
-      speciesData?.speciesActual.toLowerCase(),
-  );
-
-  // 2. Sort the filtered posts based on the active tab
   const sortedPosts = [...speciesPosts].sort((a, b) => {
     if (activeTab === "new") {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -46,6 +48,8 @@ function SpeciesPage() {
       setLiked(!liked);
     }
   };
+
+  if (loading) return <p className="text-center text-zinc-500 mt-20">Loading...</p>;
 
   return (
     <>

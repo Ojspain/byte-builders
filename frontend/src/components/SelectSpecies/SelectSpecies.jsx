@@ -1,16 +1,25 @@
-import { useMemo, useState } from "react";
-import dummy from "../../dummy_db.json";
+import { useState, useEffect, useRef } from "react";
 
 function SelectSpecies({ isLabeled, speciesQuery, setSpeciesQuery }) {
+    const [speciesCandidates, setSpeciesCandidates] = useState([]);
+    const debounceRef = useRef(null);
 
-    const speciesCandidates = useMemo(() => {
-        const q = speciesQuery.trim().toLowerCase();
-        if (!q) return dummy.species;
-        return (dummy.species).filter(
-            (s) =>
-                s.speciesCommon.toLowerCase().includes(q) ||
-                s.speciesActual.toLowerCase().includes(q)
-        );
+    useEffect(() => {
+        const q = speciesQuery.trim();
+        if (!q) {
+            setSpeciesCandidates([]);
+            return;
+        }
+
+        clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            fetch(`/api/species?search=${encodeURIComponent(q)}`)
+                .then((res) => res.json())
+                .then((data) => setSpeciesCandidates(data))
+                .catch(() => setSpeciesCandidates([]));
+        }, 300);
+
+        return () => clearTimeout(debounceRef.current);
     }, [speciesQuery]);
 
     return (

@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import bugLogo from "../assets/bugLogo.svg";
-import dummy from '../dummy_db.json';
 import SmallPost from "../components/SmallPost/SmallPost";
 import { useAuth } from "../context/AuthContext";
 
 function ProfilePage() {
 
     const { user } = useAuth();
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        if (!user?._id) return;
+        fetch(`/api/post?authorId=${user._id}`)
+            .then((res) => res.json())
+            .then((data) => setPosts(data))
+            .catch((err) => console.error("Failed to load posts:", err));
+    }, [user]);
 
     const date = user?.createdAt ? new Date(user.createdAt) : null;
     const formattedDate = date ? date.toLocaleDateString("en-US", {
@@ -14,8 +23,6 @@ function ProfilePage() {
         month: "long",
         day: "numeric",
     }) : "Unknown";
-
-    const posts = dummy.posts;
 
     if (!user) {
         return (
