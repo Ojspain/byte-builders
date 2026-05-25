@@ -25,8 +25,8 @@ const importData = async () => {
     // clear existing test data
     await Species.deleteMany();
 
-    // map through the species and skip _id, Colors, and Descriptors
-    const speciesToInsert = dummyData.species.map((bug) => {
+    // map through the species and skip specific fields
+    const speciesToInsert = dummyData.map((bug) => {
       const { _id, Colors, Descriptors, ...rest } = bug;
       return rest;
     });
