@@ -72,6 +72,7 @@ export const createPost = async (req, res) => {
       location: req.body.location || "",
       tags: req.body.tags ? JSON.parse(req.body.tags) : [],
       rating: Number(req.body.rating),
+      heart: req.body.heart || false,
     });
 
     const savedPost = await newPost.save();

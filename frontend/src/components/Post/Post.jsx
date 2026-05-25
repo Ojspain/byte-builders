@@ -18,7 +18,6 @@ function Post({
   location,
   tags,
   rating,
-  isSuperLiked,
   heart,
   createdAt,
   likeCount,
@@ -114,7 +113,7 @@ function Post({
               {/* Rating */}
               <div className="flex gap-2">
                 <StarRating rating={rating} />
-                {isSuperLiked &&
+                {heart &&
                   <img src={superHeart} className="mt-2 size-3.5"></img>
                 }
               </div>

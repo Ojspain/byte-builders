@@ -43,7 +43,7 @@ function SmallPost({ post, hasAuthor }) {
                     </p>
                     <div className="mb-3 flex gap-2">
                         <StarRating rating={post.rating} />
-                        {post.isSuperLiked &&
+                        {post.heart &&
                             <img src={superHeart} className="mt-2 size-3.5"></img>
                         }
                     </div>

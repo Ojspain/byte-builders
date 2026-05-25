@@ -99,7 +99,7 @@ function NewPostPage() {
     formData.append("image", file);
     formData.append("location", location);
     formData.append("rating", rating);
-    formData.append("isSuperLiked", isSuperLiked);
+    formData.append("heart", isSuperLiked);
     formData.append("caption", caption);
     formData.append("tags", JSON.stringify(Array.from(selectedTags)));
 

@@ -37,7 +37,6 @@ function HomePage() {
             location={p.location}
             tags={p.tags}
             rating={p.rating}
-            isSuperLiked={p.isSuperLiked}
             heart={p.heart}
             createdAt={p.createdAt}
             likeCount={p.likeCount}
