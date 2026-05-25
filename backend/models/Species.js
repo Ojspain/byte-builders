@@ -13,10 +13,9 @@ const speciesSchema = new mongoose.Schema(
     Genus: String,
     Species: String,
     Size: String,
-    Colors: String,
-    Descriptors: String,
     Category: String,
     imageUrl: String,
+    description: String,
   },
   {
     timestamps: true,
