@@ -5,6 +5,9 @@ import { useAuth } from "../context/AuthContext";
 import SelectSpecies from "../components/SelectSpecies/SelectSpecies";
 import filledStar from "../assets/filledStar.svg";
 import hollowStar from "../assets/hollowStar.svg";
+import superHeart from "../assets/superHeart.svg";
+import unlikedHeart from "../assets/unlikedHeart.svg";
+import StarRating from "../components/StarRating/StarRating";
 
 const TAG_OPTIONS = [
   "Serious",
@@ -48,6 +51,7 @@ function NewPostPage() {
   const [selectedTags, setSelectedTags] = useState(new Set());
   const [caption, setCaption] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isSuperLiked, setIsSuperLiked] = useState(false);
 
   const toggleTag = (tag) => {
     setSelectedTags((prev) => {
@@ -57,6 +61,10 @@ function NewPostPage() {
       return next;
     });
   };
+
+  const handleSuperLike = () => {
+    setIsSuperLiked(!isSuperLiked);
+  }
 
   const onFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -91,6 +99,7 @@ function NewPostPage() {
     formData.append("image", file);
     formData.append("location", location);
     formData.append("rating", rating);
+    formData.append("isSuperLiked", isSuperLiked);
     formData.append("caption", caption);
     formData.append("tags", JSON.stringify(Array.from(selectedTags)));
 
@@ -233,27 +242,44 @@ function NewPostPage() {
                 </div>
               </div>
 
-              {/* Rating */}
-              <div className="flex max-w-md flex-col gap-1">
-                <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
-                  Rating
-                </label>
-                <div className="flex items-center gap-1 px-2 py-2">
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <button
-                      key={n}
-                      type="button"
-                      onClick={() => setRating(n)}
-                      className="rounded p-0.5 transition hover:opacity-80"
-                      aria-label={`${n} star${n > 1 ? "s" : ""}`}
-                    >
+              <div className="flex gap-5">
+                {/* Rating */}
+                <div className="flex max-w-md flex-col gap-1">
+                  <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
+                    Rating
+                  </label>
+                  <div className="flex items-center gap-1 px-2 py-2">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        onClick={() => setRating(n)}
+                        className="rounded p-0.5 transition hover:opacity-80"
+                        aria-label={`${n} star${n > 1 ? "s" : ""}`}
+                      >
+                        <img
+                          src={n <= rating ? filledStar : hollowStar}
+                          alt=""
+                          className="h-6 w-6"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Super Heart */}
+                <div className="flex max-w-md flex-col gap-1">
+                  <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
+                    Super like
+                  </label>
+                  <div className="flex items-center gap-1 px-2 py-2">
+                    <button type="button" onClick={handleSuperLike}>
                       <img
-                        src={n <= rating ? filledStar : hollowStar}
-                        alt=""
-                        className="h-6 w-6"
+                        src={isSuperLiked ? superHeart : unlikedHeart}
+                        className={`${!isSuperLiked && "brightness-160"} h-6 w-6 mt-0.5`}
                       />
                     </button>
-                  ))}
+                  </div>
                 </div>
               </div>
 
@@ -275,11 +301,10 @@ function NewPostPage() {
                         key={tag}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`rounded-full px-3 py-1 text-xs font-medium transition ${
-                          on
-                            ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
-                            : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
-                        }`}
+                        className={`rounded-full px-3 py-1 text-xs font-medium transition ${on
+                          ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
+                          : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
+                          }`}
                       >
                         {tag}
                       </button>
