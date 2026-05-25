@@ -35,7 +35,7 @@ function Post({
 
   useEffect(() => {
     if (!_id) return;
-    fetch(`/api/post/${_id}/comments`)
+    fetch(`/api/posts/${_id}/comments`)
       .then((res) => res.json())
       .then((data) => setPopulatedComments(data))
       .catch(() => setPopulatedComments([]));
@@ -76,13 +76,11 @@ function Post({
                   {authorName}
                 </div>
                 <div className="text-stone-300 text-xs font-medium">
-                  {(postedHoursAgo < 24)
+                  {postedHoursAgo < 24
                     ? `${postedHoursAgo} hours ago`
-                    :
-                    (postedHoursAgo < 8760)
+                    : postedHoursAgo < 8760
                       ? `${Math.floor(postedHoursAgo / 24)} days ago`
-                      : `${Math.floor(postedHoursAgo / (24 * 365))} years ago`
-                  }
+                      : `${Math.floor(postedHoursAgo / (24 * 365))} years ago`}
                 </div>
               </div>
             </div>
@@ -135,7 +133,10 @@ function Post({
           </section>
 
           {/* Comments Section */}
-          <div ref={scrollRef} className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll scrollbar-none ${isScroll && "bg-linear-to-b from-80% to-zinc-100"}`}>
+          <div
+            ref={scrollRef}
+            className={`h-full pt-5 px-1 flex flex-col gap-3 overflow-y-scroll scrollbar-none ${isScroll && "bg-linear-to-b from-80% to-zinc-100"}`}
+          >
             {populatedComments.map((commentData) => (
               <Comment
                 key={commentData._id}

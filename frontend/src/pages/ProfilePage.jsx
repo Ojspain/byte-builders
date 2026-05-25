@@ -11,7 +11,7 @@ function ProfilePage() {
 
     useEffect(() => {
         if (!user?._id) return;
-        fetch(`/api/post?authorId=${user._id}`)
+        fetch(`/api/posts?authorId=${user._id}`)
             .then((res) => res.json())
             .then((data) => setPosts(data))
             .catch((err) => console.error("Failed to load posts:", err));
