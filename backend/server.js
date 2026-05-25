@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import express from "express";
@@ -18,8 +17,8 @@ connectDB();
 // Mount the routes
 // Any request that starts with '/api/species' is forwarded to speciesRoutes
 app.use("/api/species", speciesRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/post", postRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 const PORT = process.env.PORT || 5000;
 

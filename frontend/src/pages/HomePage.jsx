@@ -6,15 +6,21 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/post")
+    fetch("/api/posts")
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error("Failed to load posts:", err))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-center text-zinc-500 mt-20">Loading posts...</p>;
-  if (!posts.length) return <p className="text-center text-zinc-500 mt-20">No posts yet. Be the first!</p>;
+  if (loading)
+    return <p className="text-center text-zinc-500 mt-20">Loading posts...</p>;
+  if (!posts.length)
+    return (
+      <p className="text-center text-zinc-500 mt-20">
+        No posts yet. Be the first!
+      </p>
+    );
 
   return (
     <>

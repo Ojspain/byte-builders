@@ -1,10 +1,18 @@
 import express from "express";
-import { getPost, getPostById, getCommentsByPostId } from "../controllers/postController.js";
+import { upload } from "../config/cloudinary.js";
+import {
+  getPosts,
+  getPostById,
+  getCommentsByPostId,
+  createPost,
+} from "../controllers/postController.js";
 
 const router = express.Router();
 
-router.get("/", getPost);
+router.get("/", getPosts);
 router.get("/:id", getPostById);
 router.get("/:id/comments", getCommentsByPostId);
+
+router.post("/", upload.single("image"), createPost);
 
 export default router;
