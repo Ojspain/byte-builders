@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import StarRating from '../StarRating/StarRating';
 import Interaction from '../Post/Interaction';
 import diagonalArrow from "../../assets/diagonalArrow.svg";
+import superHeart from "../../assets/superHeart.svg";
 
 function SmallPost({ post, hasAuthor }) {
     return (
@@ -40,8 +41,11 @@ function SmallPost({ post, hasAuthor }) {
                     <p className='text-zinc-700 text-sm mb-3 line-clamp-2 min-h-10'>
                         {post.textContent}
                     </p>
-                    <div className='mb-3'>
+                    <div className="mb-3 flex gap-2">
                         <StarRating rating={post.rating} />
+                        {post.isSuperLiked &&
+                            <img src={superHeart} className="mt-2 size-3.5"></img>
+                        }
                     </div>
                 </section>
 

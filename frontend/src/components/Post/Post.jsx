@@ -4,6 +4,7 @@ import StarRating from "../StarRating/StarRating";
 import Interaction from "./Interaction";
 import diagonalArrow from "../../assets/diagonalArrow.svg";
 import sendArrow from "../../assets/sendArrow.svg";
+import superHeart from "../../assets/superHeart.svg";
 import Tags from "./Tags";
 import { Link } from "react-router-dom";
 
@@ -17,6 +18,7 @@ function Post({
   location,
   tags,
   rating,
+  isSuperLiked,
   heart,
   createdAt,
   likeCount,
@@ -110,7 +112,12 @@ function Post({
               <Tags location={location} tags={tags} />
 
               {/* Rating */}
-              <StarRating rating={rating} />
+              <div className="flex gap-2">
+                <StarRating rating={rating} />
+                {isSuperLiked &&
+                  <img src={superHeart} className="mt-2 size-3.5"></img>
+                }
+              </div>
 
               {/* Caption */}
               <div className="w-full pt-2.5 flex overflow-hidden">
