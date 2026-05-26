@@ -60,12 +60,15 @@ function SideBar() {
                     }
                     {/* Show the Log Out button instead */}
                     {user &&
-                        <button className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
+                        <>
+                            <button className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
+
+                            {/* Notification Bell */}
+                            <img src={bell} alt="Notifications" className='cursor-pointer ml-3' />
+                        </>
                     }
 
-                    {/* TODO: decide if we want to implement this */}
-                    {/* <img src={bell} alt="Notifications" className='cursor-pointer ml-3' /> */}
-                    {/* TODO: decide if we want to implement this */}
+                    {/* TODO: decide if we want to implement this
                     {/* <img src={settings} alt="Settings" className='cursor-pointer' /> */}
                 </div>
             </div>
@@ -105,13 +108,6 @@ function SideBar() {
                             <path d="M0 18V6L8 0L16 6V18H10V11H6V18H0Z" fill="#71717b" />
                         </svg>}
                     />
-                    {/* TODO: decide if we want to implement this */}
-                    {/* Today's Tops */}
-                    {/* <NavItem text="Today's Tops" route="/TODO"
-                        svg={<svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.4 12L0 10.6L7.4 3.15L11.4 7.15L16.6 2H14V0H20V6H18V3.4L11.4 10L7.4 6L1.4 12Z" fill="#71717b" />
-                        </svg>}
-                    /> */}
                     {/* Search */}
                     <NavItem text="Search" route="/search"
                         svg={<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
