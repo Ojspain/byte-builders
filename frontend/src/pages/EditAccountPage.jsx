@@ -78,9 +78,9 @@ function EditAccountPage() {
             <div className="rounded-xl border border-[#edeeef] bg-white p-6 shadow-[0px_4px_12px_rgba(0,0,0,0.04)] sm:p-10">
               <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                 {/* Upper section */}
-                <section className="flex gap-5">
+                <section className="flex flex-col md:flex-row gap-5">
                   {/* Profile image URL */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 m-auto">
                     <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                       Profile Image
                     </label>

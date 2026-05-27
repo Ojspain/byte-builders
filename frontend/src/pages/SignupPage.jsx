@@ -59,10 +59,10 @@ function SignupPage() {
 
   return (
     <>
-      <section className="w-screen h-screen z-200 bg-white absolute top-0 left-0">
+      <section className="w-screen min-h-screen z-200 bg-white absolute top-0 left-0">
         <Link
           to="/"
-          className="flex absolute gap-2 m-3 w-fit rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold z-1 shadow-md border border-zinc-300"
+          className="flex absolute gap-2 m-3 w-fit rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold shadow-md border border-zinc-300 z-2"
         >
           <img
             src={arrowRight}
@@ -72,11 +72,11 @@ function SignupPage() {
           Back to Home
         </Link>
 
-        <div className="absolute size-96 opacity-30 mix-blend-multiply bg-green-500/50 rounded-full blur-[32px]" />
-        <div className="absolute right-0 top-[50%] size-80 opacity-30 mix-blend-multiply bg-fuchsia-400/35 rounded-full blur-[32px]" />
-        <div className="absolute bottom-0 left-[20%] size-96 opacity-20 mix-blend-multiply bg-blue-400/50 rounded-full blur-[32px]" />
+        <div className="absolute md:size-96 opacity-30 mix-blend-multiply bg-green-500/50 rounded-full blur-[32px]" />
+        <div className="absolute right-0 top-[50%] md:size-80 opacity-30 mix-blend-multiply bg-fuchsia-400/35 rounded-full blur-[32px]" />
+        <div className="absolute bottom-0 left-[20%] md:size-96 opacity-20 mix-blend-multiply bg-blue-400/50 rounded-full blur-[32px]" />
 
-        <div className="flex justify-center gap-10 items-center h-full">
+        <div className="flex justify-center gap-10 items-center h-full my-10">
           {/* Image Card */}
           <div className="hidden lg:flex h-96 relative z-1">
             {/* Image */}
@@ -85,7 +85,7 @@ function SignupPage() {
               src={beetle}
             />
             {/* Tag */}
-            <div className="size- px-6 py-3 left-[50%] absolute bg-white rounded-full outline outline-zinc-200 flex gap-2">
+            <div className="px-6 py-3 left-[50%] absolute bg-white rounded-full outline outline-zinc-200 flex gap-2">
               <img src={bugLogo} className="size-4" />
               <div className="justify-center text-zinc-900 text-xs font-semibold tracking-wide whitespace-nowrap">
                 Start Exploring
@@ -94,7 +94,7 @@ function SignupPage() {
           </div>
 
           {/* Form Card */}
-          <div className="w-full max-w-96 lg:max-w-120 px-10 py-8 bg-white rounded-xl shadow-xl outline outline-zinc-200 flex flex-col gap-10 z-1">
+          <div className="w-full md:max-w-96 lg:max-w-120 px-10 py-8 bg-white rounded-xl md:shadow-xl md:outline outline-zinc-200 flex flex-col gap-10 z-1">
             {/* Text Header */}
             <div className="flex flex-col gap-2 items-center">
               <div className="size-16 py-3.5 bg-green-500/20 rounded-full flex justify-center items-center">

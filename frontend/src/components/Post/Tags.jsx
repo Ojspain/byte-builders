@@ -1,5 +1,5 @@
 import './Tags.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import plus from "../../assets/plus.svg";
 import minus from "../../assets/minus.svg";
 
@@ -7,6 +7,26 @@ function Tags({ location, tags }) {
     const tagCnt = tags.length;
     const [isOpen, setIsOpen] = useState(false);
     const [expImg, setExpImg] = useState(plus);
+    const [width, setWidth] = useState(window.innerWidth);
+    let shown = 4;
+
+    // 768 is md screen width
+    width < 768 ? shown = 2 : shown = 4;
+
+    // Handle screen resizing
+    useEffect(() => {
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+
+        width < 768 ? shown = 2 : shown = 4;
+    }, []);
+
 
     const handleClick = () => {
         setIsOpen(!isOpen);
@@ -21,15 +41,15 @@ function Tags({ location, tags }) {
         <>
             <div className='w-full'>
                 <div className="pt-2 pb-1 w-full flex justify-between">
-                    <div className="flex gap-1.5">
+                    <div className="flex flex-wrap gap-1.5">
                         {location} &bull;
 
-                        {tags.slice(0, 4).map((tag, i) => (
+                        {tags.slice(0, shown).map((tag, i) => (
                             <div key={i} className="tag">{tag}</div>
                         ))}
                     </div >
 
-                    {tagCnt > 4 &&
+                    {tagCnt > shown &&
                         <button onClick={handleClick}>
                             <img src={expImg} alt="Expand" className='h-5' />
                         </button>
@@ -37,13 +57,12 @@ function Tags({ location, tags }) {
                 </div>
 
                 <div className='flex gap-1.5'>
-                    {tagCnt > 4 && isOpen &&
-                        tags.slice(4).map((tag, i) => (
+                    {tagCnt > shown && isOpen &&
+                        tags.slice(shown).map((tag, i) => (
                             <div key={i} className="tag">{tag}</div>
                         ))
                     }
                 </div>
-
             </div>
         </>
     )

@@ -158,7 +158,7 @@ function SpeciesPage() {
                 {/* TODO: navigate to new post page and fill in data */}
                 <button
                   type="submit"
-                  className="mt-auto flex items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-5  text-base text-white transition hover:bg-[#005a2e] tracking-wide"
+                  className="mt-auto flex items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-3 sm:py-5 text-base text-white transition hover:bg-[#005a2e] tracking-wide"
                 >
                   <svg
                     width="16"
@@ -200,7 +200,7 @@ function SpeciesPage() {
               </div>
 
               {/* Render Sorted Posts */}
-              <section className="grid grid-cols-3 gap-6">
+              <section className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {sortedPosts.length > 0 ? (
                   sortedPosts.map((p) => (
                     <SmallPost key={p._id} post={p} hasAuthor={true} />

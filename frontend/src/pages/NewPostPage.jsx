@@ -134,7 +134,7 @@ function NewPostPage() {
   return (
     <>
       <div
-        className="min-h-[calc(100vh-4rem)] px-8 pb-16 pt-8 font-(family-name:--font-body) sm:px-16"
+        className="min-h-[calc(100vh-4rem)] md:px-8 pb-16 pt-8 font-(family-name:--font-body) sm:px-16"
         style={{
           "--font-body": "'Be Vietnam Pro', sans-serif",
           "--font-display": "'Plus Jakarta Sans', sans-serif",
@@ -269,7 +269,7 @@ function NewPostPage() {
 
                 {/* Super Heart */}
                 <div className="flex max-w-md flex-col gap-1">
-                  <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
+                  <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600 whitespace-nowrap">
                     Super like
                   </label>
                   <div className="flex items-center gap-1 px-2 py-2">
@@ -301,7 +301,7 @@ function NewPostPage() {
                         key={tag}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`rounded-full px-3 py-1 text-xs font-medium transition ${on
+                        className={`rounded-full px-3 py-1 text-sm sm:text-xs font-medium transition ${on
                           ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
                           : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
                           }`}
@@ -334,7 +334,7 @@ function NewPostPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <button
                   type="submit"
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-2.5 text-base text-white transition hover:bg-[#005a2e] tracking-wide"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-2.5 text-base text-white transition hover:bg-[#005a2e] tracking-wide whitespace-nowrap"
                 >
                   Log Observation
                   <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white/80">
