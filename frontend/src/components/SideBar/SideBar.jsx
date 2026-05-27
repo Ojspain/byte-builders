@@ -33,7 +33,7 @@ function SideBar() {
                         <img src={ham} alt="Navigation" className="h-10" />
                     </button>
 
-                    <div className="pb-5 px-2 flex relative">
+                    <div className="w-0 hidden sm:flex sm:w-auto pb-5 px-2 relative">
                         <div className="absolute w-12 mt-0.5 rotate-180 scale-y-90">
                             <img src={cup} />
                         </div>
@@ -54,14 +54,14 @@ function SideBar() {
                     {/* Already logged in? Hide the Log In and Sign Up buttons */}
                     {!user &&
                         <>
-                            <Link to="/login" className="rounded-full bg-[#6af39c] text-[#006D37] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
-                            <Link to="/signup" className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
+                            <Link to="/login" className="text-sm md:text-md rounded-full bg-[#6af39c] text-[#006D37] px-4 pt-1.5 pb-2 font-semibold">Log In</Link>
+                            <Link to="/signup" className="text-sm md:text-md rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold">Sign Up</Link>
                         </>
                     }
                     {/* Show the Log Out button instead */}
                     {user &&
                         <>
-                            <button className="rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
+                            <button className="text-sm md:text-md rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold cursor-pointer" onClick={handleLogout}>Log Out</button>
 
                             {/* Notification Bell */}
                             <img src={bell} alt="Notifications" className='cursor-pointer ml-3' />

@@ -51,7 +51,28 @@ li:hover {
         letter-spacing: 2%;
     }
 
-    div{
+    div {
         width: 100%;
+    }
+}
+
+@media(max-width: 600px) {
+    ul {
+        display: grid;
+        grid-template-columns: max-content max-content;
+    }
+
+    li {
+        font-size: 12px;
+        width: 100px;
+        padding: 8px;
+    }
+
+    .reset {
+        margin:auto;
+        background-color: #f8f9fa;
+        border: 1px solid #e1e3e4;
+        box-shadow: 1px 1px 3px -2px #777;
+        padding: 8px;
     }
 }

@@ -47,7 +47,7 @@ function SavedPage() {
       {loading ? (
         <p className="text-center text-zinc-500 mt-10">Loading...</p>
       ) : (
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           {posts.map((post) => (
             <SmallPost key={post._id} post={post} hasAuthor={true} />
           ))}

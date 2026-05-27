@@ -15,16 +15,18 @@ function SpeciesSearchResult({ speciesData }) {
                     backgroundSize: 'cover',
                 }}
             >
-                <img src={imageUrl} className="h-35 rounded-l-lg mr-5 border-r border-zinc-600" />
+                <img src={imageUrl} className="object-cover w-20 h-20 ml-1 md:ml-0 rounded-full md:w-40 md:h-35 md:rounded-r-none md:rounded-l-lg mr-5 md:border-r border-zinc-600" />
 
                 <div className="flex flex-col">
-                    <div className="text-xl font-semibold mr-2">
+                    <div className="text-sm md:text-xl font-semibold mr-2">
                         {speciesCommon}
                     </div>
-                    ({speciesActual})
+                    <div className="text-xs md:text-md">
+                        ({speciesActual})
+                    </div>
                 </div>
 
-                <img src={arrowRight} alt="-->" className="w-10 ml-auto mr-5" />
+                <img src={arrowRight} alt="-->" className="w-5 md:w-10 ml-auto mr-5" />
             </div>
         </Link>
     );

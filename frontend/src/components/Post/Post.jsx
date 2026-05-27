@@ -51,7 +51,7 @@ function Post({
     <>
       <div
         key={_id}
-        className=" flex flex-col xl:flex-row w-140 xl:w-280 h-280 xl:h-140 bg-white rounded-xl outline outline-zinc-200"
+        className=" flex flex-col xl:flex-row w-80 md:w-140 xl:w-280 h-200 md:h-280 xl:h-140 bg-white rounded-xl outline outline-zinc-200"
       >
         {/* Left Half */}
         <section className="h-[50%] xl:h-full xl:w-[50%] relative">
@@ -89,18 +89,18 @@ function Post({
         </section>
 
         {/* Right Half */}
-        <div className="h-[50%] xl:h-full xl:w-[50%] flex p-6 bg-white border-l border-zinc-200 flex-col">
+        <div className="h-[50%] xl:h-full xl:w-[50%] flex p-6 bg-white border-l border-zinc-200 flex-col overflow-hidden">
           {/* Top Section */}
           <div className="self-stretch pb-6 flex flex-col justify-start items-start">
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
               {/* Title */}
-              <div className="flex gap-1.5 items-baseline">
+              <div className="flex flex-col sm:flex-row gap-1.5 items-baseline">
                 <div className="text-zinc-900 text-xl font-semibold leading-5">
                   {speciesCommon}
                 </div>
                 <Link
                   to={`/species/${speciesActual}`}
-                  className="whitespace-nowrap flex gap-1 text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer"
+                  className="whitespace-nowrap flex gap-1 text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer text-ellipsis"
                 >
                   ({speciesActual})
                   <img src={diagonalArrow} className="w-2 h-3.5" />
