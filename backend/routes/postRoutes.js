@@ -5,6 +5,7 @@ import {
   getPosts,
   getPostById,
   createPost,
+  deletePost,
 } from "../controllers/postController.js";
 import {
   getCommentsByPostId,
@@ -17,6 +18,7 @@ router.get("/", getPosts);
 router.get("/:id", getPostById);
 router.get("/:id/comments", getCommentsByPostId);
 router.post("/:id/comments", requireAuth, createComment);
+router.delete("/:id", requireAuth, deletePost);
 
 router.post("/", upload.single("image"), createPost);
 

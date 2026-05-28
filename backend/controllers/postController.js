@@ -1,4 +1,8 @@
 import Post from "../models/Post.js";
+import Comment from "../models/Comment.js";
+import SavedPost from "../models/SavedPost.js";
+import Like from "../models/Like.js";
+import Notification from "../models/Notification.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -56,5 +60,47 @@ export const createPost = async (req, res) => {
   } catch (error) {
     console.error("Error creating post:", error);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const requesterId = req.user?.id;
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.authorId.toString() !== requesterId) {
+      return res.status(403).json({ message: "Not authorized to delete this post" });
+    }
+
+    const comments = await Comment.find({ postId: id }, { _id: 1 });
+    const commentIds = comments.map((comment) => comment._id);
+
+    await Promise.all([
+      Post.findByIdAndDelete(id),
+      Comment.deleteMany({ postId: id }),
+      SavedPost.deleteMany({ postId: id }),
+      Like.deleteMany({
+        $or: [
+          { targetType: "post", targetId: id },
+          { targetType: "comment", targetId: { $in: commentIds } },
+        ],
+      }),
+      Notification.deleteMany({
+        $or: [{ postId: id }, { commentId: { $in: commentIds } }],
+      }),
+    ]);
+
+    return res.status(200).json({ message: "Post deleted" });
+  } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid post id" });
+    }
+    console.error("Error in deletePost:", error.message);
+    return res.status(500).json({ message: "Server Error" });
   }
 };

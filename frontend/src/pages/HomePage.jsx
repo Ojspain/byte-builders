@@ -5,6 +5,10 @@ function HomePage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const handlePostDeleted = (deletedPostId) => {
+    setPosts((previous) => previous.filter((post) => post._id !== deletedPostId));
+  };
+
   useEffect(() => {
     fetch("/api/posts")
       .then((res) => res.json())
@@ -29,6 +33,7 @@ function HomePage() {
           <Post
             key={p._id}
             _id={p._id}
+            authorId={p.authorId}
             authorName={p.authorName}
             imageUrl={p.imageUrl}
             speciesCommon={p.speciesCommon}
@@ -41,6 +46,7 @@ function HomePage() {
             createdAt={p.createdAt}
             likeCount={p.likeCount}
             sprayCount={p.sprayCount}
+            onPostDeleted={handlePostDeleted}
           />
         ))}
       </div>

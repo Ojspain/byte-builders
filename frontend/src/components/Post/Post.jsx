@@ -11,6 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function Post({
   _id,
+  authorId,
   authorName,
   imageUrl,
   speciesCommon,
@@ -23,14 +24,18 @@ function Post({
   createdAt,
   likeCount,
   sprayCount,
+  onPostDeleted,
 }) {
   const [isScroll, setIsScroll] = useState(false);
   const [populatedComments, setPopulatedComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [commentError, setCommentError] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [isDeletingPost, setIsDeletingPost] = useState(false);
   const scrollRef = useRef(null);
   const { user } = useAuth();
+  const isPostOwner = Boolean(user && String(authorId) === String(user._id));
   const date = new Date(createdAt);
   const postedHoursAgo = Math.floor((new Date() - date) / (1000 * 60 * 60));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -126,6 +131,40 @@ function Post({
     );
   };
 
+  const handleDeletePost = async () => {
+    if (!isPostOwner || isDeletingPost) {
+      return;
+    }
+
+    const shouldDelete = window.confirm(
+      "Delete this post? This will also remove its comments.",
+    );
+    if (!shouldDelete) {
+      return;
+    }
+
+    setDeleteError("");
+    setIsDeletingPost(true);
+    try {
+      const response = await fetch(`/api/posts/${_id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setDeleteError(data.message || "Failed to delete post.");
+        return;
+      }
+      if (onPostDeleted) {
+        onPostDeleted(_id);
+      }
+    } catch {
+      setDeleteError("Network error while deleting post.");
+    } finally {
+      setIsDeletingPost(false);
+    }
+  };
+
   return (
     <>
       <div
@@ -207,15 +246,28 @@ function Post({
           </div>
 
           {/* Date and Interaction */}
-          <section className="self-stretch pb-3 border-b border-zinc-200 flex justify-between">
+          <section className="self-stretch pb-3 border-b border-zinc-200 flex justify-between items-center gap-3">
             {/* Date */}
             <div className="text-zinc-500 text-xs font-semibold">
               {formattedDate}
             </div>
 
             {/* Like and Spray Icons */}
-            <Interaction likeCount={likeCount} sprayCount={sprayCount} />
+            <div className="flex items-center gap-2">
+              <Interaction likeCount={likeCount} sprayCount={sprayCount} />
+              {isPostOwner &&
+                <button
+                  type="button"
+                  className="text-xs font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
+                  onClick={handleDeletePost}
+                  disabled={isDeletingPost}
+                >
+                  {isDeletingPost ? "Deleting..." : "Delete post"}
+                </button>
+              }
+            </div>
           </section>
+          {deleteError && <p className="pt-2 text-xs text-red-600">{deleteError}</p>}
 
           {/* Comments Section */}
           <div

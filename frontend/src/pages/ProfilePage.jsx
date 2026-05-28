@@ -8,6 +8,7 @@ function ProfilePage() {
 
     const { user } = useAuth();
     const [posts, setPosts] = useState([]);
+    const [deleteError, setDeleteError] = useState("");
 
     useEffect(() => {
         if (!user?._id) return;
@@ -16,6 +17,38 @@ function ProfilePage() {
             .then((data) => setPosts(data))
             .catch((err) => console.error("Failed to load posts:", err));
     }, [user]);
+
+    const getAuthHeaders = () => {
+        const token = localStorage.getItem("token");
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+
+    const handleDeletePost = async (postId) => {
+        const shouldDelete = window.confirm(
+            "Delete this post? This will also remove its comments.",
+        );
+        if (!shouldDelete) {
+            return;
+        }
+
+        setDeleteError("");
+        try {
+            const response = await fetch(`/api/posts/${postId}`, {
+                method: "DELETE",
+                headers: getAuthHeaders(),
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                setDeleteError(data.message || "Failed to delete post.");
+                return;
+            }
+
+            setPosts((previous) => previous.filter((post) => post._id !== postId));
+        } catch {
+            setDeleteError("Network error while deleting post.");
+        }
+    };
 
     const date = user?.createdAt ? new Date(user.createdAt) : null;
     const formattedDate = date ? date.toLocaleDateString("en-US", {
@@ -105,10 +138,19 @@ function ProfilePage() {
 
                 <h1 className='text-3xl font-bold'>Discoveries</h1>
             </div>
+            {deleteError &&
+                <p className="mb-4 text-sm text-red-600">{deleteError}</p>
+            }
 
             <section className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {posts.map((post) => (
-                    <SmallPost key={post._id} post={post} hasAuthor={false} />
+                    <SmallPost
+                        key={post._id}
+                        post={post}
+                        hasAuthor={false}
+                        canDelete={true}
+                        onDelete={handleDeletePost}
+                    />
                 ))}
             </section>
 
