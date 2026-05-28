@@ -4,7 +4,7 @@ import Interaction from '../Post/Interaction';
 import diagonalArrow from "../../assets/diagonalArrow.svg";
 import superHeart from "../../assets/superHeart.svg";
 
-function SmallPost({ post, hasAuthor }) {
+function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
     return (
         <div
             key={post._id}
@@ -68,8 +68,17 @@ function SmallPost({ post, hasAuthor }) {
                     </div>
 
                     {/* Engagement Stats */}
-                    <div className='border-t pt-2'>
+                    <div className='border-t pt-2 flex items-center justify-between gap-2'>
                         <Interaction likeCount={post.likeCount} sprayCount={post.sprayCount} />
+                        {canDelete && (
+                            <button
+                                type="button"
+                                className='text-xs font-semibold text-red-600 hover:text-red-700'
+                                onClick={() => onDelete && onDelete(post._id)}
+                            >
+                                Delete
+                            </button>
+                        )}
                     </div>
                 </section>
             </div>
