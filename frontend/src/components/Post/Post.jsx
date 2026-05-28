@@ -7,6 +7,7 @@ import sendArrow from "../../assets/sendArrow.svg";
 import superHeart from "../../assets/superHeart.svg";
 import Tags from "./Tags";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Post({
   _id,
@@ -25,7 +26,11 @@ function Post({
 }) {
   const [isScroll, setIsScroll] = useState(false);
   const [populatedComments, setPopulatedComments] = useState([]);
+  const [commentInput, setCommentInput] = useState("");
+  const [commentError, setCommentError] = useState("");
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const scrollRef = useRef(null);
+  const { user } = useAuth();
   const date = new Date(createdAt);
   const postedHoursAgo = Math.floor((new Date() - date) / (1000 * 60 * 60));
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -44,8 +49,82 @@ function Post({
 
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) setIsScroll(el.scrollHeight != el.clientHeight);
+    if (el) setIsScroll(el.scrollHeight !== el.clientHeight);
   }, [populatedComments]);
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    return headers;
+  };
+
+  const handleCreateComment = async () => {
+    const trimmedComment = commentInput.trim();
+    if (!user) {
+      setCommentError("Log in to post a comment.");
+      return;
+    }
+    if (!trimmedComment) {
+      return;
+    }
+
+    setIsSubmittingComment(true);
+    setCommentError("");
+    try {
+      const response = await fetch(`/api/posts/${_id}/comments`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ commentText: trimmedComment }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setCommentError(data.message || "Failed to post comment.");
+        return;
+      }
+
+      setPopulatedComments((previous) => [...previous, data.comment]);
+      setCommentInput("");
+    } catch {
+      setCommentError("Network error while posting comment.");
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
+  const handleUpdateComment = async (commentId, commentText) => {
+    const response = await fetch(`/api/comments/${commentId}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ commentText }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to update comment.");
+    }
+    setPopulatedComments((previous) =>
+      previous.map((comment) =>
+        comment._id === commentId ? data.comment : comment,
+      ),
+    );
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const response = await fetch(`/api/comments/${commentId}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to delete comment.");
+    }
+    setPopulatedComments((previous) =>
+      previous.filter((comment) => comment._id !== commentId),
+    );
+  };
 
   return (
     <>
@@ -146,24 +225,46 @@ function Post({
             {populatedComments.map((commentData) => (
               <Comment
                 key={commentData._id}
+                commentId={commentData._id}
+                authorId={commentData.authorId}
                 author={commentData.author}
                 commentText={commentData.commentText}
                 createdAt={commentData.createdAt}
+                isOwner={Boolean(
+                  user && String(commentData.authorId) === String(user._id),
+                )}
+                onUpdate={handleUpdateComment}
+                onDelete={handleDeleteComment}
               />
             ))}
           </div>
 
           {/* Add Comment */}
-          {/* TODO: add usability */}
           <div className="border-t border-zinc-200 flex flex-col w-full pt-5 relative">
-            <button className="absolute right-3 top-[50%]">
+            <button
+              className="absolute right-3 top-[50%] disabled:opacity-50"
+              disabled={isSubmittingComment || !commentInput.trim()}
+              onClick={handleCreateComment}
+            >
               <img src={sendArrow} alt="Post" />
             </button>
             <input
               type="text"
-              placeholder="Leave a Comment"
+              placeholder={user ? "Leave a Comment" : "Log in to leave a comment"}
               className="border border-zinc-200 rounded-full p-3"
+              value={commentInput}
+              onChange={(event) => setCommentInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  handleCreateComment();
+                }
+              }}
+              maxLength={1000}
             />
+            {commentError &&
+              <p className="pt-2 text-xs text-red-600">{commentError}</p>
+            }
           </div>
         </div>
       </div>
