@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import beetle from "../assets/beetle.jpg";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 function EditAccountPage() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout } = useAuth();
   const [username, setUsername] = useState(user?.username ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [bio, setBio] = useState(user?.bio ?? "");
   const [profilePicUrl, setProfilePicUrl] = useState(user?.profilePicUrl ?? "");
   const [error, setError] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -44,6 +45,47 @@ function EditAccountPage() {
       const message = "Network error. Is the server running?";
       setError(message);
       toast.error(message);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (isDeleting) return;
+
+    const shouldDelete = window.confirm(
+      "Delete your account permanently? This will remove your posts, comments, and related activity.",
+    );
+    if (!shouldDelete) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setError("");
+    try {
+      const response = await fetch("/api/users/me", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        const message = data.message || "Failed to delete account.";
+        setError(message);
+        toast.error(message);
+        return;
+      }
+
+      logout();
+      toast.success("Your account has been deleted.");
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      const message = "Network error. Is the server running?";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -249,6 +291,23 @@ function EditAccountPage() {
                     </span>
                   </button>
                 </div>
+
+                <section className="mt-4 border-t border-red-200 pt-5">
+                  <p className="text-xs font-bold uppercase tracking-[0.6px] text-red-700">
+                    Delete Your Account
+                  </p>
+                  <p className="mt-1 text-sm text-zinc-600">
+                    Deleting your account is permanent and cannot be undone.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleDeleteAccount}
+                    disabled={isDeleting}
+                    className="mt-3 rounded-full bg-red-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
+                  >
+                    {isDeleting ? "Deleting Account..." : "Delete Account"}
+                  </button>
+                </section>
               </form>
             </div>
           </div>

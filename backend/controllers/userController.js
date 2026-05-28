@@ -1,6 +1,11 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Post from "../models/Post.js";
+import Comment from "../models/Comment.js";
+import SavedPost from "../models/SavedPost.js";
+import Like from "../models/Like.js";
+import Notification from "../models/Notification.js";
 import {
   validateSignup,
   validateLogin,
@@ -151,5 +156,64 @@ export const getUserByUsername = async (req, res) => {
   } catch (error) {
     console.error("Error in getUserByUsername:", error.message);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const deleteMyAccount = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const userPosts = await Post.find({ authorId: userId }, { _id: 1 });
+    const userPostIds = userPosts.map((post) => post._id);
+
+    const [authoredComments, commentsOnUserPosts] = await Promise.all([
+      Comment.find({ authorId: userId }, { _id: 1 }),
+      Comment.find({ postId: { $in: userPostIds } }, { _id: 1 }),
+    ]);
+
+    const commentIdSet = new Set([
+      ...authoredComments.map((comment) => comment._id.toString()),
+      ...commentsOnUserPosts.map((comment) => comment._id.toString()),
+    ]);
+    const relatedCommentIds = Array.from(commentIdSet);
+
+    await Promise.all([
+      SavedPost.deleteMany({
+        $or: [{ userId }, { postId: { $in: userPostIds } }],
+      }),
+      Like.deleteMany({
+        $or: [
+          { userId },
+          { targetType: "post", targetId: { $in: userPostIds } },
+          { targetType: "comment", targetId: { $in: relatedCommentIds } },
+        ],
+      }),
+      Notification.deleteMany({
+        $or: [
+          { recipientId: userId },
+          { actorId: userId },
+          { postId: { $in: userPostIds } },
+          { commentId: { $in: relatedCommentIds } },
+        ],
+      }),
+      Comment.deleteMany({
+        $or: [{ authorId: userId }, { postId: { $in: userPostIds } }],
+      }),
+      Post.deleteMany({ authorId: userId }),
+      User.findByIdAndDelete(userId),
+    ]);
+
+    return res.status(200).json({ message: "Account deleted" });
+  } catch (error) {
+    console.error("Error in deleteMyAccount:", error.message);
+    return res.status(500).json({ message: "Server Error" });
   }
 };
