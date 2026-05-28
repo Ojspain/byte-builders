@@ -6,6 +6,7 @@ import {
   logout,
   updateUser,
   getUserByUsername,
+  verifyPassword,
   deleteMyAccount,
 } from "../controllers/userController.js";
 
@@ -14,6 +15,7 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
+router.post("/verify-password", requireAuth, verifyPassword);
 router.delete("/me", requireAuth, deleteMyAccount);
 router.put("/:username", updateUser);
 router.get("/:username", getUserByUsername);

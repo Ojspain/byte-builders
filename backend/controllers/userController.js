@@ -159,16 +159,52 @@ export const getUserByUsername = async (req, res) => {
   }
 };
 
-export const deleteMyAccount = async (req, res) => {
+export const verifyPassword = async (req, res) => {
   try {
     const userId = req.user?.id;
+    const { password } = req.body;
     if (!userId) {
       return res.status(401).json({ message: "Authentication required" });
+    }
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
     }
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
+
+    return res.status(200).json({ message: "Password verified" });
+  } catch (error) {
+    console.error("Error in verifyPassword:", error.message);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const deleteMyAccount = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { password } = req.body;
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
     const userPosts = await Post.find({ authorId: userId }, { _id: 1 });

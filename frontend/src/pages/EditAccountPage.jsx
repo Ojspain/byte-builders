@@ -10,21 +10,76 @@ function EditAccountPage() {
   const [email, setEmail] = useState(user?.email ?? "");
   const [bio, setBio] = useState(user?.bio ?? "");
   const [profilePicUrl, setProfilePicUrl] = useState(user?.profilePicUrl ?? "");
-  const [error, setError] = useState("");
+  const [accessPassword, setAccessPassword] = useState("");
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [unlockError, setUnlockError] = useState("");
+  const [updateError, setUpdateError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
 
+  const getAuthHeaders = (includeContentType = false) => {
+    const token = localStorage.getItem("token");
+    const headers = {};
+    if (includeContentType) {
+      headers["Content-Type"] = "application/json";
+    }
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    return headers;
+  };
+
+  const handleUnlock = async (e) => {
+    e.preventDefault();
+    if (isUnlocking) return;
+
+    if (!accessPassword) {
+      const message = "Please enter your password.";
+      setUnlockError(message);
+      toast.error(message);
+      return;
+    }
+
+    setUnlockError("");
+    setIsUnlocking(true);
+    try {
+      const response = await fetch("/api/users/verify-password", {
+        method: "POST",
+        headers: getAuthHeaders(true),
+        body: JSON.stringify({ password: accessPassword }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        const message = data.message || "Password verification failed.";
+        setUnlockError(message);
+        toast.error(message);
+        return;
+      }
+
+      setIsUnlocked(true);
+      toast.success("Password verified.");
+    } catch (err) {
+      console.error(err);
+      const message = "Network error. Is the server running?";
+      setUnlockError(message);
+      toast.error(message);
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    if (!isUnlocked) return;
+    setUpdateError("");
 
     try {
       const response = await fetch(`/api/users/${user.username}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders(true),
         body: JSON.stringify({ username, email, bio, profilePicUrl }),
       });
 
@@ -32,7 +87,7 @@ function EditAccountPage() {
 
       if (!response.ok) {
         const message = data.message || "Failed to update profile.";
-        setError(message);
+        setUpdateError(message);
         toast.error(message);
         return;
       }
@@ -43,13 +98,14 @@ function EditAccountPage() {
     } catch (err) {
       console.error(err);
       const message = "Network error. Is the server running?";
-      setError(message);
+      setUpdateError(message);
       toast.error(message);
     }
   };
 
   const handleDeleteAccount = async () => {
     if (isDeleting) return;
+    if (!isUnlocked) return;
 
     const shouldDelete = window.confirm(
       "Delete your account permanently? This will remove your posts, comments, and related activity.",
@@ -59,19 +115,18 @@ function EditAccountPage() {
     }
 
     setIsDeleting(true);
-    setError("");
+    setDeleteError("");
     try {
       const response = await fetch("/api/users/me", {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: getAuthHeaders(true),
+        body: JSON.stringify({ password: accessPassword }),
       });
       const data = await response.json();
 
       if (!response.ok) {
         const message = data.message || "Failed to delete account.";
-        setError(message);
+        setDeleteError(message);
         toast.error(message);
         return;
       }
@@ -82,7 +137,7 @@ function EditAccountPage() {
     } catch (err) {
       console.error(err);
       const message = "Network error. Is the server running?";
-      setError(message);
+      setDeleteError(message);
       toast.error(message);
     } finally {
       setIsDeleting(false);
@@ -118,6 +173,37 @@ function EditAccountPage() {
             </header>
 
             <div className="rounded-xl border border-[#edeeef] bg-white p-6 shadow-[0px_4px_12px_rgba(0,0,0,0.04)] sm:p-10">
+              {!isUnlocked ? (
+                <form className="flex flex-col gap-4" onSubmit={handleUnlock}>
+                  <p className="text-sm text-zinc-600">
+                    Re-enter your password to unlock account settings.
+                  </p>
+                  <input
+                    type="password"
+                    value={accessPassword}
+                    onChange={(event) => setAccessPassword(event.target.value)}
+                    placeholder="Current password"
+                    className="w-full max-w-90 rounded-full border border-zinc-300 bg-zinc-50 px-4 py-3 text-sm text-zinc-700 outline-none focus:border-zinc-500"
+                  />
+                  <div className="flex gap-3">
+                    <button
+                      type="submit"
+                      disabled={isUnlocking}
+                      className="rounded-full bg-[#006d37] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#005a2e] disabled:opacity-60"
+                    >
+                      {isUnlocking ? "Verifying..." : "Unlock"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => navigate(-1)}
+                      className="rounded-full border border-zinc-300 bg-zinc-100 px-5 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-200"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  {unlockError && <p className="text-sm text-red-500">{unlockError}</p>}
+                </form>
+              ) : (
               <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                 {/* Upper section */}
                 <section className="flex flex-col md:flex-row gap-5">
@@ -265,7 +351,6 @@ function EditAccountPage() {
                       </svg>
                     </span>
                   </button>
-                  {error && <p className="text-red-500 text-sm">{error}</p>}
                   <button
                     type="button"
                     onClick={() => navigate(-1)}
@@ -291,6 +376,7 @@ function EditAccountPage() {
                     </span>
                   </button>
                 </div>
+                {updateError && <p className="text-red-500 text-sm">{updateError}</p>}
 
                 <section className="mt-4 border-t border-red-200 pt-5">
                   <p className="text-xs font-bold uppercase tracking-[0.6px] text-red-700">
@@ -307,8 +393,10 @@ function EditAccountPage() {
                   >
                     {isDeleting ? "Deleting Account..." : "Delete Account"}
                   </button>
+                  {deleteError && <p className="mt-2 text-sm text-red-500">{deleteError}</p>}
                 </section>
               </form>
+              )}
             </div>
           </div>
         </div>
