@@ -1,6 +1,7 @@
 import Comment from "../models/Comment.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import Notification from "../models/Notification.js";
 
 const getAuthorProjection = { username: 1, profilePicUrl: 1 };
 
@@ -39,7 +40,9 @@ export const createComment = async (req, res) => {
       return res.status(400).json({ message: "Comment text is required" });
     }
     if (trimmedText.length > 1000) {
-      return res.status(400).json({ message: "Comment must be 1000 chars or less" });
+      return res
+        .status(400)
+        .json({ message: "Comment must be 1000 chars or less" });
     }
 
     const [post, author] = await Promise.all([
@@ -62,6 +65,16 @@ export const createComment = async (req, res) => {
     });
 
     await Post.findByIdAndUpdate(postId, { $inc: { commentCount: 1 } });
+
+    if (post.authorId.toString() !== authorId) {
+      await Notification.create({
+        recipientId: post.authorId,
+        actorId: authorId,
+        type: parentCommentId ? "reply" : "comment",
+        postId,
+        commentId: newComment._id,
+      });
+    }
 
     return res.status(201).json({
       comment: { ...newComment.toObject(), author },
@@ -86,7 +99,9 @@ export const updateComment = async (req, res) => {
       return res.status(400).json({ message: "Comment text is required" });
     }
     if (trimmedText.length > 1000) {
-      return res.status(400).json({ message: "Comment must be 1000 chars or less" });
+      return res
+        .status(400)
+        .json({ message: "Comment must be 1000 chars or less" });
     }
 
     const comment = await Comment.findById(commentId);
@@ -95,7 +110,9 @@ export const updateComment = async (req, res) => {
     }
 
     if (comment.authorId.toString() !== requesterId) {
-      return res.status(403).json({ message: "Not authorized to edit this comment" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to edit this comment" });
     }
 
     comment.commentText = trimmedText;
@@ -123,7 +140,9 @@ export const deleteComment = async (req, res) => {
     }
 
     if (comment.authorId.toString() !== requesterId) {
-      return res.status(403).json({ message: "Not authorized to delete this comment" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this comment" });
     }
 
     await Comment.findByIdAndDelete(commentId);
@@ -131,7 +150,7 @@ export const deleteComment = async (req, res) => {
       { _id: comment.postId, commentCount: { $gt: 0 } },
       { $inc: { commentCount: -1 } },
     );
-
+    await Notification.deleteMany({ commentId });
     return res.status(200).json({ message: "Comment deleted" });
   } catch (error) {
     if (error.name === "CastError") {
