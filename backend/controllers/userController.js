@@ -6,6 +6,7 @@ import Comment from "../models/Comment.js";
 import SavedPost from "../models/SavedPost.js";
 import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
+import Follow from "../models/Follow.js";
 import {
   validateSignup,
   validateLogin,
@@ -14,6 +15,29 @@ import {
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
+};
+
+const getFollowCounts = async (userId) => {
+  const [followerCount, followingCount] = await Promise.all([
+    Follow.countDocuments({ followeeId: userId }),
+    Follow.countDocuments({ followerId: userId }),
+  ]);
+  return { followerCount, followingCount };
+};
+
+const buildUserResponse = async (user) => {
+  const { followerCount, followingCount } = await getFollowCounts(user._id);
+  return {
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    bio: user.bio,
+    profilePicUrl: user.profilePicUrl,
+    followerCount,
+    followingCount,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
 };
 
 export const signup = async (req, res) => {
@@ -36,15 +60,10 @@ export const signup = async (req, res) => {
     const user = await User.create({ username, email, passwordHash });
 
     const token = generateToken(user._id);
+    const userResponse = await buildUserResponse(user);
     res.status(201).json({
       token,
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        bio: user.bio,
-        profilePicUrl: user.profilePicUrl,
-      },
+      user: userResponse,
     });
   } catch (error) {
     console.error("Error in signup:", error.message);
@@ -72,15 +91,10 @@ export const login = async (req, res) => {
     }
 
     const token = generateToken(user._id);
+    const userResponse = await buildUserResponse(user);
     res.status(200).json({
       token,
-      user: {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        bio: user.bio,
-        profilePicUrl: user.profilePicUrl,
-      },
+      user: userResponse,
     });
   } catch (error) {
     console.error("Error in login:", error.message);
@@ -138,7 +152,8 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(user);
+    const userResponse = await buildUserResponse(user);
+    res.status(200).json(userResponse);
   } catch (error) {
     console.error("Error in updateUser:", error.message);
     res.status(500).json({ message: "Server Error" });
@@ -152,7 +167,8 @@ export const getUserByUsername = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user);
+    const userResponse = await buildUserResponse(user);
+    res.status(200).json(userResponse);
   } catch (error) {
     console.error("Error in getUserByUsername:", error.message);
     res.status(500).json({ message: "Server Error" });
@@ -239,6 +255,9 @@ export const deleteMyAccount = async (req, res) => {
           { postId: { $in: userPostIds } },
           { commentId: { $in: relatedCommentIds } },
         ],
+      }),
+      Follow.deleteMany({
+        $or: [{ followerId: userId }, { followeeId: userId }],
       }),
       Comment.deleteMany({
         $or: [{ authorId: userId }, { postId: { $in: userPostIds } }],
