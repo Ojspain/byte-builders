@@ -3,7 +3,8 @@ import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
 
-const isValidTargetType = (targetType) => targetType === "post" || targetType === "comment";
+const isValidTargetType = (targetType) =>
+  targetType === "post" || targetType === "comment";
 const isValidReactionType = (reactionType) =>
   reactionType === "like" || reactionType === "spray";
 
@@ -78,6 +79,8 @@ export const setReaction = async (req, res) => {
     }
 
     const targetDoc = target.doc;
+
+    const Model = targetType === "post" ? Post : Comment;
     if (!existingReaction) {
       await Like.create({
         userId: actorId,
@@ -85,11 +88,28 @@ export const setReaction = async (req, res) => {
         targetType,
         reactionType,
       });
-      targetDoc[fieldByReactionType[reactionType]] += 1;
+
+      await Model.updateOne(
+        { _id: targetId },
+        { $inc: { [fieldByReactionType[reactionType]]: 1 } },
+      );
+
+      targetDoc[fieldByReactionType[reactionType]] =
+        (targetDoc[fieldByReactionType[reactionType]] || 0) + 1;
     } else {
       const previousType = existingReaction.reactionType;
       existingReaction.reactionType = reactionType;
       await existingReaction.save();
+      await Model.updateOne(
+        { _id: targetId },
+        {
+          $inc: {
+            [fieldByReactionType[previousType]]: -1,
+            [fieldByReactionType[reactionType]]: 1,
+          },
+        },
+      );
+
       targetDoc[fieldByReactionType[previousType]] = Math.max(
         0,
         (targetDoc[fieldByReactionType[previousType]] || 0) - 1,
@@ -97,8 +117,6 @@ export const setReaction = async (req, res) => {
       targetDoc[fieldByReactionType[reactionType]] =
         (targetDoc[fieldByReactionType[reactionType]] || 0) + 1;
     }
-
-    await targetDoc.save();
 
     if (String(target.ownerId) !== String(actorId)) {
       await Notification.create({
@@ -147,8 +165,10 @@ export const removeReaction = async (req, res) => {
     if (existingReaction) {
       const targetDoc = target.doc;
       const field = fieldByReactionType[existingReaction.reactionType];
+      const Model = targetType === "post" ? Post : Comment;
+      await Model.updateOne({ _id: targetId }, { $inc: { [field]: -1 } });
+
       targetDoc[field] = Math.max(0, (targetDoc[field] || 0) - 1);
-      await targetDoc.save();
     }
 
     return res.status(200).json({
