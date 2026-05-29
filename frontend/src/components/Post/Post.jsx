@@ -191,9 +191,12 @@ function Post({
 
               {/* Name and Time */}
               <div className="min-w-20 max-w-80 flex flex-col overflow-hidden">
-                <div className="text-white text-xs font-bold tracking-wide max-h-8 overflow-hidden">
+                <Link
+                  to={`/profile/${authorName}`}
+                  className="text-white text-xs font-bold tracking-wide max-h-8 overflow-hidden hover:underline"
+                >
                   {authorName}
-                </div>
+                </Link>
                 <div className="text-stone-300 text-xs font-medium">
                   {postedHoursAgo < 24
                     ? `${postedHoursAgo} hours ago`

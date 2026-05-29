@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Comment({
   commentId,
@@ -64,9 +65,12 @@ function Comment({
       <div className="w-full">
         <div className="flex items-start justify-between gap-3">
           <div className="flex gap-2 items-baseline">
-            <div className="w-min justify-center text-zinc-900 font-bold tracking-wide">
+            <Link
+              to={`/profile/${author.username}`}
+              className="w-min justify-center text-zinc-900 font-bold tracking-wide hover:underline"
+            >
               {author.username}:
-            </div>
+            </Link>
             {timestamp &&
               <div className="text-[10px] font-medium text-zinc-500">{timestamp}</div>
             }

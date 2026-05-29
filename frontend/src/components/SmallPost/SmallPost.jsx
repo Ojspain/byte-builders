@@ -19,9 +19,12 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
                 />
                 {/* Author Badge */}
                 {hasAuthor &&
-                    <div className='absolute top-2 left-2 bg-stone-900/80 text-white px-2 py-1 rounded text-xs font-semibold'>
+                    <Link
+                        to={`/profile/${post.authorName}`}
+                        className='absolute top-2 left-2 bg-stone-900/80 text-white px-2 py-1 rounded text-xs font-semibold hover:underline'
+                    >
                         {post.authorName}
-                    </div>
+                    </Link>
                 }
             </div>
 
