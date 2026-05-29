@@ -10,13 +10,13 @@ import EditAccountPage from "./pages/EditAccountPage";
 import NewPostPage from "./pages/NewPostPage";
 import SpeciesPage from "./pages/SpeciesPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PostPage from "./pages/PostPage";
 
 function App() {
-
   return (
     <>
       <SideBar />
-      <div className='lg:ml-60 mt-16 p-10'>
+      <div className="lg:ml-60 mt-16 p-10">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -28,6 +28,7 @@ function App() {
           <Route path="/edit-account" element={<EditAccountPage />} />
           <Route path="/new-post" element={<NewPostPage />} />
           <Route path="/species/:speciesId" element={<SpeciesPage />} />
+          <Route path="/post/:postId" element={<PostPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
@@ -35,4 +36,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

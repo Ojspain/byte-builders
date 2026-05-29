@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.js";
 import followRoutes from "./routes/followRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 import reactionRoutes from "./routes/reactionRoutes.js";
 
 const app = express();
@@ -18,12 +19,13 @@ app.use(express.json());
 connectDB();
 
 // Mount the routes
-// Any request that starts with '/api/species' is forwarded to speciesRoutes
+// Any request that starts with '/api/species' is forwarded to speciesRoutes, etc
 app.use("/api/species", speciesRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/users", followRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/reactions", reactionRoutes);
 
 const PORT = process.env.PORT || 5000;
