@@ -15,14 +15,46 @@ function SavedPage() {
 
   const [sortBy, setSortBy] = useState("");
   const [speciesQuery, setSpeciesQuery] = useState("");
+  const updateSortBy = (value) => {
+    if (value === sortBy) {
+      return;
+    }
+    setLoading(true);
+    setSortBy(value);
+  };
+  const updateSpeciesQuery = (value) => {
+    if (value === speciesQuery) {
+      return;
+    }
+    setLoading(true);
+    setSpeciesQuery(value);
+  };
 
   useEffect(() => {
-    fetch("/api/posts")
+    if (!user) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    const params = new URLSearchParams();
+    if (sortBy === "liked") params.set("reactionType", "like");
+    if (sortBy === "sprayed") params.set("reactionType", "spray");
+    if (speciesQuery.trim()) params.set("speciesQuery", speciesQuery.trim());
+
+    const queryString = params.toString();
+    const url = queryString ? `/api/posts/saved?${queryString}` : "/api/posts/saved";
+
+    fetch(url, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
       .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((err) => console.error("Failed to load posts:", err))
+      .then((data) => setPosts(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        console.error("Failed to load saved posts:", err);
+        setPosts([]);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [user, sortBy, speciesQuery]);
 
   if (!user)
     return (
@@ -39,13 +71,15 @@ function SavedPage() {
       <SortBy
         options={options}
         sortBy={sortBy}
-        setSortBy={setSortBy}
+        setSortBy={updateSortBy}
         speciesQuery={speciesQuery}
-        setSpeciesQuery={setSpeciesQuery}
+        setSpeciesQuery={updateSpeciesQuery}
       />
 
       {loading ? (
         <p className="text-center text-zinc-500 mt-10">Loading...</p>
+      ) : posts.length === 0 ? (
+        <p className="text-center text-zinc-500 mt-10">No saved posts yet.</p>
       ) : (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
           {posts.map((post) => (

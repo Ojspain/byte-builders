@@ -3,6 +3,7 @@ import { upload } from "../config/cloudinary.js";
 import { requireAuth } from "../middleware/authMiddleware.js";
 import {
   getPosts,
+  getSavedPosts,
   getPostById,
   createPost,
   deletePost,
@@ -15,6 +16,7 @@ import {
 const router = express.Router();
 
 router.get("/", getPosts);
+router.get("/saved", requireAuth, getSavedPosts);
 router.get("/:id", getPostById);
 router.get("/:id/comments", getCommentsByPostId);
 router.post("/:id/comments", requireAuth, createComment);

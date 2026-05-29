@@ -22,6 +22,53 @@ export const getPosts = async (req, res) => {
   }
 };
 
+export const getSavedPosts = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { reactionType, speciesQuery } = req.query;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const likeQuery = { userId, targetType: "post" };
+    if (reactionType === "like" || reactionType === "spray") {
+      likeQuery.reactionType = reactionType;
+    }
+
+    const savedReactions = await Like.find(likeQuery)
+      .sort({ createdAt: -1 })
+      .select({ targetId: 1 });
+
+    if (!savedReactions.length) {
+      return res.status(200).json([]);
+    }
+
+    const postIds = savedReactions.map((reaction) => reaction.targetId);
+    const postQuery = { _id: { $in: postIds } };
+    const trimmedSpecies = (speciesQuery || "").trim();
+    if (trimmedSpecies) {
+      postQuery.$or = [
+        { speciesActual: { $regex: trimmedSpecies, $options: "i" } },
+        { speciesCommon: { $regex: trimmedSpecies, $options: "i" } },
+      ];
+    }
+
+    const savedPosts = await Post.find(postQuery);
+    const postsById = new Map(
+      savedPosts.map((post) => [post._id.toString(), post]),
+    );
+    const orderedPosts = postIds
+      .map((postId) => postsById.get(postId.toString()))
+      .filter(Boolean);
+
+    return res.status(200).json(orderedPosts);
+  } catch (error) {
+    console.error("Error in getSavedPosts:", error.message);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
 export const getPostById = async (req, res) => {
   try {
     const { id } = req.params;
