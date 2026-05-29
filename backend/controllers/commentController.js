@@ -1,4 +1,6 @@
 import Comment from "../models/Comment.js";
+import Like from "../models/Like.js";
+import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
@@ -145,12 +147,16 @@ export const deleteComment = async (req, res) => {
         .json({ message: "Not authorized to delete this comment" });
     }
 
-    await Comment.findByIdAndDelete(commentId);
-    await Post.findOneAndUpdate(
-      { _id: comment.postId, commentCount: { $gt: 0 } },
-      { $inc: { commentCount: -1 } },
-    );
-    await Notification.deleteMany({ commentId });
+    await Promise.all([
+      Comment.findByIdAndDelete(commentId),
+      Post.findOneAndUpdate(
+        { _id: comment.postId, commentCount: { $gt: 0 } },
+        { $inc: { commentCount: -1 } },
+      ),
+      Like.deleteMany({ targetType: "comment", targetId: commentId }),
+      Notification.deleteMany({ commentId }),
+    ]);
+
     return res.status(200).json({ message: "Comment deleted" });
   } catch (error) {
     if (error.name === "CastError") {

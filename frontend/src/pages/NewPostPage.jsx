@@ -1,13 +1,12 @@
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SelectSpecies from "../components/SelectSpecies/SelectSpecies";
 import filledStar from "../assets/filledStar.svg";
 import hollowStar from "../assets/hollowStar.svg";
 import superHeart from "../assets/superHeart.svg";
 import unlikedHeart from "../assets/unlikedHeart.svg";
-import StarRating from "../components/StarRating/StarRating";
 
 const TAG_OPTIONS = [
   "Serious",
@@ -44,6 +43,7 @@ const LOCATIONS = [
 
 function NewPostPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [speciesQuery, setSpeciesQuery] = useState("");
   const [location, setLocation] = useState("");
@@ -75,8 +75,6 @@ function NewPostPage() {
       return url;
     });
   };
-
-  const { user } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -130,6 +128,17 @@ function NewPostPage() {
       console.error("Error submitting post:", error);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center mt-20 gap-4">
+        <p className="text-zinc-600 text-lg">Log in to create a new post.</p>
+        <Link to="/login" className="text-emerald-700 font-semibold underline">
+          Log in
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>

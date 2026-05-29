@@ -4,6 +4,16 @@ import SavedPost from "../models/SavedPost.js";
 import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
 
+const mapPostWithAuthorProfilePic = (postDoc) => {
+  const post = postDoc.toObject();
+  const populatedAuthor = post.authorId;
+  return {
+    ...post,
+    authorId: populatedAuthor?._id || post.authorId,
+    authorProfilePicUrl: populatedAuthor?.profilePicUrl || "",
+  };
+};
+
 export const getPosts = async (req, res) => {
   try {
     const { authorId, speciesActual, speciesCommon } = req.query;
@@ -14,11 +24,61 @@ export const getPosts = async (req, res) => {
     if (speciesCommon)
       query.speciesCommon = { $regex: `^${speciesCommon}$`, $options: "i" };
 
-    const posts = await Post.find(query).sort({ createdAt: -1 });
-    res.status(200).json(posts);
+    const posts = await Post.find(query)
+      .populate("authorId", "profilePicUrl")
+      .sort({ createdAt: -1 });
+    const postsWithAuthorPics = posts.map(mapPostWithAuthorProfilePic);
+    res.status(200).json(postsWithAuthorPics);
   } catch (error) {
     console.error("Error in getPost:", error.message);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getSavedPosts = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { reactionType, speciesQuery } = req.query;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const likeQuery = { userId, targetType: "post" };
+    if (reactionType === "like" || reactionType === "spray") {
+      likeQuery.reactionType = reactionType;
+    }
+
+    const savedReactions = await Like.find(likeQuery)
+      .sort({ createdAt: -1 })
+      .select({ targetId: 1 });
+
+    if (!savedReactions.length) {
+      return res.status(200).json([]);
+    }
+
+    const postIds = savedReactions.map((reaction) => reaction.targetId);
+    const postQuery = { _id: { $in: postIds } };
+    const trimmedSpecies = (speciesQuery || "").trim();
+    if (trimmedSpecies) {
+      postQuery.$or = [
+        { speciesActual: { $regex: trimmedSpecies, $options: "i" } },
+        { speciesCommon: { $regex: trimmedSpecies, $options: "i" } },
+      ];
+    }
+
+    const savedPosts = await Post.find(postQuery);
+    const postsById = new Map(
+      savedPosts.map((post) => [post._id.toString(), post]),
+    );
+    const orderedPosts = postIds
+      .map((postId) => postsById.get(postId.toString()))
+      .filter(Boolean);
+
+    return res.status(200).json(orderedPosts);
+  } catch (error) {
+    console.error("Error in getSavedPosts:", error.message);
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 

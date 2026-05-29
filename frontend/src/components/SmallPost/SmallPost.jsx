@@ -19,9 +19,12 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
                 />
                 {/* Author Badge */}
                 {hasAuthor &&
-                    <div className='absolute top-2 left-2 bg-stone-900/80 text-white px-2 py-1 rounded text-xs font-semibold'>
+                    <Link
+                        to={`/profile/${post.authorName}`}
+                        className='absolute top-2 left-2 bg-stone-900/80 text-white px-2 py-1 rounded text-xs font-semibold hover:underline'
+                    >
                         {post.authorName}
-                    </div>
+                    </Link>
                 }
             </div>
 
@@ -69,7 +72,12 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
 
                     {/* Engagement Stats */}
                     <div className='border-t pt-2 flex items-center justify-between gap-2'>
-                        <Interaction likeCount={post.likeCount} sprayCount={post.sprayCount} />
+                        <Interaction
+                            targetType="post"
+                            targetId={post._id}
+                            likeCount={post.likeCount}
+                            sprayCount={post.sprayCount}
+                        />
                         {canDelete && (
                             <button
                                 type="button"

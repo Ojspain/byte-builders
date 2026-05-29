@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import Interaction from "./Interaction";
 
 function Comment({
   commentId,
   author,
   commentText,
   createdAt,
+  likeCount,
+  sprayCount,
   isOwner,
   onUpdate,
   onDelete,
@@ -64,9 +68,12 @@ function Comment({
       <div className="w-full">
         <div className="flex items-start justify-between gap-3">
           <div className="flex gap-2 items-baseline">
-            <div className="w-min justify-center text-zinc-900 font-bold tracking-wide">
+            <Link
+              to={`/profile/${author.username}`}
+              className="w-min justify-center text-zinc-900 font-bold tracking-wide hover:underline"
+            >
               {author.username}:
-            </div>
+            </Link>
             {timestamp &&
               <div className="text-[10px] font-medium text-zinc-500">{timestamp}</div>
             }
@@ -134,6 +141,14 @@ function Comment({
           : <div className="w-fit text-zinc-700">{commentText}</div>}
 
         {error && <div className="pt-1 text-xs text-red-600">{error}</div>}
+        <div className="pt-2">
+          <Interaction
+            targetType="comment"
+            targetId={commentId}
+            likeCount={likeCount}
+            sprayCount={sprayCount}
+          />
+        </div>
       </div>
     </div>
   );

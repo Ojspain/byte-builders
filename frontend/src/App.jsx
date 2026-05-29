@@ -24,6 +24,7 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/saved" element={<SavedPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/edit-account" element={<EditAccountPage />} />
           <Route path="/new-post" element={<NewPostPage />} />
           <Route path="/species/:speciesId" element={<SpeciesPage />} />

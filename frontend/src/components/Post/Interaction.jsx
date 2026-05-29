@@ -1,53 +1,117 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import likedHeart from "../../assets/likedHeart.svg";
 import unlikedHeart from "../../assets/unlikedHeart.svg";
 import sprayed from "../../assets/sprayed.svg";
 import unsprayed from "../../assets/unsprayed.svg";
 
 function Interaction({
+  targetType,
+  targetId,
   likeCount: initialLikeCount,
   sprayCount: initialSprayCount,
 }) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSprayed, setIsSprayed] = useState(false);
-  const [likeImg, setLikeImg] = useState(unlikedHeart);
-  const [sprayImg, setSprayImg] = useState(unsprayed);
+  const [myReaction, setMyReaction] = useState(null);
+  const [isLoadingReaction, setIsLoadingReaction] = useState(false);
+  const [likeCount, setLikeCount] = useState(initialLikeCount ?? 0);
+  const [sprayCount, setSprayCount] = useState(initialSprayCount ?? 0);
+  const [error, setError] = useState("");
 
-  // set likes/sprays to zero if undefined
-  const [likeCount, setLikeCount] = useState(initialLikeCount || 0);
-  const [sprayCount, setSprayCount] = useState(initialSprayCount || 0);
+  useEffect(() => {
+    setLikeCount(initialLikeCount ?? 0);
+  }, [initialLikeCount]);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    if (isLiked) {
-      setLikeCount(likeCount - 1);
-      setLikeImg(unlikedHeart);
-    } else {
-      setLikeCount(likeCount + 1);
-      setLikeImg(likedHeart);
+  useEffect(() => {
+    setSprayCount(initialSprayCount ?? 0);
+  }, [initialSprayCount]);
 
-      if (isSprayed) {
-        setIsSprayed(false);
-        setSprayImg(unsprayed);
-        setSprayCount(sprayCount - 1);
-      }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || !targetType || !targetId) {
+      setMyReaction(null);
+      return;
     }
-  };
 
-  const handleSpray = () => {
-    setIsSprayed(!isSprayed);
-    if (isSprayed) {
-      setSprayCount(sprayCount - 1);
-      setSprayImg(unsprayed);
-    } else {
-      setSprayCount(sprayCount + 1);
-      setSprayImg(sprayed);
+    fetch(`/api/reactions/${targetType}/${targetId}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to load reaction status.");
+        }
+        setMyReaction(data?.data?.myReaction || null);
+      })
+      .catch(() => setMyReaction(null));
+  }, [targetType, targetId]);
 
-      if (isLiked) {
-        setIsLiked(false);
-        setLikeImg(unlikedHeart);
-        setLikeCount(likeCount - 1);
+  const handleReaction = async (reactionType) => {
+    if (!targetType || !targetId || isLoadingReaction) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Log in to react.");
+      return;
+    }
+
+    setError("");
+    setIsLoadingReaction(true);
+
+    const previous = {
+      myReaction,
+      likeCount,
+      sprayCount,
+    };
+
+    const isRemoving = myReaction === reactionType;
+    let nextReaction = myReaction;
+    let nextLikeCount = likeCount;
+    let nextSprayCount = sprayCount;
+
+    if (isRemoving) {
+      nextReaction = null;
+      if (reactionType === "like") nextLikeCount = Math.max(0, likeCount - 1);
+      if (reactionType === "spray") nextSprayCount = Math.max(0, sprayCount - 1);
+    } else if (reactionType === "like") {
+      nextReaction = "like";
+      nextLikeCount = likeCount + 1;
+      if (myReaction === "spray") nextSprayCount = Math.max(0, sprayCount - 1);
+    } else if (reactionType === "spray") {
+      nextReaction = "spray";
+      nextSprayCount = sprayCount + 1;
+      if (myReaction === "like") nextLikeCount = Math.max(0, likeCount - 1);
+    }
+
+    setMyReaction(nextReaction);
+    setLikeCount(nextLikeCount);
+    setSprayCount(nextSprayCount);
+
+    try {
+      const response = await fetch(`/api/reactions/${targetType}/${targetId}`, {
+        method: isRemoving ? "DELETE" : "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: isRemoving ? undefined : JSON.stringify({ reactionType }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update reaction.");
       }
+
+      const payload = data?.data || {};
+      setMyReaction(payload.myReaction ?? null);
+      setLikeCount(payload.likeCount ?? nextLikeCount);
+      setSprayCount(payload.sprayCount ?? nextSprayCount);
+    } catch (requestError) {
+      setMyReaction(previous.myReaction);
+      setLikeCount(previous.likeCount);
+      setSprayCount(previous.sprayCount);
+      setError(requestError.message || "Network error while updating reaction.");
+    } finally {
+      setIsLoadingReaction(false);
     }
   };
 
@@ -55,25 +119,34 @@ function Interaction({
     <>
       <div className="flex gap-3.5 h-5">
         {/* Like */}
-        <button className="flex gap-1" onClick={handleLike}>
-          <img src={likeImg} alt="Like" />
+        <button
+          className="flex gap-1 disabled:opacity-60"
+          onClick={() => handleReaction("like")}
+          disabled={isLoadingReaction}
+        >
+          <img src={myReaction === "like" ? likedHeart : unlikedHeart} alt="Like" />
           <div
-            className={`${isLiked ? "text-emerald-800" : "text-zinc-500"} text-center text-sm font-bold tracking-wide`}
+            className={`${myReaction === "like" ? "text-emerald-800" : "text-zinc-500"} text-center text-sm font-bold tracking-wide`}
           >
             {likeCount}
           </div>
         </button>
 
         {/* Spray */}
-        <button className="flex gap-1" onClick={handleSpray}>
-          <img src={sprayImg} alt="Spray" />
+        <button
+          className="flex gap-1 disabled:opacity-60"
+          onClick={() => handleReaction("spray")}
+          disabled={isLoadingReaction}
+        >
+          <img src={myReaction === "spray" ? sprayed : unsprayed} alt="Spray" />
           <div
-            className={` ${isSprayed ? "text-[#880808]" : "text-zinc-500"} text-center text-sm font-bold tracking-wide`}
+            className={` ${myReaction === "spray" ? "text-[#880808]" : "text-zinc-500"} text-center text-sm font-bold tracking-wide`}
           >
             {sprayCount}
           </div>
         </button>
       </div>
+      {error && <div className="pt-1 text-[10px] text-red-600">{error}</div>}
     </>
   );
 }
