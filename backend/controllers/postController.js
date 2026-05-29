@@ -4,6 +4,16 @@ import SavedPost from "../models/SavedPost.js";
 import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
 
+const mapPostWithAuthorProfilePic = (postDoc) => {
+  const post = postDoc.toObject();
+  const populatedAuthor = post.authorId;
+  return {
+    ...post,
+    authorId: populatedAuthor?._id || post.authorId,
+    authorProfilePicUrl: populatedAuthor?.profilePicUrl || "",
+  };
+};
+
 export const getPosts = async (req, res) => {
   try {
     const { authorId, speciesActual, speciesCommon } = req.query;
@@ -14,8 +24,11 @@ export const getPosts = async (req, res) => {
     if (speciesCommon)
       query.speciesCommon = { $regex: `^${speciesCommon}$`, $options: "i" };
 
-    const posts = await Post.find(query).sort({ createdAt: -1 });
-    res.status(200).json(posts);
+    const posts = await Post.find(query)
+      .populate("authorId", "profilePicUrl")
+      .sort({ createdAt: -1 });
+    const postsWithAuthorPics = posts.map(mapPostWithAuthorProfilePic);
+    res.status(200).json(postsWithAuthorPics);
   } catch (error) {
     console.error("Error in getPost:", error.message);
     res.status(500).json({ message: "Server Error" });

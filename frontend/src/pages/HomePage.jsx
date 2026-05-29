@@ -35,6 +35,7 @@ function HomePage() {
             _id={p._id}
             authorId={p.authorId}
             authorName={p.authorName}
+            authorProfilePicUrl={p.authorProfilePicUrl}
             imageUrl={p.imageUrl}
             speciesCommon={p.speciesCommon}
             speciesActual={p.speciesActual}

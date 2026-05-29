@@ -13,6 +13,7 @@ function Post({
   _id,
   authorId,
   authorName,
+  authorProfilePicUrl,
   imageUrl,
   speciesCommon,
   speciesActual,
@@ -184,7 +185,7 @@ function Post({
             <div className="p-3 bg-stone-900/75 rounded-[5px] flex gap-3">
               {/* Profile Picture */}
               <img
-                src="https://placehold.co/20x20"
+                src={authorProfilePicUrl || "https://placehold.co/20x20"}
                 alt=""
                 className="w-7.5 h-7.5 rounded-full"
               />
