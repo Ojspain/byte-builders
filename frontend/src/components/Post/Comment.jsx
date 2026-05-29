@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Interaction from "./Interaction";
 
 function Comment({
   commentId,
   author,
   commentText,
   createdAt,
+  likeCount,
+  sprayCount,
   isOwner,
   onUpdate,
   onDelete,
@@ -138,6 +141,14 @@ function Comment({
           : <div className="w-fit text-zinc-700">{commentText}</div>}
 
         {error && <div className="pt-1 text-xs text-red-600">{error}</div>}
+        <div className="pt-2">
+          <Interaction
+            targetType="comment"
+            targetId={commentId}
+            likeCount={likeCount}
+            sprayCount={sprayCount}
+          />
+        </div>
       </div>
     </div>
   );

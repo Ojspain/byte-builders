@@ -72,7 +72,12 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
 
                     {/* Engagement Stats */}
                     <div className='border-t pt-2 flex items-center justify-between gap-2'>
-                        <Interaction likeCount={post.likeCount} sprayCount={post.sprayCount} />
+                        <Interaction
+                            targetType="post"
+                            targetId={post._id}
+                            likeCount={post.likeCount}
+                            sprayCount={post.sprayCount}
+                        />
                         {canDelete && (
                             <button
                                 type="button"

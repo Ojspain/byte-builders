@@ -257,7 +257,12 @@ function Post({
 
             {/* Like and Spray Icons */}
             <div className="flex items-center gap-2">
-              <Interaction likeCount={likeCount} sprayCount={sprayCount} />
+              <Interaction
+                targetType="post"
+                targetId={_id}
+                likeCount={likeCount}
+                sprayCount={sprayCount}
+              />
               {isPostOwner &&
                 <button
                   type="button"
@@ -285,6 +290,8 @@ function Post({
                 author={commentData.author}
                 commentText={commentData.commentText}
                 createdAt={commentData.createdAt}
+                likeCount={commentData.likeCount}
+                sprayCount={commentData.sprayCount}
                 isOwner={Boolean(
                   user && String(commentData.authorId) === String(user._id),
                 )}
