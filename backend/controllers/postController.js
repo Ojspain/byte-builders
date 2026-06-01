@@ -101,6 +101,12 @@ export const createPost = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "Image is required" });
     }
+    if (req.body.location == "") {
+      return res.status(400).json({ message: "A location is required" });
+    }
+    if (!req.body.rating) {
+      return res.status(400).json({ message: "Rating is required" });
+    }
 
     const newPost = new Post({
       authorId: req.body.authorId,
