@@ -89,7 +89,26 @@ function NewPostPage() {
     const file = fileInput.files?.[0];
 
     if (!file) {
+      toast.error("Please upload an image!");
       console.error("Please upload an image!");
+      return;
+    }
+
+    if (!speciesQuery) {
+      toast.error("Please select the species!");
+      console.error("Please select the species!");
+      return;
+    }
+
+    if (!location) {
+      toast.error("Please select a location!");
+      console.error("Please select a location!");
+      return;
+    }
+
+     if (!rating) {
+      toast.error("Please enter your rating!");
+      console.error("Please enter your rating!");
       return;
     }
 
