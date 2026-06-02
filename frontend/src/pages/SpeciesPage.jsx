@@ -14,8 +14,15 @@ function SpeciesPage() {
   const [speciesPosts, setSpeciesPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const targetType = "speciesType";
+  const [targetId, setTargetId] = useState("");
+
+  const [myReaction, setMyReaction] = useState(null);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     if (!speciesId) return;
+
     setLoading(true);
     fetch(`/api/species/name/${encodeURIComponent(speciesId)}`)
       .then((res) => (res.ok ? res.json() : null))
@@ -31,6 +38,26 @@ function SpeciesPage() {
       .then((posts) => setSpeciesPosts(posts || []))
       .catch((err) => console.error("Failed to load species:", err))
       .finally(() => setLoading(false));
+
+    setTargetId(encodeURIComponent(speciesData._id));
+    const token = localStorage.getItem("token");
+    if (!token || !targetType || !targetId) {
+      setMyReaction(null);
+      return;
+    }
+
+    console.log(`Sending to /api/reactions/${targetType}/${targetId}/me`);
+    fetch(`/api/reactions/${targetType}/${targetId}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message || "Failed to load reaction status.");
+        }
+        setMyReaction(data?.data?.myReaction || null);
+      })
+      .catch(() => setMyReaction(null));
   }, [speciesId]);
 
   const sortedPosts = [...speciesPosts].sort((a, b) => {
@@ -43,9 +70,11 @@ function SpeciesPage() {
 
   const handleClick = (option) => {
     if (option == "dislike") {
+      handleReaction("dislike");
       setLiked(false);
       setDisliked(!disliked);
     } else {
+      handleReaction("like");
       setDisliked(false);
       setLiked(!liked);
     }
@@ -53,6 +82,72 @@ function SpeciesPage() {
 
   if (loading)
     return <p className="text-center text-zinc-500 mt-20">Loading...</p>;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleReaction = async (reactionType) => {
+    if (!targetType || !targetId) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Log in to react.");
+      return;
+    }
+
+    setError("");
+
+    const isRemoving = myReaction === reactionType;
+
+    try {
+      console.log(`Sending to /api/reactions/${targetType}/${targetId}`);
+
+      const response = await fetch(`/api/reactions/${targetType}/${targetId}`, {
+        method: isRemoving ? "DELETE" : "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: isRemoving ? undefined : JSON.stringify({ reactionType }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update reaction.");
+      }
+
+      const payload = data?.data || {};
+      setMyReaction(payload.myReaction ?? null);
+    } catch (requestError) {
+      setError(requestError.message || "Network error while updating reaction.");
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
