@@ -47,7 +47,7 @@ function LoginPage() {
 
   return (
     <>
-      <section className="w-screen h-screen z-200 bg-white absolute top-0 left-0">
+      <section className="w-screen min-h-screen z-200 bg-white absolute top-0 left-0">
         <Link
           to="/"
           className="flex absolute gap-2 m-3 w-fit rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold shadow-md border border-zinc-300 z-2"
