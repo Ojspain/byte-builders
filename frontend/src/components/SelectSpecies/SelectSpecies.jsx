@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function SelectSpecies({ isLabeled, speciesQuery, setSpeciesQuery }) {
+function SelectSpecies({ isLabeled, speciesQuery, setSpeciesQuery, isRequired }) {
     const [speciesCandidates, setSpeciesCandidates] = useState([]);
     const debounceRef = useRef(null);
 
@@ -27,7 +27,7 @@ function SelectSpecies({ isLabeled, speciesQuery, setSpeciesQuery }) {
             <div className="flex flex-col gap-1">
                 {isLabeled &&
                     <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
-                        Species
+                        Species{isRequired && <span>*</span>}
                     </label>
                 }
                 <div className="relative">

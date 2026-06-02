@@ -18,6 +18,7 @@ li {
     color: #1e2423;
     font-size: 14px;
     align-content: center;
+    cursor: pointer;
 }
 
 .reset {

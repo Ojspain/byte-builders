@@ -6,7 +6,7 @@ function SearchPage() {
 
     return (
         <>
-            <section className="w-screen h-screen z-200 bg-white absolute top-0 left-0 flex justify-center items-center pb-20 ">
+            <section className="w-screen min-h-screen z-200 bg-white absolute top-0 left-0 flex justify-center items-center pb-20 ">
                 {/* Logo */}
                 <div className="flex flex-col items-center gap-7 shadow-xl rounded-full w-125 h-125 p-20 justify-center">
                     <div className="flex relative">

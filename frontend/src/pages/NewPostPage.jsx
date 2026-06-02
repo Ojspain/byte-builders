@@ -89,7 +89,26 @@ function NewPostPage() {
     const file = fileInput.files?.[0];
 
     if (!file) {
+      toast.error("Please upload an image!");
       console.error("Please upload an image!");
+      return;
+    }
+
+    if (!speciesQuery) {
+      toast.error("Please select the species!");
+      console.error("Please select the species!");
+      return;
+    }
+
+    if (!location) {
+      toast.error("Please select a location!");
+      console.error("Please select a location!");
+      return;
+    }
+
+     if (!rating) {
+      toast.error("Please enter your rating!");
+      console.error("Please enter your rating!");
       return;
     }
 
@@ -257,13 +276,13 @@ function NewPostPage() {
                   <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
                     Rating
                   </label>
-                  <div className="flex items-center gap-1 px-2 py-2">
+                  <div className="flex items-center gap-1 px-2 py-2 cursor-pointer">
                     {[1, 2, 3, 4, 5].map((n) => (
                       <button
                         key={n}
                         type="button"
                         onClick={() => setRating(n)}
-                        className="rounded p-0.5 transition hover:opacity-80"
+                        className="rounded p-0.5 transition hover:opacity-80 cursor-pointer"
                         aria-label={`${n} star${n > 1 ? "s" : ""}`}
                       >
                         <img
@@ -285,7 +304,7 @@ function NewPostPage() {
                     <button type="button" onClick={handleSuperLike}>
                       <img
                         src={isSuperLiked ? superHeart : unlikedHeart}
-                        className={`${!isSuperLiked && "brightness-160"} h-6 w-6 mt-0.5`}
+                        className={`${!isSuperLiked && "brightness-160"} h-6 w-6 mt-0.5 cursor-pointer`}
                       />
                     </button>
                   </div>
@@ -302,7 +321,7 @@ function NewPostPage() {
                     (Select up to 5 tags)
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-2 py-3">
+                <div className="flex flex-wrap gap-2 py-3 cursor-pointer">
                   {TAG_OPTIONS.map((tag) => {
                     const on = selectedTags.has(tag);
                     return (
@@ -310,7 +329,7 @@ function NewPostPage() {
                         key={tag}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`rounded-full px-3 py-1 text-sm sm:text-xs font-medium transition ${on
+                        className={`rounded-full px-3 py-1 text-sm sm:text-xs font-medium transition cursor-pointer ${on
                           ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
                           : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
                           }`}
@@ -343,7 +362,7 @@ function NewPostPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <button
                   type="submit"
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-2.5 text-base text-white transition hover:bg-[#005a2e] tracking-wide whitespace-nowrap"
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-2.5 text-base text-white transition hover:bg-[#005a2e] tracking-wide whitespace-nowrap cursor-pointer"
                 >
                   Log Observation
                   <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white/80">
@@ -367,7 +386,7 @@ function NewPostPage() {
                 <button
                   type="button"
                   onClick={() => navigate(-1)}
-                  className="flex w-full shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] sm:w-50"
+                  className="flex w-full shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] sm:w-50 cursor-pointer"
                 >
                   Cancel
                   <span className="inline-flex h-3.25 w-3.25 items-center justify-center text-zinc-600">

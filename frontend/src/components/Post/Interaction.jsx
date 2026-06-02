@@ -120,7 +120,7 @@ function Interaction({
       <div className="flex gap-3.5 h-5">
         {/* Like */}
         <button
-          className="flex gap-1 disabled:opacity-60"
+          className="flex gap-1 disabled:opacity-60 cursor-pointer"
           onClick={() => handleReaction("like")}
           disabled={isLoadingReaction}
         >
@@ -134,7 +134,7 @@ function Interaction({
 
         {/* Spray */}
         <button
-          className="flex gap-1 disabled:opacity-60"
+          className="flex gap-1 disabled:opacity-60 cursor-pointer"
           onClick={() => handleReaction("spray")}
           disabled={isLoadingReaction}
         >

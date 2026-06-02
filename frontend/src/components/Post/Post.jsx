@@ -8,6 +8,7 @@ import superHeart from "../../assets/superHeart.svg";
 import Tags from "./Tags";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import defaultPfp from "../../assets/defaultPfp.png";
 
 function Post({
   _id,
@@ -185,7 +186,7 @@ function Post({
             <div className="p-3 bg-stone-900/75 rounded-[5px] flex gap-3">
               {/* Profile Picture */}
               <img
-                src={authorProfilePicUrl || "https://placehold.co/20x20"}
+                src={authorProfilePicUrl || defaultPfp}
                 alt=""
                 className="w-7.5 h-7.5 rounded-full"
               />

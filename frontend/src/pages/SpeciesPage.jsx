@@ -103,7 +103,7 @@ function SpeciesPage() {
                   <button
                     type="button"
                     onClick={() => handleClick("like")}
-                    className={`flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${liked && selected}`}
+                    className={`cursor-pointer flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${liked && selected}`}
                   >
                     Like
                     <span className="inline-flex h-3.5 w-3.5 items-center justify-center text-zinc-600">
@@ -126,7 +126,7 @@ function SpeciesPage() {
                   <button
                     type="button"
                     onClick={() => handleClick("dislike")}
-                    className={`flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${disliked && selected}`}
+                    className={`cursor-pointer flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${disliked && selected}`}
                   >
                     Dislike
                     <span className="inline-flex h-3.5 w-3.5 mt-1 items-center justify-center text-zinc-600">
@@ -158,7 +158,7 @@ function SpeciesPage() {
                 {/* TODO: navigate to new post page and fill in data */}
                 <button
                   type="submit"
-                  className="mt-auto flex items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-3 sm:py-5 text-base text-white transition hover:bg-[#005a2e] tracking-wide"
+                  className="mt-auto flex items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-3 sm:py-5 text-base text-white transition hover:bg-[#005a2e] tracking-wide cursor-pointer"
                 >
                   <svg
                     width="16"
@@ -183,16 +183,16 @@ function SpeciesPage() {
               <div className="w-full flex justify-between items-end border-b border-zinc-200 pb-4 mb-10">
                 <h3 className="text-2xl font-bold text-zinc-900">Sightings</h3>
 
-                <div className="flex gap-2 bg-zinc-100 p-1 rounded-lg">
+                <div className="flex gap-2 bg-zinc-100 p-1 rounded-lg cursor-pointer">
                   <button
                     onClick={() => setActiveTab("new")}
-                    className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${activeTab === "new" ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-500 hover:text-zinc-700"}`}
+                    className={`cursor-pointer px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${activeTab === "new" ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-500 hover:text-zinc-700"}`}
                   >
                     New
                   </button>
                   <button
                     onClick={() => setActiveTab("top")}
-                    className={`px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${activeTab === "top" ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-500 hover:text-zinc-700"}`}
+                    className={`cursor-pointer px-4 py-1.5 text-sm font-bold rounded-md transition-colors ${activeTab === "top" ? "bg-white text-zinc-900 shadow-sm" : "text-zinc-500 hover:text-zinc-700"}`}
                   >
                     Top
                   </button>

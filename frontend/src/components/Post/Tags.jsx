@@ -42,7 +42,9 @@ function Tags({ location, tags }) {
             <div className='w-full'>
                 <div className="pt-2 pb-1 w-full flex justify-between">
                     <div className="flex flex-wrap gap-1.5">
-                        {location} &bull;
+                        {location}
+                        
+                        {tags.length != 0 && <span>&bull;</span>}
 
                         {tags.slice(0, shown).map((tag, i) => (
                             <div key={i} className="tag">{tag}</div>
@@ -51,7 +53,7 @@ function Tags({ location, tags }) {
 
                     {tagCnt > shown &&
                         <button onClick={handleClick}>
-                            <img src={expImg} alt="Expand" className='h-5' />
+                            <img src={expImg} alt="Expand" className='h-5 cursor-pointer' />
                         </button>
                     }
                 </div>

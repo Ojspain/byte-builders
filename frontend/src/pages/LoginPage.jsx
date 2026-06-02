@@ -47,7 +47,7 @@ function LoginPage() {
 
   return (
     <>
-      <section className="w-screen h-screen z-200 bg-white absolute top-0 left-0">
+      <section className="w-screen min-h-screen z-200 bg-white absolute top-0 left-0">
         <Link
           to="/"
           className="flex absolute gap-2 m-3 w-fit rounded-full bg-zinc-200 px-4 pt-1.5 pb-2 font-semibold shadow-md border border-zinc-300 z-2"
@@ -64,7 +64,7 @@ function LoginPage() {
         <div className="absolute right-0 top-[50%] md:size-80 opacity-30 mix-blend-multiply bg-fuchsia-400/35 rounded-full blur-[32px]" />
         <div className="absolute bottom-0 left-[20%] md:size-96 opacity-20 mix-blend-multiply bg-blue-400/50 rounded-full blur-[32px]" />
 
-        <div className="flex justify-center gap-10 items-center h-full">
+        <div className="flex justify-center gap-10 items-center h-full mt-25">
           {/* Image Card */}
           <div className="hidden lg:flex h-96 relative z-1">
             {/* Image */}
