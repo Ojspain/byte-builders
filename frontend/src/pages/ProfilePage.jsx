@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import bugLogo from "../assets/bugLogo.svg";
 import SmallPost from "../components/SmallPost/SmallPost";
 import { useAuth } from "../context/AuthContext";
+import defaultPfp from "../assets/defaultPfp.png";
 
 const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
@@ -194,7 +195,7 @@ function ProfilePage() {
         <>
             <section className="flex flex-col">
                 <div className="p-6 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col sm:flex-row gap-6 mb-6">
-                    <img className="size-32 max-w-248 relative rounded-full border-4 border-zinc-100" src={profileUser.profilePicUrl} />
+                    <img className="size-32 max-w-248 relative rounded-full border-4 border-zinc-100" src={profileUser.profilePicUrl || defaultPfp} />
 
                     <div className="flex flex-col w-full">
                         <div className="text-[#191C1D] text-3xl font-bold">{profileUser.username}</div>
