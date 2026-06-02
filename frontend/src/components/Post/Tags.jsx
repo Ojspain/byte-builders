@@ -53,7 +53,7 @@ function Tags({ location, tags }) {
 
                     {tagCnt > shown &&
                         <button onClick={handleClick}>
-                            <img src={expImg} alt="Expand" className='h-5' />
+                            <img src={expImg} alt="Expand" className='h-5 cursor-pointer' />
                         </button>
                     }
                 </div>

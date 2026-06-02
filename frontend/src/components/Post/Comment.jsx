@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Interaction from "./Interaction";
+import defaultPfp from "../../assets/defaultPfp.png";
 
 function Comment({
   commentId,
@@ -61,7 +62,7 @@ function Comment({
   return (
     <div className="flex gap-3 items-start text-sm">
       <img
-        src={author.profilePicUrl}
+        src={author.profilePicUrl || defaultPfp}
         alt={`${author.username} profile`}
         className="w-8 h-8 rounded-full object-cover"
       />
@@ -84,7 +85,7 @@ function Comment({
                 ? (
                   <button
                     type="button"
-                    className="text-zinc-500 hover:text-zinc-700"
+                    className="text-zinc-500 hover:text-zinc-700 cursor-pointer"
                     onClick={() => {
                       setIsEditing(false);
                       setDraftText(commentText);
@@ -97,7 +98,7 @@ function Comment({
                 : (
                   <button
                     type="button"
-                    className="text-zinc-500 hover:text-zinc-700"
+                    className="text-zinc-500 hover:text-zinc-700 cursor-pointer"
                     onClick={() => {
                       setDraftText(commentText);
                       setIsEditing(true);
@@ -108,7 +109,7 @@ function Comment({
                 )}
               <button
                 type="button"
-                className="text-red-500 hover:text-red-700"
+                className="text-red-500 hover:text-red-700 cursor-pointer"
                 onClick={handleDelete}
               >
                 Delete
@@ -129,7 +130,7 @@ function Comment({
               <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 disabled:opacity-50"
+                  className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 disabled:opacity-50 cursor-pointer"
                   disabled={isSaving}
                   onClick={handleSave}
                 >

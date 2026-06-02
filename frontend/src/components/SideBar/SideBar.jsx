@@ -131,9 +131,10 @@ function SideBar() {
           {/* Already logged in? Hide the Log In and Sign Up buttons */}
           {!user && (
             <>
+            {/* text-[#006D37]  */}
               <Link
                 to="/login"
-                className="text-sm md:text-md rounded-full bg-[#6af39c] text-[#006D37] px-4 pt-1.5 pb-2 font-semibold"
+                className="text-sm md:text-md rounded-full bg-[#6af39c] text-black px-4 pt-1.5 pb-2 font-semibold"
               >
                 Log In
               </Link>
@@ -309,7 +310,7 @@ function SideBar() {
 
       {/* Notification Sliding Panel */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl border-l border-zinc-200 z-[100] transform transition-transform duration-300 ${notifOpen ? "translate-x-0" : "translate-x-full"} flex flex-col`}
+        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl border-l border-zinc-200 z-100 transform transition-transform duration-300 ${notifOpen ? "translate-x-0" : "translate-x-full"} flex flex-col`}
       >
         {/* Header */}
         <div className="flex justify-between items-center p-5 border-b border-zinc-100">

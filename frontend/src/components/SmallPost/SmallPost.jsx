@@ -8,7 +8,7 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
     return (
         <div
             key={post._id}
-            className='rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer bg-white'
+            className='rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white'
         >
             {/* Post Image */}
             <div className='relative h-48 overflow-hidden bg-zinc-200'>
