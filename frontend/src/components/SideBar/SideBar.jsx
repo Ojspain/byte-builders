@@ -107,7 +107,7 @@ function SideBar() {
       <div className="w-full h-16 px-10 bg-white border-b border-zinc-100 shadow-xs fixed flex justify-between top-0 left-0 z-99">
         <section className="flex gap-10">
           <button onClick={handleHam} className="lg:hidden">
-            <img src={ham} alt="Navigation" className="h-10" />
+            <img src={ham} alt="Navigation" className="h-10 cursor-pointer" />
           </button>
 
           <div className="w-0 hidden sm:flex sm:w-auto pb-5 px-2 relative">
