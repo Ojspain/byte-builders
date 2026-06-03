@@ -7,10 +7,10 @@ const likeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // The Id of either a post or comment
+    // The Id of either a post, comment, or species
     targetId: { type: mongoose.Schema.Types.ObjectId, required: true },
-    targetType: { type: String, enum: ["post", "comment"], required: true },
-    reactionType: { type: String, enum: ["like", "spray"], required: true },
+    targetType: { type: String, enum: ["post", "comment", "speciesType"], required: true },
+    reactionType: { type: String, enum: ["like", "spray", "dislike"], required: true },
   },
   {
     timestamps: true,

@@ -14,21 +14,59 @@ function SpeciesPage() {
   const [speciesPosts, setSpeciesPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const targetType = "speciesType";
+  const [targetId, setTargetId] = useState("");
+
+  const [myReaction, setMyReaction] = useState(null);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     if (!speciesId) return;
+
     setLoading(true);
     fetch(`/api/species/name/${encodeURIComponent(speciesId)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         setSpeciesData(data);
+
         if (data) {
-          return fetch(
+          // Fetch Posts based on speciesActual
+          fetch(
             `/api/posts?speciesActual=${encodeURIComponent(data.speciesActual)}`,
-          );
+          )
+            .then((res) => (res ? res.json() : []))
+            .then((posts) => setSpeciesPosts(posts || []))
+            .catch((err) =>
+              console.error("Failed to load species posts:", err),
+            );
+
+          // Set Target ID and fetch user's reaction
+          const currentTargetId = encodeURIComponent(data._id);
+          setTargetId(currentTargetId);
+
+          const token = localStorage.getItem("token");
+          if (token && targetType && currentTargetId) {
+            console.log(
+              `Sending to /api/reactions/${targetType}/${currentTargetId}/me`,
+            );
+            fetch(`/api/reactions/${targetType}/${currentTargetId}/me`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+              .then(async (res) => {
+                const reactionData = await res.json();
+                if (!res.ok) {
+                  throw new Error(
+                    reactionData.message || "Failed to load reaction status.",
+                  );
+                }
+                setMyReaction(reactionData?.data?.myReaction || null);
+              })
+              .catch(() => setMyReaction(null));
+          } else {
+            setMyReaction(null);
+          }
         }
       })
-      .then((res) => (res ? res.json() : []))
-      .then((posts) => setSpeciesPosts(posts || []))
       .catch((err) => console.error("Failed to load species:", err))
       .finally(() => setLoading(false));
   }, [speciesId]);
@@ -43,9 +81,11 @@ function SpeciesPage() {
 
   const handleClick = (option) => {
     if (option == "dislike") {
+      handleReaction("dislike");
       setLiked(false);
       setDisliked(!disliked);
     } else {
+      handleReaction("like");
       setDisliked(false);
       setLiked(!liked);
     }
@@ -53,6 +93,46 @@ function SpeciesPage() {
 
   if (loading)
     return <p className="text-center text-zinc-500 mt-20">Loading...</p>;
+
+  const handleReaction = async (reactionType) => {
+    if (!targetType || !targetId) {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("Log in to react.");
+      return;
+    }
+
+    setError("");
+
+    const isRemoving = myReaction === reactionType;
+
+    try {
+      console.log(`Sending to /api/reactions/${targetType}/${targetId}`);
+
+      const response = await fetch(`/api/reactions/${targetType}/${targetId}`, {
+        method: isRemoving ? "DELETE" : "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: isRemoving ? undefined : JSON.stringify({ reactionType }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update reaction.");
+      }
+
+      const payload = data?.data || {};
+      setMyReaction(payload.myReaction ?? null);
+    } catch (requestError) {
+      setError(
+        requestError.message || "Network error while updating reaction.",
+      );
+    }
+  };
 
   return (
     <>
@@ -150,9 +230,11 @@ function SpeciesPage() {
                 <div className="h-px w-16 bg-zinc-200 mb-6"></div>
 
                 {/* Description */}
-                <p className="text-zinc-600 leading-relaxed text-md font-medium mb-12 xl:border xl:border-zinc-200 xl:rounded-lg xl:p-3">
-                  {speciesData.description || "---"}
-                </p>
+                <div className="mb-12 xl:border xl:border-zinc-200 xl:rounded-lg xl:p-4 max-h-72 overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-300 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-400 [&::-webkit-scrollbar-thumb]:rounded-full">
+                  <p className="text-zinc-600 leading-relaxed text-md font-medium">
+                    {speciesData.description || "---"}
+                  </p>
+                </div>
 
                 {/* Log Observation Button */}
                 {/* TODO: navigate to new post page and fill in data */}

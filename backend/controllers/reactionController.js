@@ -2,11 +2,16 @@ import Comment from "../models/Comment.js";
 import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
+import Species from "../models/Species.js";
 
 const isValidTargetType = (targetType) =>
-  targetType === "post" || targetType === "comment";
+  targetType === "post" ||
+  targetType === "comment" ||
+  targetType === "speciesType";
 const isValidReactionType = (reactionType) =>
-  reactionType === "like" || reactionType === "spray";
+  reactionType === "like" ||
+  reactionType === "spray" ||
+  reactionType === "dislike";
 
 const fieldByReactionType = {
   like: "likeCount",
@@ -24,13 +29,25 @@ const getTargetByType = async (targetType, targetId) => {
     };
   }
 
-  const comment = await Comment.findById(targetId);
-  if (!comment) return null;
-  return {
-    doc: comment,
-    ownerId: comment.authorId,
-    notificationRefs: { postId: comment.postId, commentId: comment._id },
-  };
+  if (targetType === "comment") {
+    const comment = await Comment.findById(targetId);
+    if (!comment) return null;
+    return {
+      doc: comment,
+      ownerId: comment.authorId,
+      notificationRefs: { postId: comment.postId, commentId: comment._id },
+    };
+  }
+
+  if (targetType === "speciesType") {
+    const species = await Like.findById(targetId);
+    if (!species) return null;
+    return {
+      doc: species,
+      ownerId: species.authorId,
+      notificationRefs: { speciesId: species._id, commentId: null },
+    };
+  }
 };
 
 const getCounts = (doc) => ({
@@ -80,7 +97,12 @@ export const setReaction = async (req, res) => {
 
     const targetDoc = target.doc;
 
-    const Model = targetType === "post" ? Post : Comment;
+    const Model =
+      targetType === "post"
+        ? Post
+        : targetType === "comment"
+          ? Comment
+          : Species;
     if (!existingReaction) {
       await Like.create({
         userId: actorId,
@@ -165,7 +187,12 @@ export const removeReaction = async (req, res) => {
     if (existingReaction) {
       const targetDoc = target.doc;
       const field = fieldByReactionType[existingReaction.reactionType];
-      const Model = targetType === "post" ? Post : Comment;
+      const Model =
+        targetType === "post"
+          ? Post
+          : targetType === "comment"
+            ? Comment
+            : Species;
       await Model.updateOne({ _id: targetId }, { $inc: { [field]: -1 } });
 
       targetDoc[field] = Math.max(0, (targetDoc[field] || 0) - 1);
