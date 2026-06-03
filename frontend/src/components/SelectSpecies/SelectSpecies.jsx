@@ -6,6 +6,8 @@ function SelectSpecies({
   setSpeciesQuery,
   setSelectedSpecies,
   isRequired,
+  reset,
+  setReset
 }) {
   const [speciesCandidates, setSpeciesCandidates] = useState([]);
   const debounceRef = useRef(null);
@@ -49,6 +51,13 @@ function SelectSpecies({
       setSelectedSpecies?.(null);
     }
   };
+
+  useEffect(() => {
+    if (reset) {
+      setSpeciesQuery("");
+      setReset(false);
+    }
+  }, [reset]);
 
   return (
     <>
