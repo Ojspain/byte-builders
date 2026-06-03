@@ -49,7 +49,7 @@ function BugPreference({ profileUser }) {
         setDisliked([]);
       })
       .finally(() => setLoading(false));
-  }, [user]);
+  }, [profileUser?._id]);
 
   return (
     <div className="flex flex-col md:flex-row gap-2 mt-5 items-baseline xl:max-w-125">
