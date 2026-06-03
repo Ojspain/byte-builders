@@ -48,7 +48,7 @@ describe("Post Component", () => {
     );
 
     expect(screen.getByText("Ladybug")).toBeInTheDocument();
-    expect(screen.getByText("(Coccinellidae)")).toBeInTheDocument();
+    expect(screen.getByText("Coccinellidae")).toBeInTheDocument();
     expect(
       screen.getByText("Always love finding them in my garden <3"),
     ).toBeInTheDocument();
