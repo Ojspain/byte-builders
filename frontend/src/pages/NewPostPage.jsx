@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SelectSpecies from "../components/SelectSpecies/SelectSpecies";
 import filledStar from "../assets/filledStar.svg";
@@ -43,6 +43,7 @@ const LOCATIONS = [
 
 function NewPostPage() {
   const navigate = useNavigate();
+  const routeLocation = useLocation();
   const { user } = useAuth();
   const [speciesQuery, setSpeciesQuery] = useState("");
   const [selectedSpecies, setSelectedSpecies] = useState(null);
@@ -52,6 +53,21 @@ function NewPostPage() {
   const [caption, setCaption] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [isSuperLiked, setIsSuperLiked] = useState(false);
+
+  useEffect(() => {
+    if (routeLocation.state && routeLocation.state.prefilledSpecies) {
+      const incomingSpecies = routeLocation.state.prefilledSpecies;
+
+      setSelectedSpecies(incomingSpecies);
+
+      // prefill the species info if user navigated from species page
+      const formattedName = incomingSpecies.speciesCommon
+        ? `${incomingSpecies.speciesActual} (${incomingSpecies.speciesCommon})`
+        : incomingSpecies.speciesActual;
+
+      setSpeciesQuery(formattedName);
+    }
+  }, [routeLocation.state]);
 
   const toggleTag = (tag) => {
     setSelectedTags((prev) => {

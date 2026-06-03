@@ -1,9 +1,10 @@
 import SmallPost from "../components/SmallPost/SmallPost";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function SpeciesPage() {
   const { speciesId } = useParams();
+  const navigate = useNavigate();
 
   const selected = "!bg-[#6af39c]";
 
@@ -162,8 +163,6 @@ function SpeciesPage() {
                     {speciesData.speciesActual}
                   </span>
                 </div>
-
-                {/* TODO: connect to user's profile */}
                 <section className="flex gap-2 mb-6">
                   {/* Like Button */}
                   <button
@@ -223,9 +222,13 @@ function SpeciesPage() {
                 </div>
 
                 {/* Log Observation Button */}
-                {/* TODO: navigate to new post page and fill in data */}
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={() =>
+                    navigate("/new-post", {
+                      state: { prefilledSpecies: speciesData },
+                    })
+                  }
                   className="mt-auto flex items-center justify-center gap-2 rounded-full bg-[#006d37] font-medium px-6 py-3 sm:py-5 text-base text-white transition hover:bg-[#005a2e] tracking-wide cursor-pointer"
                 >
                   <svg
