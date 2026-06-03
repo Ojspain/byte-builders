@@ -131,7 +131,7 @@ function SideBar() {
           {/* Already logged in? Hide the Log In and Sign Up buttons */}
           {!user && (
             <>
-            {/* text-[#006D37]  */}
+              {/* text-[#006D37]  */}
               <Link
                 to="/login"
                 className="text-sm md:text-md rounded-full bg-[#6af39c] text-black px-4 pt-1.5 pb-2 font-semibold"
@@ -313,18 +313,20 @@ function SideBar() {
         className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl border-l border-zinc-200 z-100 transform transition-transform duration-300 ${notifOpen ? "translate-x-0" : "translate-x-full"} flex flex-col`}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-5 border-b border-zinc-100">
-          <h2 className="text-xl font-bold text-[#006D37]">Notifications</h2>
-          <button
-            onClick={() => setNotifOpen(false)}
-            className="text-zinc-400 hover:text-zinc-600 font-bold text-2xl"
-          >
-            &times;
-          </button>
+        <div className="flex flex-col justify-between items-center p-5 border-b border-zinc-100">
+          <div className="w-full flex gap-3 items-center">
+            <h2 className="ml-6 w-full text-center text-xl font-bold text-[#006D37]">Notifications</h2>
+            <button
+              onClick={() => setNotifOpen(false)}
+              className="w-min text-zinc-400 hover:text-zinc-600 font-bold text-2xl"
+            >
+              &times;
+            </button>
+          </div>
 
           {/* Action Buttons */}
           {notifications.length > 0 && (
-            <div className="flex gap-4 text-sm font-semibold">
+            <div className="flex gap-4 text-sm font-semibold mt-2">
               <button
                 onClick={handleMarkAllAsRead}
                 className="text-[#006D37] hover:underline cursor-pointer"
