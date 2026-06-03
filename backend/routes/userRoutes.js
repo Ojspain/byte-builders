@@ -8,6 +8,7 @@ import {
   getUserByUsername,
   verifyPassword,
   deleteMyAccount,
+  getUserSpeciesPreferences,
 } from "../controllers/userController.js";
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.post("/verify-password", requireAuth, verifyPassword);
 router.delete("/me", requireAuth, deleteMyAccount);
 router.put("/:username", updateUser);
 router.get("/:username", getUserByUsername);
+router.get("/:username/preferences", getUserSpeciesPreferences);
 
 export default router;

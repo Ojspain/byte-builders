@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import Post from "../models/Post.js";
 import Comment from "../models/Comment.js";
 import SavedPost from "../models/SavedPost.js";
+import Species from "../models/Species.js";
 import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
 import Follow from "../models/Follow.js";
@@ -269,6 +270,46 @@ export const deleteMyAccount = async (req, res) => {
     return res.status(200).json({ message: "Account deleted" });
   } catch (error) {
     console.error("Error in deleteMyAccount:", error.message);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getUserSpeciesPreferences = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find all reactions by this user where the target is a species
+    const reactions = await Like.find({
+      userId: user._id,
+      targetType: "speciesType",
+    }).populate({
+      path: "targetId",
+      model: "Species",
+      select: "speciesCommon speciesActual imageUrl",
+    });
+
+    // Separate them into likes and dislikes
+    const likedSpecies = reactions
+      .filter((r) => r.reactionType === "like" && r.targetId)
+      .map((r) => r.targetId);
+
+    const dislikedSpecies = reactions
+      .filter((r) => r.reactionType === "dislike" && r.targetId)
+      .map((r) => r.targetId);
+
+    return res.status(200).json({
+      data: {
+        likes: likedSpecies,
+        dislikes: dislikedSpecies,
+      },
+    });
+  } catch (error) {
+    console.error("Error in getUserSpeciesPreferences:", error.message);
     return res.status(500).json({ message: "Server Error" });
   }
 };

@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 function SpeciesPage() {
   const { speciesId } = useParams();
 
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
   const selected = "!bg-[#6af39c]";
 
   const [activeTab, setActiveTab] = useState("new");
@@ -78,18 +76,6 @@ function SpeciesPage() {
       return b.likeCount - a.likeCount;
     }
   });
-
-  const handleClick = (option) => {
-    if (option == "dislike") {
-      handleReaction("dislike");
-      setLiked(false);
-      setDisliked(!disliked);
-    } else {
-      handleReaction("like");
-      setDisliked(false);
-      setLiked(!liked);
-    }
-  };
 
   if (loading)
     return <p className="text-center text-zinc-500 mt-20">Loading...</p>;
@@ -182,8 +168,8 @@ function SpeciesPage() {
                   {/* Like Button */}
                   <button
                     type="button"
-                    onClick={() => handleClick("like")}
-                    className={`cursor-pointer flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${liked && selected}`}
+                    onClick={() => handleReaction("like")}
+                    className={`cursor-pointer flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${myReaction === "like" ? selected : ""}`}
                   >
                     Like
                     <span className="inline-flex h-3.5 w-3.5 items-center justify-center text-zinc-600">
@@ -205,8 +191,8 @@ function SpeciesPage() {
                   {/* Dislike Button */}
                   <button
                     type="button"
-                    onClick={() => handleClick("dislike")}
-                    className={`cursor-pointer flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${disliked && selected}`}
+                    onClick={() => handleReaction("dislike")}
+                    className={`cursor-pointer flex w-30 shrink-0 items-center justify-center gap-2 rounded-full border border-[#b3b3b3] bg-[#edeeef] px-6 py-2.5 text-sm font-medium text-zinc-600transition hover:bg-[#e2e4e5] ${myReaction === "dislike" ? selected : ""}`}
                   >
                     Dislike
                     <span className="inline-flex h-3.5 w-3.5 mt-1 items-center justify-center text-zinc-600">

@@ -40,11 +40,11 @@ const getTargetByType = async (targetType, targetId) => {
   }
 
   if (targetType === "speciesType") {
-    const species = await Like.findById(targetId);
+    const species = await Species.findById(targetId);
     if (!species) return null;
     return {
       doc: species,
-      ownerId: species.authorId,
+      ownerId: null,
       notificationRefs: { speciesId: species._id, commentId: null },
     };
   }
@@ -140,7 +140,7 @@ export const setReaction = async (req, res) => {
         (targetDoc[fieldByReactionType[reactionType]] || 0) + 1;
     }
 
-    if (String(target.ownerId) !== String(actorId)) {
+    if (target.ownerId && String(target.ownerId) !== String(actorId)) {
       await Notification.create({
         recipientId: target.ownerId,
         actorId,

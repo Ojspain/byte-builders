@@ -8,48 +8,26 @@ function BugPreference({ profileUser }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!profileUser?._id) return;
+    if (!profileUser?.username) return;
 
-    const token = localStorage.getItem("token");
-    const params = new URLSearchParams();
+    setLoading(true);
 
-    // Target 'likes' on 'species'
-    params.set("targetType", "speciesType");
-    params.set("reactionType", "like");
-    const likedQueryString = params.toString();
-    const likedUrl = likedQueryString
-      ? `/api/posts/saved?${likedQueryString}`
-      : "/api/posts/saved"; // TODO
-
-    fetch(likedUrl, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    })
-      .then((res) => res.json())
-      .then((data) => setLiked(Array.isArray(data) ? data : []))
+    fetch(`/api/users/${profileUser.username}/preferences`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch preferences");
+        return res.json();
+      })
+      .then((payload) => {
+        setLiked(payload.data?.likes || []);
+        setDisliked(payload.data?.dislikes || []);
+      })
       .catch((err) => {
         console.error("Failed to load bug preferences:", err);
         setLiked([]);
-      })
-      .finally(() => setLoading(false));
-
-    // Disliked species
-    params.set("reactionType", "dislike");
-    const dislikedQueryString = params.toString();
-    const dislikedUrl = dislikedQueryString
-      ? `/api/posts/saved?${dislikedQueryString}`
-      : "/api/posts/saved"; // TODO
-
-    fetch(dislikedUrl, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    })
-      .then((res) => res.json())
-      .then((data) => setDisliked(Array.isArray(data) ? data : []))
-      .catch((err) => {
-        console.error("Failed to load bug preferences:", err);
         setDisliked([]);
       })
       .finally(() => setLoading(false));
-  }, [profileUser?._id]);
+  }, [profileUser?.username]);
 
   return (
     <div className="flex flex-col md:flex-row gap-2 mt-5 items-baseline xl:max-w-125">
