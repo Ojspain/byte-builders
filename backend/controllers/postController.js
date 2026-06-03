@@ -44,20 +44,26 @@ export const getSavedPosts = async (req, res) => {
       return res.status(401).json({ message: "Authentication required" });
     }
 
-    const likeQuery = { userId, targetType: "post" };
+    let postIds = [];
+
+    // Filter by liked or sprayed, otherwise default to explicitly Saved posts
     if (reactionType === "like" || reactionType === "spray") {
-      likeQuery.reactionType = reactionType;
+      const likeQuery = { userId, targetType: "post", reactionType };
+      const savedReactions = await Like.find(likeQuery)
+        .sort({ createdAt: -1 })
+        .select({ targetId: 1 });
+      postIds = savedReactions.map((reaction) => reaction.targetId);
+    } else {
+      const explicitSaves = await SavedPost.find({ userId })
+        .sort({ createdAt: -1 })
+        .select({ postId: 1 });
+      postIds = explicitSaves.map((save) => save.postId);
     }
 
-    const savedReactions = await Like.find(likeQuery)
-      .sort({ createdAt: -1 })
-      .select({ targetId: 1 });
-
-    if (!savedReactions.length) {
+    if (!postIds.length) {
       return res.status(200).json([]);
     }
 
-    const postIds = savedReactions.map((reaction) => reaction.targetId);
     const postQuery = { _id: { $in: postIds } };
     const trimmedSpecies = (speciesQuery || "").trim();
     if (trimmedSpecies) {
@@ -82,6 +88,44 @@ export const getSavedPosts = async (req, res) => {
   }
 };
 
+export const toggleSavePost = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const postId = req.params.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const existingSave = await SavedPost.findOne({ userId, postId });
+
+    if (existingSave) {
+      await SavedPost.findByIdAndDelete(existingSave._id);
+      return res.status(200).json({ saved: false, message: "Post unsaved" });
+    } else {
+      const newSave = new SavedPost({ userId, postId });
+      await newSave.save();
+      return res.status(201).json({ saved: true, message: "Post saved" });
+    }
+  } catch (error) {
+    console.error("Error in toggleSavePost:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const checkSaveStatus = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const postId = req.params.id;
+
+    if (!userId) return res.status(200).json({ saved: false });
+
+    const existingSave = await SavedPost.findOne({ userId, postId });
+    return res.status(200).json({ saved: !!existingSave });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 export const getPostById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -140,7 +184,9 @@ export const deletePost = async (req, res) => {
     }
 
     if (post.authorId.toString() !== requesterId) {
-      return res.status(403).json({ message: "Not authorized to delete this post" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this post" });
     }
 
     const comments = await Comment.find({ postId: id }, { _id: 1 });

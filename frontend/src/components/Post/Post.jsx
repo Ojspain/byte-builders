@@ -9,6 +9,7 @@ import Tags from "./Tags";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import defaultPfp from "../../assets/defaultPfp.png";
+import SaveButton from "./SaveButton";
 
 function Post({
   _id,
@@ -257,14 +258,16 @@ function Post({
               {formattedDate}
             </div>
 
-            {/* Like and Spray Icons */}
-            <div className="flex items-center gap-2">
+            {/* Like, Spray, and Save Icons */}
+            <div className="flex items-center gap-3">
+              {" "}
               <Interaction
                 targetType="post"
                 targetId={_id}
                 likeCount={likeCount}
                 sprayCount={sprayCount}
               />
+              <SaveButton postId={_id} />
               {isPostOwner && (
                 <button
                   type="button"

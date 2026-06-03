@@ -9,11 +9,12 @@ function SavedPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const options = {
+    Saved: "saved",
     Liked: "liked",
     Sprayed: "sprayed",
   };
 
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState("saved");
   const [speciesQuery, setSpeciesQuery] = useState("");
   const updateSortBy = (value) => {
     if (value === sortBy) {
@@ -42,7 +43,9 @@ function SavedPage() {
     if (speciesQuery.trim()) params.set("speciesQuery", speciesQuery.trim());
 
     const queryString = params.toString();
-    const url = queryString ? `/api/posts/saved?${queryString}` : "/api/posts/saved";
+    const url = queryString
+      ? `/api/posts/saved?${queryString}`
+      : "/api/posts/saved";
 
     fetch(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
