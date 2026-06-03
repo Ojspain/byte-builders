@@ -171,13 +171,13 @@ function Post({
     <>
       <div
         key={_id}
-        className=" flex flex-col xl:flex-row w-80 md:w-140 xl:w-280 h-200 md:h-280 xl:h-140 bg-white rounded-xl outline outline-zinc-200"
+        className="flex flex-col xl:flex-row w-80 md:w-140 xl:w-280 h-230 md:h-280 xl:h-140 bg-white rounded-xl outline outline-zinc-200"
       >
         {/* Left Half */}
-        <section className="h-[50%] xl:h-full xl:w-[50%] relative">
+        <section className="aspect-square h-fit xl:h-full xl:w-[50%] relative">
           {/* Post Photo */}
           <img
-            className="h-full w-full object-cover rounded-t-xl xl:rounded-t-none xl:rounded-l-xl"
+            className="aspect-square h-full w-full object-cover rounded-t-xl xl:rounded-t-none xl:rounded-l-xl"
             src={imageUrl}
           />
 
@@ -212,7 +212,7 @@ function Post({
         </section>
 
         {/* Right Half */}
-        <div className="h-[50%] xl:h-full xl:w-[50%] flex p-6 bg-white border-l border-zinc-200 flex-col overflow-hidden">
+        <div className="h-[80%] md:h-[50%] xl:h-full xl:w-[50%] flex p-6 bg-white border-l border-zinc-200 flex-col overflow-hidden">
           {/* Top Section */}
           <div className="self-stretch pb-6 flex flex-col justify-start items-start">
             <div className="self-stretch flex flex-col justify-start items-start gap-1">

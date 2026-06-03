@@ -3,8 +3,14 @@ import "./SortBy.css";
 import SelectSpecies from "../SelectSpecies/SelectSpecies";
 
 function SortBy({ options, sortBy, setSortBy, speciesQuery, setSpeciesQuery }) {
+    const [resetSearchBar, setResetSearchBar] = useState(false);
+
     const handleSortByChange = (option) => {
         setSortBy(option);
+
+        if (option === "reset") {
+            setResetSearchBar(true);
+        }
     };
 
     const getSortByClass = (option) => {
@@ -42,7 +48,7 @@ function SortBy({ options, sortBy, setSortBy, speciesQuery, setSpeciesQuery }) {
             <div className="selectSpecies">
                 <p>Species:</p>
                 <div>
-                    <SelectSpecies isLabeled={false} speciesQuery={speciesQuery} setSpeciesQuery={setSpeciesQuery} />
+                    <SelectSpecies isLabeled={false} speciesQuery={speciesQuery} setSpeciesQuery={setSpeciesQuery} reset={resetSearchBar} setReset={setResetSearchBar} />
                 </div>
             </div>
         </>

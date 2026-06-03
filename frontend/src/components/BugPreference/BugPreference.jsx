@@ -46,16 +46,21 @@ function BugPreference({ profileUser }) {
           />
         </svg>
         <div className="w-fit text-[rgb(93,8,102)] text-xs font-medium overflow-hidden max-h-8 text-ellipsis line-clamp-2">
-          Likes:
+          Likes:&nbsp;
           {loading ? (
-            <span> ...</span>
+            <span>...</span>
           ) : liked.length === 0 ? (
-            <span> ---</span>
+            <span>---</span>
           ) : (
             <span>
-              {liked.map((bug) => (
-                <span key={bug._id}> {bug.speciesCommon},</span>
+              {liked.map((bug, index) => (
+                <span key={bug._id}>
+                    {(index != liked.length - 1) &&
+                        <span>{bug.speciesCommon}, </span>
+                    }
+                </span>
               ))}
+              {liked[liked.length - 1].speciesCommon}
             </span>
           )}
         </div>
@@ -76,16 +81,21 @@ function BugPreference({ profileUser }) {
           />
         </svg>
         <div className="w-fit text-[#191C1D] text-xs font-medium overflow-hidden max-h-8 text-ellipsis line-clamp-2">
-          Dislikes:
+          Dislikes:&nbsp;
           {loading ? (
-            <span> ...</span>
+            <span>...</span>
           ) : disliked.length === 0 ? (
-            <span> ---</span>
+            <span>---</span>
           ) : (
             <span>
-              {disliked.map((bug) => (
-                <span key={bug._id}> {bug.speciesCommon},</span>
+              {disliked.map((bug, index) => (
+                <span key={bug._id}>
+                    {(index != disliked.length - 1) &&
+                        <span>{bug.speciesCommon}, </span>
+                    }
+                </span>
               ))}
+              {disliked[disliked.length - 1].speciesCommon}
             </span>
           )}
         </div>
