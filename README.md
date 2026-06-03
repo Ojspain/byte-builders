@@ -5,10 +5,8 @@
 Group Members:
 
 - Isaiah Hardy
-- Luke Lundeen
 - Naima Zida-Brown
 - Oliver Spain
-- Teagan O'Reilly
 
 ## Project Overview
 
