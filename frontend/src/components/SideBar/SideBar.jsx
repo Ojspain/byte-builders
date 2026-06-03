@@ -172,8 +172,6 @@ function SideBar() {
             </>
           )}
 
-          {/* TODO: decide if we want to implement this
-                    {/* <img src={settings} alt="Settings" className='cursor-pointer' /> */}
         </div>
       </div>
 
@@ -190,7 +188,7 @@ function SideBar() {
 
             <div className="pt-6 flex flex-col items-center">
               <img src={bugLogo} />
-              <div className="text-[#006D37] text-3xl font-bold uppercase tracking-wide">
+              <div className="text-[#009467] text-3xl font-bold uppercase tracking-wide">
                 U<span className="text-xl">nder</span>T
                 <span className="text-xl">he</span>C
                 <span className="text-xl">up</span>
@@ -329,7 +327,7 @@ function SideBar() {
             <div className="flex gap-4 text-sm font-semibold mt-2">
               <button
                 onClick={handleMarkAllAsRead}
-                className="text-[#006D37] hover:underline cursor-pointer"
+                className="text-[#009467] hover:underline cursor-pointer"
               >
                 Mark all as read
               </button>
