@@ -230,9 +230,11 @@ function SpeciesPage() {
                 <div className="h-px w-16 bg-zinc-200 mb-6"></div>
 
                 {/* Description */}
-                <p className="text-zinc-600 leading-relaxed text-md font-medium mb-12 xl:border xl:border-zinc-200 xl:rounded-lg xl:p-3">
-                  {speciesData.description || "---"}
-                </p>
+                <div className="mb-12 xl:border xl:border-zinc-200 xl:rounded-lg xl:p-4 max-h-72 overflow-y-auto pr-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-300 hover:[&::-webkit-scrollbar-thumb]:bg-zinc-400 [&::-webkit-scrollbar-thumb]:rounded-full">
+                  <p className="text-zinc-600 leading-relaxed text-md font-medium">
+                    {speciesData.description || "---"}
+                  </p>
+                </div>
 
                 {/* Log Observation Button */}
                 {/* TODO: navigate to new post page and fill in data */}

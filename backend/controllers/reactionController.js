@@ -2,11 +2,16 @@ import Comment from "../models/Comment.js";
 import Like from "../models/Like.js";
 import Notification from "../models/Notification.js";
 import Post from "../models/Post.js";
+import Species from "../models/Species.js";
 
 const isValidTargetType = (targetType) =>
-  targetType === "post" || targetType === "comment" || targetType === "speciesType";
+  targetType === "post" ||
+  targetType === "comment" ||
+  targetType === "speciesType";
 const isValidReactionType = (reactionType) =>
-  reactionType === "like" || reactionType === "spray" || reactionType === "dislike";
+  reactionType === "like" ||
+  reactionType === "spray" ||
+  reactionType === "dislike";
 
 const fieldByReactionType = {
   like: "likeCount",
@@ -40,7 +45,7 @@ const getTargetByType = async (targetType, targetId) => {
     return {
       doc: species,
       ownerId: species.authorId,
-      notificationRefs: { speciedId: species.postId, commentId: null },
+      notificationRefs: { speciesId: species._id, commentId: null },
     };
   }
 };
@@ -92,7 +97,12 @@ export const setReaction = async (req, res) => {
 
     const targetDoc = target.doc;
 
-    const Model = targetType === "post" ? Post : (targetType === "comment" ? Comment : Species);
+    const Model =
+      targetType === "post"
+        ? Post
+        : targetType === "comment"
+          ? Comment
+          : Species;
     if (!existingReaction) {
       await Like.create({
         userId: actorId,
@@ -177,7 +187,12 @@ export const removeReaction = async (req, res) => {
     if (existingReaction) {
       const targetDoc = target.doc;
       const field = fieldByReactionType[existingReaction.reactionType];
-      const Model = targetType === "post" ? Post : (targetType === "comment" ? Comment : Species);
+      const Model =
+        targetType === "post"
+          ? Post
+          : targetType === "comment"
+            ? Comment
+            : Species;
       await Model.updateOne({ _id: targetId }, { $inc: { [field]: -1 } });
 
       targetDoc[field] = Math.max(0, (targetDoc[field] || 0) - 1);
