@@ -28,36 +28,47 @@ function SpeciesPage() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         setSpeciesData(data);
+
         if (data) {
-          return fetch(
+          // Fetch Posts based on speciesActual
+          fetch(
             `/api/posts?speciesActual=${encodeURIComponent(data.speciesActual)}`,
-          );
+          )
+            .then((res) => (res ? res.json() : []))
+            .then((posts) => setSpeciesPosts(posts || []))
+            .catch((err) =>
+              console.error("Failed to load species posts:", err),
+            );
+
+          // Set Target ID and fetch user's reaction
+          const currentTargetId = encodeURIComponent(data._id);
+          setTargetId(currentTargetId);
+
+          const token = localStorage.getItem("token");
+          if (token && targetType && currentTargetId) {
+            console.log(
+              `Sending to /api/reactions/${targetType}/${currentTargetId}/me`,
+            );
+            fetch(`/api/reactions/${targetType}/${currentTargetId}/me`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+              .then(async (res) => {
+                const reactionData = await res.json();
+                if (!res.ok) {
+                  throw new Error(
+                    reactionData.message || "Failed to load reaction status.",
+                  );
+                }
+                setMyReaction(reactionData?.data?.myReaction || null);
+              })
+              .catch(() => setMyReaction(null));
+          } else {
+            setMyReaction(null);
+          }
         }
       })
-      .then((res) => (res ? res.json() : []))
-      .then((posts) => setSpeciesPosts(posts || []))
       .catch((err) => console.error("Failed to load species:", err))
       .finally(() => setLoading(false));
-
-    setTargetId(encodeURIComponent(speciesData._id));
-    const token = localStorage.getItem("token");
-    if (!token || !targetType || !targetId) {
-      setMyReaction(null);
-      return;
-    }
-
-    console.log(`Sending to /api/reactions/${targetType}/${targetId}/me`);
-    fetch(`/api/reactions/${targetType}/${targetId}/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(async (res) => {
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.message || "Failed to load reaction status.");
-        }
-        setMyReaction(data?.data?.myReaction || null);
-      })
-      .catch(() => setMyReaction(null));
   }, [speciesId]);
 
   const sortedPosts = [...speciesPosts].sort((a, b) => {
@@ -82,20 +93,6 @@ function SpeciesPage() {
 
   if (loading)
     return <p className="text-center text-zinc-500 mt-20">Loading...</p>;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const handleReaction = async (reactionType) => {
     if (!targetType || !targetId) {
@@ -131,23 +128,11 @@ function SpeciesPage() {
       const payload = data?.data || {};
       setMyReaction(payload.myReaction ?? null);
     } catch (requestError) {
-      setError(requestError.message || "Network error while updating reaction.");
+      setError(
+        requestError.message || "Network error while updating reaction.",
+      );
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   return (
     <>

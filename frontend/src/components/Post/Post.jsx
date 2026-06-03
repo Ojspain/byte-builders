@@ -222,10 +222,10 @@ function Post({
                   {speciesCommon}
                 </div>
                 <Link
-                  to={`/species/${speciesActual}`}
+                  to={`/species/${encodeURIComponent(speciesActual)}`}
                   className="whitespace-nowrap flex gap-1 text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer text-ellipsis"
                 >
-                  ({speciesActual})
+                  {speciesActual}
                   <img src={diagonalArrow} className="w-2 h-3.5" />
                 </Link>
               </div>
@@ -236,9 +236,9 @@ function Post({
               {/* Rating */}
               <div className="flex gap-2">
                 <StarRating rating={rating} />
-                {heart &&
+                {heart && (
                   <img src={superHeart} className="mt-2 size-3.5"></img>
-                }
+                )}
               </div>
 
               {/* Caption */}
@@ -265,7 +265,7 @@ function Post({
                 likeCount={likeCount}
                 sprayCount={sprayCount}
               />
-              {isPostOwner &&
+              {isPostOwner && (
                 <button
                   type="button"
                   className="text-xs font-semibold text-red-600 hover:text-red-700 disabled:opacity-50"
@@ -274,10 +274,12 @@ function Post({
                 >
                   {isDeletingPost ? "Deleting..." : "Delete post"}
                 </button>
-              }
+              )}
             </div>
           </section>
-          {deleteError && <p className="pt-2 text-xs text-red-600">{deleteError}</p>}
+          {deleteError && (
+            <p className="pt-2 text-xs text-red-600">{deleteError}</p>
+          )}
 
           {/* Comments Section */}
           <div
@@ -314,7 +316,9 @@ function Post({
             </button>
             <input
               type="text"
-              placeholder={user ? "Leave a Comment" : "Log in to leave a comment"}
+              placeholder={
+                user ? "Leave a Comment" : "Log in to leave a comment"
+              }
               className="border border-zinc-200 rounded-full p-3"
               value={commentInput}
               onChange={(event) => setCommentInput(event.target.value)}
@@ -326,9 +330,9 @@ function Post({
               }}
               maxLength={1000}
             />
-            {commentError &&
+            {commentError && (
               <p className="pt-2 text-xs text-red-600">{commentError}</p>
-            }
+            )}
           </div>
         </div>
       </div>

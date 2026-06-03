@@ -44,8 +44,8 @@ const LOCATIONS = [
 function NewPostPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-
   const [speciesQuery, setSpeciesQuery] = useState("");
+  const [selectedSpecies, setSelectedSpecies] = useState(null);
   const [location, setLocation] = useState("");
   const [rating, setRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState(new Set());
@@ -64,7 +64,7 @@ function NewPostPage() {
 
   const handleSuperLike = () => {
     setIsSuperLiked(!isSuperLiked);
-  }
+  };
 
   const onFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -94,24 +94,22 @@ function NewPostPage() {
       return;
     }
 
-    if (!speciesQuery) {
-      toast.error("Please select the species!");
-      console.error("Please select the species!");
-      return;
-    }
-
     if (!location) {
       toast.error("Please select a location!");
       console.error("Please select a location!");
       return;
     }
 
-     if (!rating) {
+    if (!rating) {
       toast.error("Please enter your rating!");
       console.error("Please enter your rating!");
       return;
     }
 
+    if (!selectedSpecies || !selectedSpecies._id) {
+      toast.error("Please select a valid species!");
+      return;
+    }
     const formData = new FormData();
     formData.append("image", file);
     formData.append("location", location);
@@ -123,7 +121,9 @@ function NewPostPage() {
     // Append the user data and species info
     formData.append("authorId", user._id);
     formData.append("authorName", user.username);
-    formData.append("speciesActual", speciesQuery);
+    formData.append("speciesId", selectedSpecies._id);
+    formData.append("speciesActual", selectedSpecies.speciesActual);
+    formData.append("speciesCommon", selectedSpecies.speciesCommon);
 
     // Retrieve the token for the Authorization header
     const token = localStorage.getItem("token");
@@ -232,6 +232,7 @@ function NewPostPage() {
                   isLabeled={true}
                   speciesQuery={speciesQuery}
                   setSpeciesQuery={setSpeciesQuery}
+                  setSelectedSpecies={setSelectedSpecies}
                 />
                 <div className="flex flex-col gap-1">
                   <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
@@ -329,10 +330,11 @@ function NewPostPage() {
                         key={tag}
                         type="button"
                         onClick={() => toggleTag(tag)}
-                        className={`rounded-full px-3 py-1 text-sm sm:text-xs font-medium transition cursor-pointer ${on
-                          ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
-                          : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
-                          }`}
+                        className={`rounded-full px-3 py-1 text-sm sm:text-xs font-medium transition cursor-pointer ${
+                          on
+                            ? "bg-[#f9d7f9] text-[#5d0866] shadow-[0px_2px_2px_rgba(0,0,0,0.05)]"
+                            : "bg-[#edeeef] text-zinc-600 hover:opacity-90"
+                        }`}
                       >
                         {tag}
                       </button>

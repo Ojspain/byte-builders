@@ -1,17 +1,25 @@
 import Species from "../models/Species.js";
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export const getSpecies = async (req, res) => {
   try {
     const { search } = req.query;
     let query = {};
+
     if (search) {
+      const safeSearch = escapeRegExp(search);
+
       query = {
         $or: [
-          { speciesCommon: { $regex: search, $options: "i" } },
-          { speciesActual: { $regex: search, $options: "i" } },
+          { speciesCommon: { $regex: safeSearch, $options: "i" } },
+          { speciesActual: { $regex: safeSearch, $options: "i" } },
         ],
       };
     }
+
     const species = await Species.find(query).limit(search ? 20 : 0);
     res.status(200).json(species);
   } catch (error) {
