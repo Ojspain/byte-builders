@@ -5,6 +5,7 @@ import BugPreference from "../components/BugPreference/BugPreference";
 import SmallPost from "../components/SmallPost/SmallPost";
 import { useAuth } from "../context/AuthContext";
 import defaultPfp from "../assets/defaultPfp.png";
+import UserListModal from "../components/UserListModal/UserListModal";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -22,10 +23,19 @@ function ProfilePage() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followError, setFollowError] = useState("");
   const [isUpdatingFollow, setIsUpdatingFollow] = useState(false);
+  const [modalConfig, setModalConfig] = useState({ isOpen: false, type: null });
 
   const viewingOwnProfile = !usernameParam || usernameParam === user?.username;
   const targetUsername = usernameParam || user?.username;
   const shouldLoadProfile = Boolean(targetUsername);
+
+  const openModal = (type) => {
+    setModalConfig({ isOpen: true, type });
+  };
+
+  const closeModal = () => {
+    setModalConfig({ isOpen: false, type: null });
+  };
 
   useEffect(() => {
     if (!shouldLoadProfile) {
@@ -266,19 +276,27 @@ function ProfilePage() {
 
         <section className="flex flex-col lg:flex-row gap-6">
           <section className="flex lg:flex-2 justify-center gap-2 sm:gap-6">
-            <div className="px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col sm:flex-row gap-1 sm:gap-3 w-full justify-center items-center">
+            {/* Followers Button */}
+            <button
+              onClick={() => openModal("followers")}
+              className="px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col sm:flex-row gap-1 sm:gap-3 w-full justify-center items-center hover:bg-zinc-50 transition-colors"
+            >
               <div className="text-[#191C1D] text-md font-bold">Followers:</div>
               <div className="text-zinc-700 text-md font-normal">
                 {profileUser.followerCount ?? "---"}
               </div>
-            </div>
+            </button>
 
-            <div className="px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col sm:flex-row gap-1 sm:gap-3 w-full justify-center items-center">
+            {/* Following Button */}
+            <button
+              onClick={() => openModal("following")}
+              className="px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col sm:flex-row gap-1 sm:gap-3 w-full justify-center items-center hover:bg-zinc-50 transition-colors"
+            >
               <div className="text-[#191C1D] text-md font-bold">Following:</div>
               <div className="text-zinc-700 text-md font-normal">
                 {profileUser.followingCount ?? "---"}
               </div>
-            </div>
+            </button>
           </section>
 
           <div className="lg:flex-1 px-6 py-3 bg-white rounded-xl shadow-sm border border-zinc-200 flex flex-col w-full text-center">
@@ -310,6 +328,13 @@ function ProfilePage() {
           />
         ))}
       </section>
+
+      <UserListModal
+        isOpen={modalConfig.isOpen}
+        onClose={closeModal}
+        username={profileUser.username}
+        type={modalConfig.type}
+      />
     </>
   );
 }
