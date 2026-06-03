@@ -7,6 +7,8 @@ import {
   getPostById,
   createPost,
   deletePost,
+  toggleSavePost,
+  checkSaveStatus,
 } from "../controllers/postController.js";
 import {
   getCommentsByPostId,
@@ -17,6 +19,8 @@ const router = express.Router();
 
 router.get("/", getPosts);
 router.get("/saved", requireAuth, getSavedPosts);
+router.post("/:id/save", requireAuth, toggleSavePost);
+router.get("/:id/save/me", requireAuth, checkSaveStatus);
 router.get("/:id", getPostById);
 router.get("/:id/comments", getCommentsByPostId);
 router.post("/:id/comments", requireAuth, createComment);
