@@ -140,7 +140,7 @@ export const setReaction = async (req, res) => {
         (targetDoc[fieldByReactionType[reactionType]] || 0) + 1;
     }
 
-    if (target.ownerId && String(target.ownerId) !== String(actorId)) {
+    if (reactionType !== "spray" && target.ownerId && String(target.ownerId) !== String(actorId)) {
       await Notification.create({
         recipientId: target.ownerId,
         actorId,

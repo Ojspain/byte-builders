@@ -12,9 +12,12 @@ function NotificationItem({ notification, closeMenu, onMarkAsRead }) {
   const previewText =
     rawText.length > 30 ? `${rawText.substring(0, 30)}...` : rawText;
 
+  // Follow notifications route to the user's profile, others to the post
+  const destinationLink = type === "follow" ? `/profile/${username}` : `/post/${postId}`;
+
   return (
     <Link
-      to={`/post/${postId}`}
+      to={destinationLink}
       onClick={() => {
         if (!read) onMarkAsRead(notification._id);
         closeMenu();
@@ -33,7 +36,15 @@ function NotificationItem({ notification, closeMenu, onMarkAsRead }) {
         {type === "comment" && (
           <span> commented on your post: "{previewText}"</span>
         )}
-        {/* TODO: Other notification types */}
+        {type === "like" && (
+          <span> liked your post.</span>
+        )}
+        {type === "spray" && (
+          <span> sprayed your post.</span>
+        )}
+        {type === "follow" && (
+          <span> started following you.</span>
+        )}
       </div>
 
       {!read && (

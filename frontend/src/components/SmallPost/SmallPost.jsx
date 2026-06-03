@@ -1,14 +1,25 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import StarRating from '../StarRating/StarRating';
 import Interaction from '../Post/Interaction';
 import diagonalArrow from "../../assets/diagonalArrow.svg";
 import superHeart from "../../assets/superHeart.svg";
 
 function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
+    const navigate = useNavigate();
+
+    // Disambiguates whether the user meant to go to the post, the authors profile, or the species page after clicking
+    const handleCardClick = (e) => {
+        if (e.target.closest('a') || e.target.closest('button')) {
+            return;
+        }
+        navigate(`/post/${post._id}`);
+    };
+
     return (
         <div
             key={post._id}
-            className='rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white'
+            onClick={handleCardClick}
+            className='cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white'
         >
             {/* Post Image */}
             <div className='relative h-48 overflow-hidden bg-zinc-200'>
@@ -38,7 +49,7 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
                             className='text-zinc-500 text-xs font-semibold hover:text-emerald-600 hover:underline transition-colors cursor-pointer whitespace-nowrap flex gap-1 mr-1'
                         >
                             ({post.speciesActual})
-                            <img src={diagonalArrow} className="w-1.5 h-4" />
+                            <img src={diagonalArrow} className="w-1.5 h-4" alt="arrow" />
                         </Link>
                     </div>
                     <p className='text-zinc-700 text-sm mb-3 line-clamp-2 min-h-10'>
@@ -47,7 +58,7 @@ function SmallPost({ post, hasAuthor, canDelete = false, onDelete }) {
                     <div className="mb-3 flex gap-2">
                         <StarRating rating={post.rating} />
                         {post.heart &&
-                            <img src={superHeart} className="mt-2 size-3.5"></img>
+                            <img src={superHeart} className="mt-2 size-3.5" alt="heart" />
                         }
                     </div>
                 </section>
