@@ -291,7 +291,8 @@ function SideBar() {
         >
           <div className="flex w-full h-12 bg-[#6af39c] rounded-full gap-3 items-center justify-center">
             <img src={bugLogo} className="h-6" />
-            <div className="text-center justify-center text-[#006D37] text-md font-bold tracking-wide">
+            {/* text-[#006D37] */}
+            <div className="text-center justify-center text-[#006231] text-md font-bold tracking-wide">
               Post New Bug
             </div>
           </div>

@@ -329,7 +329,7 @@ function NewPostPage() {
                     <button type="button" onClick={handleSuperLike}>
                       <img
                         src={isSuperLiked ? superHeart : unlikedHeart}
-                        className={`${!isSuperLiked && "brightness-160"} h-6 w-6 mt-0.5 cursor-pointer`}
+                        className={`${!isSuperLiked && "brightness-160"} h-6 w-6 mt-0.5 cursor-pointer saturate-0`}
                       />
                     </button>
                   </div>

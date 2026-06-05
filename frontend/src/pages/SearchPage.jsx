@@ -6,7 +6,7 @@ function SearchPage() {
     const options = {
         "Most Liked": "most_liked",
         "Most Sprayed": "most_sprayed",
-        "Posted Today": "posted_today"
+        "Recently Posted": "recent"
     };
     const [sortBy, setSortBy] = useState("");
     const [speciesQuery, setSpeciesQuery] = useState("");
