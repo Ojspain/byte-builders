@@ -110,6 +110,12 @@ function NewPostPage() {
       return;
     }
 
+    if (!selectedSpecies || !selectedSpecies._id) {
+      toast.error("Please select a valid species!");
+      console.error("Please select a valid species!");
+      return;
+    }
+
     if (!location) {
       toast.error("Please select a location!");
       console.error("Please select a location!");
@@ -122,10 +128,7 @@ function NewPostPage() {
       return;
     }
 
-    if (!selectedSpecies || !selectedSpecies._id) {
-      toast.error("Please select a valid species!");
-      return;
-    }
+    
     const formData = new FormData();
     formData.append("image", file);
     formData.append("location", location);
@@ -198,6 +201,10 @@ function NewPostPage() {
           </header>
 
           <div className="rounded-xl border border-[#edeeef] bg-white p-6 shadow-[0px_4px_12px_rgba(0,0,0,0.04)] sm:p-10">
+            <p className="text-sm leading-5.25 text-zinc-500 mb-3">
+              Required fields are marked with an asterisk *
+            </p>
+
             <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
               {/* Image upload */}
               <div>
@@ -235,7 +242,7 @@ function NewPostPage() {
                         />
                       </svg>
                       <span className="text-center text-xs font-bold uppercase tracking-[0.6px] text-zinc-500">
-                        Upload from your Device
+                        Upload from your Device*
                       </span>
                     </>
                   )}
@@ -249,10 +256,11 @@ function NewPostPage() {
                   speciesQuery={speciesQuery}
                   setSpeciesQuery={setSpeciesQuery}
                   setSelectedSpecies={setSelectedSpecies}
+                  isRequired
                 />
                 <div className="flex flex-col gap-1">
                   <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
-                    Location
+                    Location*
                   </label>
                   <div className="relative">
                     <select
@@ -291,7 +299,7 @@ function NewPostPage() {
                 {/* Rating */}
                 <div className="flex max-w-md flex-col gap-1">
                   <label className="pl-1 text-xs font-bold uppercase tracking-[0.6px] text-zinc-600">
-                    Rating
+                    Rating*
                   </label>
                   <div className="flex items-center gap-1 px-2 py-2 cursor-pointer">
                     {[1, 2, 3, 4, 5].map((n) => (
