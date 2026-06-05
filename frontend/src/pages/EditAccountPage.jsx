@@ -155,7 +155,7 @@ function EditAccountPage() {
         </div>
 
         <div
-          className="w-full min-h-[calc(100vh-4rem)] px-8 pb-16 pt-8 font-(family-name:--font-body) sm:px-16"
+          className="w-full min-h-screen h-max px-8 pb-16 pt-8 font-(family-name:--font-body) sm:px-16 flex flex-col justify-center"
           style={{
             "--font-body": "'Be Vietnam Pro', sans-serif",
             "--font-display": "'Plus Jakarta Sans', sans-serif",

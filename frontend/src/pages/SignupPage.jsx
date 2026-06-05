@@ -76,7 +76,7 @@ function SignupPage() {
         <div className="absolute right-0 top-[50%] md:size-80 opacity-30 mix-blend-multiply bg-fuchsia-400/35 rounded-full blur-[32px]" />
         <div className="absolute bottom-0 left-[20%] md:size-96 opacity-20 mix-blend-multiply bg-blue-400/50 rounded-full blur-[32px]" />
 
-        <div className="flex justify-center gap-10 items-center h-full my-10">
+        <div className="flex justify-center gap-10 items-center h-screen">
           {/* Image Card */}
           <div className="hidden lg:flex h-96 relative z-1">
             {/* Image */}
