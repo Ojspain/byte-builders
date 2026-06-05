@@ -6,6 +6,7 @@ function PostPage() {
   const { postId } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
+  const [authorPfpUrl, setAuthorPfpUrl] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -18,6 +19,14 @@ function PostPage() {
         }
         const data = await response.json();
         setPost(data);
+
+        // Specifically gets the pfp Url of the post author
+        const response_2 = await fetch(`/api/users/${data.authorName}`);
+        if (!response_2.ok) {
+          throw new Error("Author not found ");
+        }
+        const data_2 = await response_2.json();
+        setAuthorPfpUrl(data_2.profilePicUrl);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -46,8 +55,8 @@ function PostPage() {
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-4rem)] bg-zinc-50 flex justify-center items-start pt-10 sm:pt-20 pb-10 px-4">
-      {post && <Post {...post} onPostDeleted={handlePostDeleted} />}
+    <div className="w-full h-full justify-center content-center px-4">
+      {post && <Post {...post} authorProfilePicUrl={authorPfpUrl} onPostDeleted={handlePostDeleted} />}
     </div>
   );
 }
