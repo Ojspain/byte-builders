@@ -7,6 +7,7 @@ import {
   updateUser,
   getUserByUsername,
   verifyPassword,
+  searchUsers,
   deleteMyAccount,
   getUserSpeciesPreferences,
 } from "../controllers/userController.js";
@@ -17,6 +18,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/verify-password", requireAuth, verifyPassword);
+router.get("/search", searchUsers);
 router.delete("/me", requireAuth, deleteMyAccount);
 router.put("/:username", updateUser);
 router.get("/:username", getUserByUsername);

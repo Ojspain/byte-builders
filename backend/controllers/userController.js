@@ -313,3 +313,31 @@ export const getUserSpeciesPreferences = async (req, res) => {
     return res.status(500).json({ message: "Server Error" });
   }
 };
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export const searchUsers = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let query = {};
+
+    if (search) {
+      const safeSearch = escapeRegExp(search);
+      query = {
+        username: { $regex: safeSearch, $options: "i" },
+      };
+    }
+
+    // only respond with Username, profile picture, and bio.
+    const users = await User.find(query)
+      .select("username profilePicUrl bio")
+      .limit(search ? 20 : 0);
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error in searchUsers:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+};

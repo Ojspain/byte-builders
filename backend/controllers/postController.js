@@ -16,17 +16,26 @@ const mapPostWithAuthorProfilePic = (postDoc) => {
 
 export const getPosts = async (req, res) => {
   try {
-    const { authorId, speciesActual, speciesCommon } = req.query;
+    const { authorId, speciesActual, speciesCommon, sort } = req.query;
     const query = {};
+
     if (authorId) query.authorId = authorId;
     if (speciesActual)
       query.speciesActual = { $regex: `^${speciesActual}$`, $options: "i" };
     if (speciesCommon)
       query.speciesCommon = { $regex: `^${speciesCommon}$`, $options: "i" };
 
+    let sortLogic = { createdAt: -1 };
+    if (sort === "most_liked") {
+      sortLogic = { likeCount: -1, createdAt: -1 };
+    } else if (sort === "most_sprayed") {
+      sortLogic = { sprayCount: -1, createdAt: -1 };
+    }
+
     const posts = await Post.find(query)
       .populate("authorId", "profilePicUrl")
-      .sort({ createdAt: -1 });
+      .sort(sortLogic);
+
     const postsWithAuthorPics = posts.map(mapPostWithAuthorProfilePic);
     res.status(200).json(postsWithAuthorPics);
   } catch (error) {
