@@ -189,7 +189,7 @@ function Post({
               <img
                 src={authorProfilePicUrl || defaultPfp}
                 alt=""
-                className="w-7.5 h-7.5 rounded-full"
+                className="w-7.5 h-7.5 rounded-full object-cover"
               />
 
               {/* Name and Time */}
