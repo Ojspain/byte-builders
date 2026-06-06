@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import mongoose from "mongoose";
 import speciesRoutes from "./routes/speciesRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import followRoutes from "./routes/followRoutes.js";
