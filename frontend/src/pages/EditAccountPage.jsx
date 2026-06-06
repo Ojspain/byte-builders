@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fetchApi } from "@/fetchApi";
 import { useNavigate } from "react-router-dom";
 import beetle from "../assets/beetle.jpg";
 import { useAuth } from "../context/AuthContext";
@@ -45,7 +46,7 @@ function EditAccountPage() {
     setUnlockError("");
     setIsUnlocking(true);
     try {
-      const response = await fetch("/api/users/verify-password", {
+      const response = await fetchApi("/api/users/verify-password", {
         method: "POST",
         headers: getAuthHeaders(true),
         body: JSON.stringify({ password: accessPassword }),
@@ -77,7 +78,7 @@ function EditAccountPage() {
     setUpdateError("");
 
     try {
-      const response = await fetch(`/api/users/${user.username}`, {
+      const response = await fetchApi(`/api/users/${user.username}`, {
         method: "PUT",
         headers: getAuthHeaders(true),
         body: JSON.stringify({ username, email, bio, profilePicUrl }),
@@ -117,7 +118,7 @@ function EditAccountPage() {
     setIsDeleting(true);
     setDeleteError("");
     try {
-      const response = await fetch("/api/users/me", {
+      const response = await fetchApi("/api/users/me", {
         method: "DELETE",
         headers: getAuthHeaders(true),
         body: JSON.stringify({ password: accessPassword }),

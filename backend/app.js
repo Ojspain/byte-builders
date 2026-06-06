@@ -10,8 +10,26 @@ import reactionRoutes from "./routes/reactionRoutes.js";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://underthecup.vercel.app",
+      /\.vercel\.app$/,
+    ],
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    time: new Date().toISOString(),
+    mongo: mongoose.connection.readyState === 1,
+  });
+});
 
 // Mount the routes
 // Any request that starts with '/api/species' is forwarded to speciesRoutes, etc

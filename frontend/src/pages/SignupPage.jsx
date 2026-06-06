@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fetchApi } from "@/fetchApi";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import bugLogo from "../assets/bugLogo.svg";
@@ -27,7 +28,7 @@ function SignupPage() {
     }
 
     try {
-      const response = await fetch("/api/users/signup", {
+      const response = await fetchApi("/api/users/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

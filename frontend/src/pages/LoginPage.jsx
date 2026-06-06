@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fetchApi } from "@/fetchApi";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import arrowRight from "../assets/arrowRight.svg";
@@ -18,7 +19,7 @@ function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("/api/users/login", {
+      const response = await fetchApi("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { fetchApi } from "@/fetchApi";
 
 function SelectSpecies({
   isLabeled,
@@ -21,7 +22,7 @@ function SelectSpecies({
 
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      fetch(`/api/species?search=${encodeURIComponent(q)}`)
+      fetchApi(`/api/species?search=${encodeURIComponent(q)}`)
         .then((res) => res.json())
         .then((data) => setSpeciesCandidates(data))
         .catch(() => setSpeciesCandidates([]));

@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { fetchApi } from "@/fetchApi";
 import { useState, useEffect } from "react";
 import bugLogo from "../assets/bugLogo.svg";
 import BugPreference from "../components/BugPreference/BugPreference";
@@ -47,7 +48,7 @@ function ProfilePage() {
       setIsLoadingProfile(true);
       setProfileError("");
       try {
-        const res = await fetch(`/api/users/${targetUsername}`);
+        const res = await fetchApi(`/api/users/${targetUsername}`);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.message || "Failed to load profile.");
@@ -76,7 +77,7 @@ function ProfilePage() {
       return;
     }
 
-    fetch(`/api/posts?authorId=${profileUser._id}`)
+    fetchApi(`/api/posts?authorId=${profileUser._id}`)
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error("Failed to load posts:", err));
@@ -87,7 +88,7 @@ function ProfilePage() {
       return;
     }
 
-    fetch(`/api/users/${usernameParam}/follow-status`, {
+    fetchApi(`/api/users/${usernameParam}/follow-status`, {
       headers: getAuthHeaders(),
     })
       .then(async (res) => {
@@ -110,7 +111,7 @@ function ProfilePage() {
 
     setDeleteError("");
     try {
-      const response = await fetch(`/api/posts/${postId}`, {
+      const response = await fetchApi(`/api/posts/${postId}`, {
         method: "DELETE",
         headers: getAuthHeaders(),
       });
@@ -135,7 +136,7 @@ function ProfilePage() {
     setIsUpdatingFollow(true);
     setFollowError("");
     try {
-      const response = await fetch(`/api/users/${usernameParam}/follow`, {
+      const response = await fetchApi(`/api/users/${usernameParam}/follow`, {
         method: isFollowing ? "DELETE" : "POST",
         headers: getAuthHeaders(),
       });

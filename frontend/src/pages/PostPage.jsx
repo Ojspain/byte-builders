@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchApi } from "@/fetchApi";
 import { useParams, useNavigate } from "react-router-dom";
 import Post from "../components/Post/Post";
 
@@ -13,7 +14,7 @@ function PostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`/api/posts/${postId}`);
+        const response = await fetchApi(`/api/posts/${postId}`);
         if (!response.ok) {
           throw new Error("Post not found");
         }
@@ -21,7 +22,7 @@ function PostPage() {
         setPost(data);
 
         // Specifically gets the pfp Url of the post author
-        const response_2 = await fetch(`/api/users/${data.authorName}`);
+        const response_2 = await fetchApi(`/api/users/${data.authorName}`);
         if (!response_2.ok) {
           throw new Error("Author not found ");
         }

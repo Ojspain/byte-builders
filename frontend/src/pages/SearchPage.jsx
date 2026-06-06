@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { fetchApi } from "@/fetchApi";
 import SpeciesSearchResult from "../components/SpeciesSearchResult/SpeciesSearchResult";
 import UserSearchResult from "../components/UserSearchResult/UserSearchResult";
 
@@ -30,7 +31,7 @@ function SearchPage() {
           ? `/api/species?search=${encodeURIComponent(q)}`
           : `/api/users/search?search=${encodeURIComponent(q)}`;
 
-      fetch(endpoint)
+      fetchApi(endpoint)
         .then((res) => res.json())
         .then((data) => setResults(data))
         .catch(() => setResults([]))

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { fetchApi } from "@/fetchApi";
 import { useState, useEffect } from "react";
 import SmallPost from "../components/SmallPost/SmallPost";
 import SortBy from "../components/SortBy/SortBy";
@@ -47,7 +48,7 @@ function SavedPage() {
       ? `/api/posts/saved?${queryString}`
       : "/api/posts/saved";
 
-    fetch(url, {
+    fetchApi(url, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
       .then((res) => res.json())

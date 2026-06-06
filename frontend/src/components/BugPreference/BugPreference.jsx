@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { fetchApi } from "@/fetchApi";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -12,7 +13,7 @@ function BugPreference({ profileUser }) {
 
     setLoading(true);
 
-    fetch(`/api/users/${profileUser.username}/preferences`)
+    fetchApi(`/api/users/${profileUser.username}/preferences`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch preferences");
         return res.json();

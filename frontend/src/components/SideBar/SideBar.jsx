@@ -1,4 +1,5 @@
 import bell from "../../assets/bell.svg";
+import { fetchApi } from "@/fetchApi";
 import settings from "../../assets/settings.svg";
 import bugLogo from "../../assets/bugLogo.svg";
 import cup from "../../assets/cup.svg";
@@ -36,7 +37,7 @@ function SideBar() {
 
     const fetchNotifications = async () => {
       try {
-        const res = await fetch("/api/notifications", {
+        const res = await fetchApi("/api/notifications", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -58,7 +59,7 @@ function SideBar() {
 
   const handleMarkAsRead = async (id) => {
     try {
-      await fetch(`/api/notifications/${id}/read`, {
+      await fetchApi(`/api/notifications/${id}/read`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -73,7 +74,7 @@ function SideBar() {
 
   const handleMarkAllAsRead = async () => {
     try {
-      const res = await fetch("/api/notifications/mark-all-read", {
+      const res = await fetchApi("/api/notifications/mark-all-read", {
         method: "PUT",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -91,7 +92,7 @@ function SideBar() {
 
   const handleClearAll = async () => {
     try {
-      await fetch("/api/notifications/clear-all", {
+      await fetchApi("/api/notifications/clear-all", {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchApi } from "@/fetchApi";
 import Post from "../components/Post/Post";
 import SortBy from "../components/SortBy/SortBy";
 
@@ -20,7 +21,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    fetch(`/api/posts?sort=${sortBy}`)
+    fetchApi(`/api/posts?sort=${sortBy}`)
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch((err) => console.error("Failed to load posts:", err))

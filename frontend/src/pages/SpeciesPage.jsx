@@ -1,4 +1,5 @@
 import SmallPost from "../components/SmallPost/SmallPost";
+import { fetchApi } from "@/fetchApi";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -23,14 +24,14 @@ function SpeciesPage() {
     if (!speciesId) return;
 
     setLoading(true);
-    fetch(`/api/species/name/${encodeURIComponent(speciesId)}`)
+    fetchApi(`/api/species/name/${encodeURIComponent(speciesId)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         setSpeciesData(data);
 
         if (data) {
           // Fetch Posts based on speciesActual
-          fetch(
+          fetchApi(
             `/api/posts?speciesActual=${encodeURIComponent(data.speciesActual)}`,
           )
             .then((res) => (res ? res.json() : []))
@@ -48,7 +49,7 @@ function SpeciesPage() {
             console.log(
               `Sending to /api/reactions/${targetType}/${currentTargetId}/me`,
             );
-            fetch(`/api/reactions/${targetType}/${currentTargetId}/me`, {
+            fetchApi(`/api/reactions/${targetType}/${currentTargetId}/me`, {
               headers: { Authorization: `Bearer ${token}` },
             })
               .then(async (res) => {
@@ -99,7 +100,7 @@ function SpeciesPage() {
     try {
       console.log(`Sending to /api/reactions/${targetType}/${targetId}`);
 
-      const response = await fetch(`/api/reactions/${targetType}/${targetId}`, {
+      const response = await fetchApi(`/api/reactions/${targetType}/${targetId}`, {
         method: isRemoving ? "DELETE" : "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

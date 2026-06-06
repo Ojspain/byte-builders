@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { fetchApi } from "@/fetchApi";
 import Comment from "./Comment";
 import StarRating from "../StarRating/StarRating";
 import Interaction from "./Interaction";
@@ -49,7 +50,7 @@ function Post({
 
   useEffect(() => {
     if (!_id) return;
-    fetch(`/api/posts/${_id}/comments`)
+    fetchApi(`/api/posts/${_id}/comments`)
       .then((res) => res.json())
       .then((data) => setPopulatedComments(data))
       .catch(() => setPopulatedComments([]));
@@ -82,7 +83,7 @@ function Post({
     setIsSubmittingComment(true);
     setCommentError("");
     try {
-      const response = await fetch(`/api/posts/${_id}/comments`, {
+      const response = await fetchApi(`/api/posts/${_id}/comments`, {
         method: "POST",
         headers: getAuthHeaders(),
         body: JSON.stringify({ commentText: trimmedComment }),
@@ -104,7 +105,7 @@ function Post({
   };
 
   const handleUpdateComment = async (commentId, commentText) => {
-    const response = await fetch(`/api/comments/${commentId}`, {
+    const response = await fetchApi(`/api/comments/${commentId}`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify({ commentText }),
@@ -121,7 +122,7 @@ function Post({
   };
 
   const handleDeleteComment = async (commentId) => {
-    const response = await fetch(`/api/comments/${commentId}`, {
+    const response = await fetchApi(`/api/comments/${commentId}`, {
       method: "DELETE",
       headers: getAuthHeaders(),
     });
@@ -149,7 +150,7 @@ function Post({
     setDeleteError("");
     setIsDeletingPost(true);
     try {
-      const response = await fetch(`/api/posts/${_id}`, {
+      const response = await fetchApi(`/api/posts/${_id}`, {
         method: "DELETE",
         headers: getAuthHeaders(),
       });

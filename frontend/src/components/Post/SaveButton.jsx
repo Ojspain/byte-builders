@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchApi } from "@/fetchApi";
 import bookmarkOutline from "../../assets/bookmarkOutline.svg";
 import bookmarkFilled from "../../assets/bookmarkFilled.svg";
 
@@ -10,7 +11,7 @@ function SaveButton({ postId }) {
     const token = localStorage.getItem("token");
     if (!token || !postId) return;
 
-    fetch(`/api/posts/${postId}/save/me`, {
+    fetchApi(`/api/posts/${postId}/save/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -27,7 +28,7 @@ function SaveButton({ postId }) {
 
     setLoading(true);
     try {
-      const res = await fetch(`/api/posts/${postId}/save`, {
+      const res = await fetchApi(`/api/posts/${postId}/save`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });

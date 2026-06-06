@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchApi } from "@/fetchApi";
 import likedHeart from "../../assets/likedHeart.svg";
 import unlikedHeart from "../../assets/unlikedHeart.svg";
 import sprayed from "../../assets/sprayed.svg";
@@ -31,7 +32,7 @@ function Interaction({
       return;
     }
 
-    fetch(`/api/reactions/${targetType}/${targetId}/me`, {
+    fetchApi(`/api/reactions/${targetType}/${targetId}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
@@ -88,7 +89,7 @@ function Interaction({
     setSprayCount(nextSprayCount);
 
     try {
-      const response = await fetch(`/api/reactions/${targetType}/${targetId}`, {
+      const response = await fetchApi(`/api/reactions/${targetType}/${targetId}`, {
         method: isRemoving ? "DELETE" : "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

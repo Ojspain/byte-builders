@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchApi } from "@/fetchApi";
 import { Link } from "react-router-dom";
 import defaultPfp from "../../assets/defaultPfp.png";
 
@@ -24,7 +25,7 @@ function UserListModal({ isOpen, onClose, username, type }) {
       setUsers([]);
 
       try {
-        const res = await fetch(`/api/users/${username}/${type}`);
+        const res = await fetchApi(`/api/users/${username}/${type}`);
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message || `Failed to load ${type}`);

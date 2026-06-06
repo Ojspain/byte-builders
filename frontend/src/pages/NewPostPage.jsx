@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchApi } from "@/fetchApi";
 import toast from "react-hot-toast";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -148,7 +149,7 @@ function NewPostPage() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("/api/posts", {
+      const response = await fetchApi("/api/posts", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
