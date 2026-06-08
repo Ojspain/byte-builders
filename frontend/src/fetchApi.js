@@ -11,6 +11,11 @@ export const fetchApi = async (endpoint, options = {}) => {
     ...options.headers,
   };
 
+  // let the browser set the Content-Type for image uploads
+  if (options.body instanceof FormData) {
+    delete headers["Content-Type"];
+  }
+
   const response = await fetch(`${baseURL}${path}`, {
     ...options,
     headers,
