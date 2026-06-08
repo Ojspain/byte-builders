@@ -10,7 +10,9 @@ Group Members:
 
 ## Project Overview
 
-Byte Builders is a bug-themed social application designed to allow users to interact, explore species pages, and write bug reviews. The project is built using the MERN stack (MongoDB, Express, React, Node.js) and styled with Tailwind CSS.
+Byte Builders is a bug-themed social application designed to allow users to interact, explore species pages, and write bug reviews. The project is built using the MERN stack (MongoDB, Express, React, Node.js), uses Cloudinary for image uploads, and is styled with Tailwind CSS.
+
+The project is hosted with Render + Vercel and can be accessed through the URL: https://underthecup.vercel.app/
 
 ## Project Structure
 
@@ -73,3 +75,20 @@ npm run dev
 - **`/edit-account` (Edit Account Page):** How users can edit their dashboard and user details.
 - **`/saved` (Saved Page):** A collection of posts and species that the user has bookmarked for later viewing.
 - **`/*` (Not Found):** A fallback route to handle 404 errors for unrecognized URLs.
+
+
+
+
+
+
+## Individual Reflections
+
+
+### Isaiah Hardy
+Insert Paragraph Here
+
+### Naima Zida-Brown
+Insert Paragraph Here
+
+### Oliver Spain
+My main contributions to this project are in the database and backend design, but I also did some component development and testing. Although I have previous backend development experience, this was my first time using a noSQL DB so I had to try and re-learn the proper way to do things which made for a good learning experience. However, I would say my experience creating React components was more beneficial than my backend work. My aversion to frontend work means that a lot of my personal projects end up with at most a bare-bones HTML UI, but my positive experience with React has begun to change that. With how much easier and faster creating components is, all of a sudden the effort needed to get a nice frontend seems much more worth it. All that being said, I think the most valuable thing I learned about was creating tests. The importance of being able to write a good unit test was emphasized multiple times by different guest presenters throughout the quarter. I had no previous experience creating tests nor was I aware of how important they were in the industry so getting that experience now will make me more appealing to hire after graduation.
