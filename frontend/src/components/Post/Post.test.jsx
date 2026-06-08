@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Post from "./Post";
 
@@ -40,7 +40,7 @@ describe("Post Component", () => {
     });
   });
 
-  it("renders post details correctly", () => {
+  it("renders post details correctly", async () => {
     render(
       <BrowserRouter>
         <Post {...mockPostProps} />
@@ -52,17 +52,20 @@ describe("Post Component", () => {
     expect(
       screen.getByText("Always love finding them in my garden <3"),
     ).toBeInTheDocument();
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
   });
 
-  it("shows the delete button only for the post owner", () => {
+  it("shows the delete button only for the post owner", async () => {
     render(
       <BrowserRouter>
         <Post {...mockPostProps} />
       </BrowserRouter>,
     );
 
-    // Because the mock user._id matches the authorId, the isPostOwner boolean is true[cite: 5].
     const deleteBtn = screen.getByRole("button", { name: "Delete post" });
     expect(deleteBtn).toBeInTheDocument();
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
   });
 });
