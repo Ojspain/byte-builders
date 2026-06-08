@@ -42,6 +42,18 @@ To set up the project locally, install the dependencies for both the frontend an
    cd ../backend
    npm install
    ```
+4. **Configure Environment Variables:**
+   
+   Navigate to the `/backend` directory and create a new file named `.env`. Add the following keys and update the placeholder values with your specific database and API credentials:
+
+   ```env
+   MONGO_URI=mongodb+srv://<db_username>:<db_password>@underthecup.rtsga1l.mongodb.net/utcdev?appName=UnderTheCup
+   PORT=5000
+   JWT_SECRET=<your_jwt_secret>
+   CLOUDINARY_CLOUD_NAME=byte-builders
+   CLOUDINARY_API_KEY=<CLOUDINARY_API_KEY_HERE>
+   CLOUDINARY_API_SECRET=<CLOUDINARY_API_SECRET_HERE>
+   ```
 
 ## How to Run the Project Locally
 
