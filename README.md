@@ -97,7 +97,7 @@ npm run dev
 
 
 ### Isaiah Hardy
-Insert Paragraph Here
+My main contributions to this project are in the backend implementation, such as developing functional posts, comments, and likes and sprays. The hardest part of this project at first was that I did not really know how to begin until we learned backend development in class. I could understand the general idea of the app and what pages we wanted, but I had a hard time seeing how the frontend was supposed to get real information instead of dummy data. Once we started covering Express routes and MongoDB the project made a lot more sense; I finally had a way to think about where signup, login, posts, comments, and species searches were supposed to live. I still spent a lot of time looking things up and fixing small mistakes, especially when the frontend had to call the backend correctly, but it felt more manageable after that. I think the biggest thing I learned was how to develop backend functionality for a website and how to think about building a website as a complete whole.
 
 ### Naima Zida-Brown
 Insert Paragraph Here
